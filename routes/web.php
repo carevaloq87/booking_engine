@@ -20,7 +20,11 @@ Route::group(
     'prefix' => 'roles',
 ], function () {
 
-    Route::get('/', 'RolesController@index')
+    Route::get('/', [
+        'uses'=>'RolesController@index',
+        'middleware' => 'roles',
+        'roles' =>'Administrator'
+        ])
          ->name('roles.role.index');
 
     Route::get('/create','RolesController@create')

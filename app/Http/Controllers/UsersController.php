@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Role;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Exception;
@@ -38,9 +39,8 @@ class UsersController extends Controller
      */
     public function create()
     {
-        
-        
-        return view('users.create');
+        $roles = Role::all();
+        return view('users.create', compact('roles'));
     }
 
     /**
@@ -52,19 +52,24 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
-        try {
-            
-            $data = $this->getData($request);            
-            $data['password'] = bcrypt($data['password']);
-            User::create($data);
+        try {                        
+            //create and save the user            
+            $user = User::create([
+                'name'  => filter_var($request->name, FILTER_SANITIZE_STRING),
+                'email' => filter_var($request->email, FILTER_VALIDATE_EMAIL),
+                'password' => bcrypt($request->password)
+            ]); 
+
+            $user
+	            ->roles()
+	            ->attach(Role::where('id',  $request->roles )->first());
 
             return redirect()->route('users.user.index')
                              ->with('success_message', 'User was successfully added!');
 
-        } catch (Exception $exception) {
-
+        } catch (Exception $exception) {            
             return back()->withInput()
-                         ->withErrors(['unexpected_error' => 'Unexpected error occurred while trying to process your request!']);
+                         ->withErrors(['unexpected_error' => 'Unexpected error occurred while trying to process your request! '. $exception->getMessage()]);
         }
     }
 
@@ -113,6 +118,9 @@ class UsersController extends Controller
             
             $user = User::findOrFail($id);
             $data['password'] = bcrypt($data['password']);
+            $data['name']     = filter_var($data['name'], FILTER_SANITIZE_STRING);  
+            $data['email']    = filter_var($data['email'], FILTER_VALIDATE_EMAIL);              
+                
             $user->update($data);
 
             return redirect()->route('users.user.index')

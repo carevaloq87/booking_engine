@@ -137,7 +137,7 @@
             "foreign-constraint": null,
             "on-store": null,
             "on-update": null
-        },
+        },      
         {
             "name": "created_at",
             "labels": "Created At",
