@@ -54,15 +54,11 @@ class UsersController extends Controller
     {
         try {                        
             //create and save the user            
-            $user = User::create([
-                'name'  => filter_var($request->name, FILTER_SANITIZE_STRING),
-                'email' => filter_var($request->email, FILTER_VALIDATE_EMAIL),
-                'password' => bcrypt($request->password)
-            ]); 
+            $user = User::create($this->getUserFields($request)); 
 
             $user
 	            ->roles()
-	            ->attach(Role::where('id',  $request->roles )->first());
+	            ->attach(Role::where('id',  $request->role )->first());
 
             return redirect()->route('users.user.index')
                              ->with('success_message', 'User was successfully added!');
@@ -83,7 +79,7 @@ class UsersController extends Controller
     public function show($id)
     {
         $user = User::findOrFail($id);
-
+        
         return view('users.show', compact('user'));
     }
 
@@ -97,9 +93,8 @@ class UsersController extends Controller
     public function edit($id)
     {
         $user = User::findOrFail($id);
-        
-
-        return view('users.edit', compact('user'));
+        $roles = Role::all();        
+        return view('users.edit', compact('user','roles'));
     }
 
     /**
@@ -114,14 +109,12 @@ class UsersController extends Controller
     {
         try {
             
-            $data = $this->getData($request);
-            
-            $user = User::findOrFail($id);
-            $data['password'] = bcrypt($data['password']);
-            $data['name']     = filter_var($data['name'], FILTER_SANITIZE_STRING);  
-            $data['email']    = filter_var($data['email'], FILTER_VALIDATE_EMAIL);              
-                
-            $user->update($data);
+            $user = User::findOrFail($id);             
+            $user->update($this->getUserFields($request));
+                        
+            $user->roles()
+                 ->sync( Role::where('id',  $request->role )
+                 ->first());
 
             return redirect()->route('users.user.index')
                              ->with('success_message', 'User was successfully updated!');
@@ -129,8 +122,23 @@ class UsersController extends Controller
         } catch (Exception $exception) {
 
             return back()->withInput()
-                         ->withErrors(['unexpected_error' => 'Unexpected error occurred while trying to process your request!']);
-        }        
+                         ->withErrors(['unexpected_error' => 'Unexpected error occurred while trying to process your request! ' . 
+                                        $exception->getMessage()]);
+        }         
+    }
+    /**
+     * Return sanitize  user fields
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function getUserFields(Request $request)
+    {
+        return [                
+                'name'  => filter_var($request->name, FILTER_SANITIZE_STRING),
+                'email' => filter_var($request->email, FILTER_VALIDATE_EMAIL),
+                'password' => bcrypt($request->password)
+            ];
     }
 
     /**

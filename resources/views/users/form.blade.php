@@ -23,15 +23,15 @@
     </div>
 </div>
 
-<div class="form-group {{ $errors->has('roles') ? 'has-error' : '' }}">
-    <label for="roles" class="col-md-2 control-label">Role</label>
+<div class="form-group {{ $errors->has('role') ? 'has-error' : '' }}">
+    <label for="role" class="col-md-2 control-label">Role</label>
     <div class="col-md-10">
-        <select class="form-control" id="roles" name="roles" required="true">
-        	    <option value="" style="display: none;" {{ old('roles', optional($user)->roles ?: '') == '' ? 'selected' : '' }} disabled selected>Enter role here...</option>
-        	@foreach ($roles as $rol)
-			    <option value="{{ $rol['id'] }}" {{ old('roles', optional($user)->roles) == $rol['id'] ? 'selected' : '' }}>
-			    	{{ $rol['name'] }}
-			    </option>
+        <select class="form-control" id="role" name="role" required="true">
+        	    <option value="" style="display: none;" {{ old('role', optional($user)->roles() ?: '') == '' ? 'selected' : '' }} disabled selected>Enter role here...</option>
+        	@foreach ($roles as $role)
+            <option value="{{ $role['id'] }}" {{ isset($user) && old('role', optional($user) && $user->roles()->first()->id) == $role['id'] ? 'selected' : '' }}>
+                {{ $role['name'] }}
+            </option>
 			@endforeach
         </select>
         

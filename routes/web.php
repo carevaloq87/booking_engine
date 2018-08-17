@@ -15,6 +15,9 @@ Route::get('/', function () {
     return view('welcome');
 });
 
+Route::get('/logout', '\App\Http\Controllers\Auth\LoginController@logout')->name('logout');
+Route::get('/home', 'HomeController@index')->name('home');
+
 Route::group(
 [
     'prefix' => 'roles',
@@ -82,3 +85,6 @@ Route::group(
          ->where('id', '[0-9]+');
 
 });
+
+Auth::routes();
+
