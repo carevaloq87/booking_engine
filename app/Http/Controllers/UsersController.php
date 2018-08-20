@@ -52,7 +52,13 @@ class UsersController extends Controller
      */
     public function store(Request $request)
     {
-        try {                        
+        try {
+            //validate the password.
+
+            $this->validate($request, [
+                'password'  => 'required|confirmed',
+            ]);
+            
             //create and save the user            
             $user = User::create($this->getUserFields($request)); 
 

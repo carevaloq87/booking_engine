@@ -14,22 +14,30 @@
         {!! $errors->first('email', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
-
+@if(!isset($user))
 <div class="form-group {{ $errors->has('password') ? 'has-error' : '' }}">
     <label for="password" class="col-md-2 control-label">Password</label>
     <div class="col-md-10">
-        <input class="form-control" name="password" type="password" id="password" value="{{ old('password', optional($user)->password) }}" required="true" placeholder="Enter password here...">
+        <input class="form-control" name="password" type="password" id="password"  required="true" placeholder="Enter password here...">
         {!! $errors->first('password', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
 
+<div class="form-group {{ $errors->has('password_confirmation') ? 'has-error' : '' }}">
+    <label for="password_confirmation" class="col-md-2 control-label">Password Confirmation</label>
+    <div class="col-md-10">
+        <input class="form-control" name="password_confirmation" type="password" id="password_confirmation"  required="true" placeholder="Enter password confirmation here...">
+        {!! $errors->first('password-confirmation', '<p class="help-block">:message</p>') !!}
+    </div>
+</div>
+@endif
 <div class="form-group {{ $errors->has('role') ? 'has-error' : '' }}">
     <label for="role" class="col-md-2 control-label">Role</label>
     <div class="col-md-10">
         <select class="form-control" id="role" name="role" required="true">
         	    <option value="" style="display: none;" {{ old('role', optional($user)->roles() ?: '') == '' ? 'selected' : '' }} disabled selected>Enter role here...</option>
         	@foreach ($roles as $role)
-            <option value="{{ $role['id'] }}" {{ isset($user) && old('role', optional($user) && $user->roles()->first()->id) == $role['id'] ? 'selected' : '' }}>
+            <option value="{{ $role['id'] }}" {{ ( isset($user) && $user->roles()->first()->id == $role['id'] ? 'selected' : '' ) }}>
                 {{ $role['name'] }}
             </option>
 			@endforeach
