@@ -69,12 +69,12 @@ class User extends Authenticatable
     {
         if ( is_array($roles) ) {
             foreach ($roles as  $role) {
-                if ($this-hasRole($role)) {
+                if ($this->hasRole($role)) {
                     return true;
                 }                
             }
         } else {
-            if ($this-hasRole($role)) {
+            if ($this->hasRole($roles)) {
                 return true;
             }   
         }
@@ -84,7 +84,7 @@ class User extends Authenticatable
 
     public function hasRole($role)
     {
-        if ($this->roles()->where('name',role)->first()) {
+        if ($this->roles()->where('name',$role)->first()) {
             return true;
         }
         return false;

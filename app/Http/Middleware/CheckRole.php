@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
 
 class CheckRole
 {
@@ -19,8 +20,8 @@ class CheckRole
     {
         if ($request->user() === null) {
             return response("Insufficient permissions ", 401);
-        }
-        $actions = $request->route()->getActions();
+        }        
+        $actions = $request->route()->getAction();
         $roles = isset($actions['roles']) ? $actions['roles'] : null;
 
         if ($request->user()->hasAnyRole($roles) || !$roles) {
