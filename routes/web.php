@@ -18,6 +18,7 @@ Route::get('/', function () {
 Route::get('/logout', '\App\Http\Controllers\Auth\LoginController@logout')->name('logout');
 Route::get('/home', 'HomeController@index')->name('home');
 
+// Roles
 Route::group(
 [
     'prefix' => 'roles',
@@ -30,57 +31,109 @@ Route::group(
         ])
          ->name('roles.role.index');
 
-    Route::get('/create','RolesController@create')
+    Route::get('/create',[
+        'uses'=>'RolesController@create',
+        'middleware' => 'roles',
+        'roles' =>'Administrator'
+        ])
          ->name('roles.role.create');
 
-    Route::get('/show/{role}','RolesController@show')
+    Route::get('/show/{role}',[
+        'uses'=>'RolesController@show',
+        'middleware' => 'roles',
+        'roles' =>'Administrator'
+        ])
          ->name('roles.role.show')
          ->where('id', '[0-9]+');
 
-    Route::get('/{role}/edit','RolesController@edit')
+    Route::get('/{role}/edit',[
+        'uses'=>'RolesController@edit',
+        'middleware' => 'roles',
+        'roles' =>'Administrator'
+        ])
          ->name('roles.role.edit')
          ->where('id', '[0-9]+');
 
-    Route::post('/', 'RolesController@store')
+    Route::post('/', [
+        'uses'=>'RolesController@store',
+        'middleware' => 'roles',
+        'roles' =>'Administrator'
+        ])
          ->name('roles.role.store');
                
-    Route::put('role/{role}', 'RolesController@update')
+    Route::put('role/{role}', [
+        'uses'=>'RolesController@update',
+        'middleware' => 'roles',
+        'roles' =>'Administrator'
+        ])
          ->name('roles.role.update')
          ->where('id', '[0-9]+');
 
-    Route::delete('/role/{role}','RolesController@destroy')
+    Route::delete('/role/{role}',[
+        'uses'=>'RolesController@destroy',
+        'middleware' => 'roles',
+        'roles' =>'Administrator'
+        ])
          ->name('roles.role.destroy')
          ->where('id', '[0-9]+');
 
 });
-
+// Users
 Route::group(
 [
     'prefix' => 'users',
 ], function () {
 
-    Route::get('/', 'UsersController@index')
+    Route::get('/', [
+        'uses'=>'UsersController@index',
+        'middleware' => 'roles',
+        'roles' =>'Administrator'
+        ])
          ->name('users.user.index');
 
-    Route::get('/create','UsersController@create')
+    Route::get('/create',[
+        'uses'=>'UsersController@create',
+        'middleware' => 'roles',
+        'roles' =>'Administrator'
+        ])
          ->name('users.user.create');
 
-    Route::get('/show/{user}','UsersController@show')
+    Route::get('/show/{user}',[
+        'uses'=>'UsersController@show',
+        'middleware' => 'roles',
+        'roles' =>'Administrator'
+        ])
          ->name('users.user.show')
          ->where('id', '[0-9]+');
 
-    Route::get('/{user}/edit','UsersController@edit')
+    Route::get('/{user}/edit',[
+        'uses'=>'UsersController@edit',
+        'middleware' => 'roles',
+        'roles' =>'Administrator'
+        ])
          ->name('users.user.edit')
          ->where('id', '[0-9]+');
 
-    Route::post('/', 'UsersController@store')
+    Route::post('/', [
+        'uses'=>'UsersController@store',
+        'middleware' => 'roles',
+        'roles' =>'Administrator'
+        ])
          ->name('users.user.store');
                
-    Route::put('user/{user}', 'UsersController@update')
+    Route::put('user/{user}', [
+        'uses'=>'UsersController@update',
+        'middleware' => 'roles',
+        'roles' =>'Administrator'
+        ])
          ->name('users.user.update')
          ->where('id', '[0-9]+');
 
-    Route::delete('/user/{user}','UsersController@destroy')
+    Route::delete('/user/{user}',[
+        'uses'=>'UsersController@destroy',
+        'middleware' => 'roles',
+        'roles' =>'Administrator'
+        ])
          ->name('users.user.destroy')
          ->where('id', '[0-9]+');
 

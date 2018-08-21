@@ -41,8 +41,7 @@
                 {{ $role['name'] }}
             </option>
 			@endforeach
-        </select>
-        
+        </select>       
         {!! $errors->first('roles', '<p class="help-block">:message</p>') !!}
     </div>
 </div>

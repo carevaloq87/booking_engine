@@ -82,9 +82,14 @@
           <a href="{!! url('/') !!}" class="navbar-brand">{{ config('app.name', 'booking-engine') }}</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
+          @if (Auth::check())
           <ul class="nav navbar-nav">
-            <li class="active"><a href="{!! url('/') !!}">Home</a></li>
+            <li class="active"><a href="{!! url('/users') !!}">Users</a></li>
           </ul>
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="{!! url('/roles') !!}">Roles</a></li>
+          </ul>
+          @endif
 
           @if (Route::has('login'))
             <ul class="nav navbar-nav navbar-right">
