@@ -34,6 +34,16 @@ return [
 |       ],
 |   ],
 |
- */
+*/
     'organize_migrations' => true,
+    'common_definitions' =>
+    [
+        [
+            'match' => ['date'],
+            'set' => [
+                'data-type' => 'date',
+                'date-format' => 'd-m-Y',
+            ],
+        ],
+   ],
 ];

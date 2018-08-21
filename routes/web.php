@@ -60,7 +60,7 @@ Route::group(
         'roles' =>'Administrator'
         ])
          ->name('roles.role.store');
-               
+
     Route::put('role/{role}', [
         'uses'=>'RolesController@update',
         'middleware' => 'roles',
@@ -120,7 +120,7 @@ Route::group(
         'roles' =>'Administrator'
         ])
          ->name('users.user.store');
-               
+
     Route::put('user/{user}', [
         'uses'=>'UsersController@update',
         'middleware' => 'roles',
@@ -141,3 +141,130 @@ Route::group(
 
 Auth::routes();
 
+Route::group(
+[
+    'prefix' => 'service_providers',
+], function () {
+
+    Route::get('/', 'ServiceProvidersController@index')
+         ->name('service_providers.service_provider.index');
+
+    Route::get('/create','ServiceProvidersController@create')
+         ->name('service_providers.service_provider.create');
+
+    Route::get('/show/{serviceProvider}','ServiceProvidersController@show')
+         ->name('service_providers.service_provider.show')
+         ->where('id', '[0-9]+');
+
+    Route::get('/{serviceProvider}/edit','ServiceProvidersController@edit')
+         ->name('service_providers.service_provider.edit')
+         ->where('id', '[0-9]+');
+
+    Route::post('/', 'ServiceProvidersController@store')
+         ->name('service_providers.service_provider.store');
+
+    Route::put('service_provider/{serviceProvider}', 'ServiceProvidersController@update')
+         ->name('service_providers.service_provider.update')
+         ->where('id', '[0-9]+');
+
+    Route::delete('/service_provider/{serviceProvider}','ServiceProvidersController@destroy')
+         ->name('service_providers.service_provider.destroy')
+         ->where('id', '[0-9]+');
+
+});
+
+Route::group(
+[
+    'prefix' => 'services',
+], function () {
+
+    Route::get('/', 'ServicesController@index')
+         ->name('services.service.index');
+
+    Route::get('/create','ServicesController@create')
+         ->name('services.service.create');
+
+    Route::get('/show/{service}','ServicesController@show')
+         ->name('services.service.show')
+         ->where('id', '[0-9]+');
+
+    Route::get('/{service}/edit','ServicesController@edit')
+         ->name('services.service.edit')
+         ->where('id', '[0-9]+');
+
+    Route::post('/', 'ServicesController@store')
+         ->name('services.service.store');
+
+    Route::put('service/{service}', 'ServicesController@update')
+         ->name('services.service.update')
+         ->where('id', '[0-9]+');
+
+    Route::delete('/service/{service}','ServicesController@destroy')
+         ->name('services.service.destroy')
+         ->where('id', '[0-9]+');
+
+});
+
+Route::group(
+[
+    'prefix' => 'resources',
+], function () {
+
+    Route::get('/', 'ResourcesController@index')
+         ->name('resources.resource.index');
+
+    Route::get('/create','ResourcesController@create')
+         ->name('resources.resource.create');
+
+    Route::get('/show/{resource}','ResourcesController@show')
+         ->name('resources.resource.show')
+         ->where('id', '[0-9]+');
+
+    Route::get('/{resource}/edit','ResourcesController@edit')
+         ->name('resources.resource.edit')
+         ->where('id', '[0-9]+');
+
+    Route::post('/', 'ResourcesController@store')
+         ->name('resources.resource.store');
+
+    Route::put('resource/{resource}', 'ResourcesController@update')
+         ->name('resources.resource.update')
+         ->where('id', '[0-9]+');
+
+    Route::delete('/resource/{resource}','ResourcesController@destroy')
+         ->name('resources.resource.destroy')
+         ->where('id', '[0-9]+');
+
+});
+
+Route::group(
+[
+    'prefix' => 'served_by',
+], function () {
+
+    Route::get('/', 'ServedByController@index')
+         ->name('served_by.served_by.index');
+
+    Route::get('/create','ServedByController@create')
+         ->name('served_by.served_by.create');
+
+    Route::get('/show/{servedBy}','ServedByController@show')
+         ->name('served_by.served_by.show')
+         ->where('id', '[0-9]+');
+
+    Route::get('/{servedBy}/edit','ServedByController@edit')
+         ->name('served_by.served_by.edit')
+         ->where('id', '[0-9]+');
+
+    Route::post('/', 'ServedByController@store')
+         ->name('served_by.served_by.store');
+
+    Route::put('served_by/{servedBy}', 'ServedByController@update')
+         ->name('served_by.served_by.update')
+         ->where('id', '[0-9]+');
+
+    Route::delete('/served_by/{servedBy}','ServedByController@destroy')
+         ->name('served_by.served_by.destroy')
+         ->where('id', '[0-9]+');
+
+});

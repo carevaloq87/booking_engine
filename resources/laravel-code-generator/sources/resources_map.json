@@ -6,5 +6,45 @@
     {
         "model-name": "User",
         "resource-file": "users.json"
+    },
+    {
+        "model-name": "ServiceProvider",
+        "resource-file": "service_providers.json"
+    },
+    {
+        "model-name": "service",
+        "resource-file": "services.json"
+    },
+    {
+        "model-name": "resource",
+        "resource-file": "resources.json"
+    },
+    {
+        "model-name": "servedBy",
+        "resource-file": "served_bies.json"
+    },
+    {
+        "model-name": "availableDays",
+        "resource-file": "available_days.json"
+    },
+    {
+        "model-name": "AvailableHours",
+        "resource-file": "available_hours.json"
+    },
+    {
+        "model-name": "AvailableAdhocs",
+        "resource-file": "available_adhocs.json"
+    },
+    {
+        "model-name": "UnavailableDays",
+        "resource-file": "unavailable_days.json"
+    },
+    {
+        "model-name": "UnavailableHours",
+        "resource-file": "unavailable_hours.json"
+    },
+    {
+        "model-name": "UnavailableAdhocs",
+        "resource-file": "unavailable_adhocs.json"
     }
 ]
