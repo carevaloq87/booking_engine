@@ -268,3 +268,35 @@ Route::group(
          ->where('id', '[0-9]+');
 
 });
+
+Route::group(
+[
+    'prefix' => 'booking_status',
+], function () {
+
+    Route::get('/', 'BookingStatusController@index')
+         ->name('booking_status.booking_status.index');
+
+    Route::get('/create','BookingStatusController@create')
+         ->name('booking_status.booking_status.create');
+
+    Route::get('/show/{bookingStatus}','BookingStatusController@show')
+         ->name('booking_status.booking_status.show')
+         ->where('id', '[0-9]+');
+
+    Route::get('/{bookingStatus}/edit','BookingStatusController@edit')
+         ->name('booking_status.booking_status.edit')
+         ->where('id', '[0-9]+');
+
+    Route::post('/', 'BookingStatusController@store')
+         ->name('booking_status.booking_status.store');
+               
+    Route::put('booking_status/{bookingStatus}', 'BookingStatusController@update')
+         ->name('booking_status.booking_status.update')
+         ->where('id', '[0-9]+');
+
+    Route::delete('/booking_status/{bookingStatus}','BookingStatusController@destroy')
+         ->name('booking_status.booking_status.destroy')
+         ->where('id', '[0-9]+');
+
+});

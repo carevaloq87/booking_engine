@@ -46,5 +46,9 @@
     {
         "model-name": "UnavailableAdhocs",
         "resource-file": "unavailable_adhocs.json"
+    },
+    {
+        "model-name": "BookingStatus",
+        "resource-file": "booking_statuses.json"
     }
 ]
