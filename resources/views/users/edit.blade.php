@@ -3,7 +3,7 @@
 @section('content')
 
     <div class="panel panel-default">
-  
+
         <div class="panel-heading clearfix">
 
             <div class="pull-left">
@@ -11,11 +11,11 @@
             </div>
             <div class="btn-group btn-group-sm pull-right" role="group">
 
-                <a href="{{ route('users.user.index') }}" class="btn btn-primary" title="Show All User">
+                <a href="{{ route('users.index') }}" class="btn btn-primary" title="Show All User">
                     <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
                 </a>
 
-                <a href="{{ route('users.user.create') }}" class="btn btn-success" title="Create New User">
+                <a href="{{ route('users.create') }}" class="btn btn-success" title="Create New User">
                     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                 </a>
 
@@ -32,7 +32,7 @@
                 </ul>
             @endif
 
-            <form method="POST" action="{{ route('users.user.update', $user->id) }}" id="edit_user_form" name="edit_user_form" accept-charset="UTF-8" class="form-horizontal">
+            <form method="POST" action="{{ route('users.update', $user->id) }}" id="edit_user_form" name="edit_user_form" accept-charset="UTF-8" class="form-horizontal">
             {{ csrf_field() }}
             <input name="_method" type="hidden" value="PUT">
             @include ('users.form', [

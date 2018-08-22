@@ -160,6 +160,15 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
 
+        /**
+         * User and Roles
+         * https://itsolutionstuff.com/post/laravel-56-user-roles-and-permissions-acl-using-spatie-tutorialexample.html
+         */
+        Spatie\Permission\PermissionServiceProvider::class,
+        /**
+         * Form Provider
+         */
+        Collective\Html\HtmlServiceProvider::class,
     ],
 
     /*
@@ -208,7 +217,11 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-
+        /**
+         * Form Aliases
+         */
+        'Form' => Collective\Html\FormFacade::class,
+        'Html' => Collective\Html\HtmlFacade::class,
     ],
 
 ];

@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\Role;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Spatie\Permission\Models\Role;
+use DB;
 use Exception;
+use Hash;
 
 class UsersController extends Controller
 {
@@ -19,7 +21,7 @@ class UsersController extends Controller
 	{
 	    $this->middleware('auth');
 	}
-	
+
     /**
      * Display a listing of the users.
      *
@@ -33,7 +35,7 @@ class UsersController extends Controller
     }
 
     /**
-     * Show the form for creating a new user.
+     * Show the form for creating a new 
      *
      * @return Illuminate\View\View
      */
@@ -56,27 +58,32 @@ class UsersController extends Controller
             //validate the password.
 
             $this->validate($request, [
+                'name' => 'required',
+                'email' => 'required|email|unique:users,email',
                 'password'  => 'required|confirmed',
+                'roles' => 'required'
             ]);
-            
-            //create and save the user            
-            $user = User::create($this->getUserFields($request)); 
 
+            //create and save the user
+            $user = User::create($this->getUserFields($request));
+
+            $user->assignRole($request->input('roles'));
+            /*
             $user
 	            ->roles()
 	            ->attach(Role::where('id',  $request->role )->first());
-
-            return redirect()->route('users.user.index')
+            */
+            return redirect()->route('users.index')
                              ->with('success_message', 'User was successfully added!');
 
-        } catch (Exception $exception) {            
+        } catch (Exception $exception) {
             return back()->withInput()
-                         ->withErrors(['unexpected_error' => 'Unexpected error occurred while trying to process your request! '. $exception->getMessage()]);
+                         ->withErrors(['unexpected_error' => $exception->getMessage()]);
         }
     }
 
     /**
-     * Display the specified user.
+     * Display the specified 
      *
      * @param int $id
      *
@@ -85,12 +92,12 @@ class UsersController extends Controller
     public function show($id)
     {
         $user = User::findOrFail($id);
-        
+
         return view('users.show', compact('user'));
     }
 
     /**
-     * Show the form for editing the specified user.
+     * Show the form for editing the specified 
      *
      * @param int $id
      *
@@ -99,8 +106,10 @@ class UsersController extends Controller
     public function edit($id)
     {
         $user = User::findOrFail($id);
-        $roles = Role::all();        
-        return view('users.edit', compact('user','roles'));
+        $roles = Role::all();
+        $userRole = $user->roles->pluck('name','name')->all();
+
+        return view('users.edit', compact('user','roles','userRole'));
     }
 
     /**
@@ -114,23 +123,33 @@ class UsersController extends Controller
     public function update($id, Request $request)
     {
         try {
-            
-            $user = User::findOrFail($id);             
+
+            $this->validate($request, [
+                'name' => 'required',
+                'email' => 'required|email|unique:users,email,'.$id,
+                //'password' => 'same:confirm-password',
+                'roles' => 'required'
+            ]);
+
+            $user = User::findOrFail($id);
             $user->update($this->getUserFields($request));
-                        
+            /*
             $user->roles()
                  ->sync( Role::where('id',  $request->role )
                  ->first());
+            */
 
-            return redirect()->route('users.user.index')
+            DB::table('model_has_roles')->where('model_id',$id)->delete();
+            $user->assignRole($request->input('roles'));
+
+            return redirect()->route('users.index')
                              ->with('success_message', 'User was successfully updated!');
 
         } catch (Exception $exception) {
 
             return back()->withInput()
-                         ->withErrors(['unexpected_error' => 'Unexpected error occurred while trying to process your request! ' . 
-                                        $exception->getMessage()]);
-        }         
+                         ->withErrors(['unexpected_error' => $exception->getMessage()]);
+        }
     }
     /**
      * Return sanitize  user fields
@@ -140,7 +159,7 @@ class UsersController extends Controller
      */
     public function getUserFields(Request $request)
     {
-        return [                
+        return [
                 'name'  => filter_var($request->name, FILTER_SANITIZE_STRING),
                 'email' => filter_var($request->email, FILTER_VALIDATE_EMAIL),
                 'password' => bcrypt($request->password)
@@ -160,7 +179,7 @@ class UsersController extends Controller
             $user = User::findOrFail($id);
             $user->delete();
 
-            return redirect()->route('users.user.index')
+            return redirect()->route('users.index')
                              ->with('success_message', 'User was successfully deleted!');
 
         } catch (Exception $exception) {
@@ -170,11 +189,11 @@ class UsersController extends Controller
         }
     }
 
-    
+
     /**
      * Get the request's data from the request.
      *
-     * @param Illuminate\Http\Request\Request $request 
+     * @param Illuminate\Http\Request\Request $request
      * @return array
      */
     protected function getData(Request $request)
@@ -183,10 +202,10 @@ class UsersController extends Controller
             'name' => 'required|nullable|string|min:0|max:255',
             'email' => 'required',
             'password' => 'required',
-     
+
         ];
 
-        
+
         $data = $request->validate($rules);
 
 

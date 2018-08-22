@@ -2,12 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Role;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
+use DB;
 use Exception;
 
-class RolesController extends Controller
+class RoleController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -15,10 +17,14 @@ class RolesController extends Controller
      * @return void
      */
 	public function __construct()
-	{
-        $this->middleware('auth');
+	{/*
+        $this->middleware('permission:role-list');
+        $this->middleware('permission:role-create', ['only' => ['create','store']]);
+        $this->middleware('permission:role-edit', ['only' => ['edit','update']]);
+        $this->middleware('permission:role-delete', ['only' => ['destroy']]);
+        $this->middleware('auth');*/
 	}
-	
+
     /**
      * Display a listing of the roles.
      *
@@ -32,15 +38,14 @@ class RolesController extends Controller
     }
 
     /**
-     * Show the form for creating a new role.
+     * Show the form for creating a new 
      *
      * @return Illuminate\View\View
      */
     public function create()
     {
-        
-        
-        return view('roles.create');
+        $permission = Permission::get();
+        return view('roles.create',compact('permission'));
     }
 
     /**
@@ -53,23 +58,24 @@ class RolesController extends Controller
     public function store(Request $request)
     {
         try {
-            
-            $data = $this->getData($request);
-            
-            Role::create($data);
 
-            return redirect()->route('roles.role.index')
+            $data = $this->getData($request);
+
+            $role = Role::create(['name' => $data['name']]);
+            $role->syncPermissions($request->input('permission'));
+
+            return redirect()->route('roles.index')
                              ->with('success_message', 'Role was successfully added!');
 
         } catch (Exception $exception) {
-
+            dd($exception->getMessage());
             return back()->withInput()
-                         ->withErrors(['unexpected_error' => 'Unexpected error occurred while trying to process your request!']);
+                         ->withErrors(['unexpected_error' => $exception->getMessage()]);
         }
     }
 
     /**
-     * Display the specified role.
+     * Display the specified 
      *
      * @param int $id
      *
@@ -79,11 +85,15 @@ class RolesController extends Controller
     {
         $role = Role::findOrFail($id);
 
-        return view('roles.show', compact('role'));
+        $rolePermissions = Permission::join("role_has_permissions","role_has_permissions.permission_id","=","permissions.id")
+            ->where("role_has_permissions.role_id",$id)
+            ->get();
+
+        return view('roles.show', compact('role','rolePermissions'));
     }
 
     /**
-     * Show the form for editing the specified role.
+     * Show the form for editing the specified 
      *
      * @param int $id
      *
@@ -92,9 +102,13 @@ class RolesController extends Controller
     public function edit($id)
     {
         $role = Role::findOrFail($id);
-        
 
-        return view('roles.edit', compact('role'));
+        $permission = Permission::get();
+        $rolePermissions = DB::table("role_has_permissions")->where("role_has_permissions.role_id",$id)
+            ->pluck('role_has_permissions.permission_id','role_has_permissions.permission_id')
+            ->all();
+
+        return view('roles.edit', compact('role','permission','rolePermissions'));
     }
 
     /**
@@ -108,20 +122,23 @@ class RolesController extends Controller
     public function update($id, Request $request)
     {
         try {
-            
-            $data = $this->getData($request);
-            
-            $role = Role::findOrFail($id);
-            $role->update($data);
 
-            return redirect()->route('roles.role.index')
+            $data = $this->getData($request);
+
+            $role = Role::findOrFail($id);
+            $role->name = $request->input('name');
+            $role->save();
+
+            $role->syncPermissions($request->input('permission'));
+
+            return redirect()->route('roles.index')
                              ->with('success_message', 'Role was successfully updated!');
 
         } catch (Exception $exception) {
 
             return back()->withInput()
-                         ->withErrors(['unexpected_error' => 'Unexpected error occurred while trying to process your request!']);
-        }        
+                         ->withErrors(['unexpected_error' => $exception->getMessage()]);
+        }
     }
 
     /**
@@ -137,36 +154,31 @@ class RolesController extends Controller
             $role = Role::findOrFail($id);
             $role->delete();
 
-            return redirect()->route('roles.role.index')
+            return redirect()->route('roles.index')
                              ->with('success_message', 'Role was successfully deleted!');
 
         } catch (Exception $exception) {
 
             return back()->withInput()
-                         ->withErrors(['unexpected_error' => 'Unexpected error occurred while trying to process your request!']);
+                         ->withErrors(['unexpected_error' => $exception->getMessage()]);
         }
     }
 
-    
+
     /**
      * Get the request's data from the request.
      *
-     * @param Illuminate\Http\Request\Request $request 
+     * @param Illuminate\Http\Request\Request $request
      * @return array
      */
     protected function getData(Request $request)
     {
         $rules = [
-            'name' => 'required|string|min:1|max:255',
-            'description' => 'string|min:1|max:1000|nullable',
-     
+            'name' => 'required',
+            'permission' => 'required',
         ];
 
-        
         $data = $request->validate($rules);
-
-
-
 
         return $data;
     }

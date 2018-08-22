@@ -3,11 +3,15 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Laravel\Passport\HasApiTokens;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
-    
+
+    //use HasApiTokens, Notifiable;
+    use HasRoles;
 
     /**
      * The database table used by the model.
@@ -34,62 +38,22 @@ class User extends Authenticatable
                   'password'
               ];
     protected $hidden = [
-                'password', 
+                'password',
                 'remember_token'
-             ];    
+             ];
     /**
      * The attributes that should be mutated to dates.
      *
      * @var array
      */
     protected $dates = [];
-    
+
     /**
      * The attributes that should be cast to native types.
      *
      * @var array
      */
     protected $casts = [];
-    
-    /**
-     * Get the roles for this model.
-     */
-    public function roles()
-    {
-        return $this->belongsToMany('App\Models\Role','user_role','user_id','role_id')
-                    ->withTimestamps();
-    }
-
-    /**
-     * Check if the user has any role
-     * 
-     * @param Object $roles 
-     */
-    public function hasAnyRole($roles)
-    {
-        if ( is_array($roles) ) {
-            foreach ($roles as  $role) {
-                if ($this->hasRole($role)) {
-                    return true;
-                }                
-            }
-        } else {
-            if ($this->hasRole($roles)) {
-                return true;
-            }   
-        }
-        return false;
-         
-    }
-
-    public function hasRole($role)
-    {
-        if ($this->roles()->where('name',$role)->first()) {
-            return true;
-        }
-        return false;
-    }
-
 
     /**
      * Get created_at in array format

@@ -23,13 +23,13 @@
             </div>
 
             <div class="btn-group btn-group-sm pull-right" role="group">
-                <a href="{{ route('roles.role.create') }}" class="btn btn-success" title="Create New Role">
+                <a href="{{ route('roles.create') }}" class="btn btn-success" title="Create New Role">
                     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                 </a>
             </div>
 
         </div>
-        
+
         @if(count($roles) == 0)
             <div class="panel-body text-center">
                 <h4>No Roles Available!</h4>
@@ -53,15 +53,15 @@
 
                             <td>
 
-                                <form method="POST" action="{!! route('roles.role.destroy', $role->id) !!}" accept-charset="UTF-8">
+                                <form method="POST" action="{!! route('roles.destroy', $role->id) !!}" accept-charset="UTF-8">
                                 <input name="_method" value="DELETE" type="hidden">
                                 {{ csrf_field() }}
 
                                     <div class="btn-group btn-group-xs pull-right" role="group">
-                                        <a href="{{ route('roles.role.show', $role->id ) }}" class="btn btn-info" title="Show Role">
+                                        <a href="{{ route('roles.show', $role->id ) }}" class="btn btn-info" title="Show Role">
                                             <span class="glyphicon glyphicon-open" aria-hidden="true"></span>
                                         </a>
-                                        <a href="{{ route('roles.role.edit', $role->id ) }}" class="btn btn-primary" title="Edit Role">
+                                        <a href="{{ route('roles.edit', $role->id ) }}" class="btn btn-primary" title="Edit Role">
                                             <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
                                         </a>
 
@@ -71,7 +71,7 @@
                                     </div>
 
                                 </form>
-                                
+
                             </td>
                         </tr>
                     @endforeach
@@ -84,8 +84,8 @@
         <div class="panel-footer">
             {!! $roles->render() !!}
         </div>
-        
+
         @endif
-    
+
     </div>
 @endsection

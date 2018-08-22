@@ -5,11 +5,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ config('app.name', 'booking-engine') }}</title>
+    <title>{{ config('app.name', 'Booking Engine') }}</title>
 
     <!-- Styles -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
-    
+
     {{-- <link href="{{ asset('css/app.css') }}" rel="stylesheet"> --}}
 
     <style>
@@ -24,9 +24,9 @@
             padding-right: 15px;
         }
 
-        /* Override the default bootstrap behavior where horizontal description lists 
-           will truncate terms that are too long to fit in the left column.
-           Also, add a 8pm to the bottom margin
+        /* Override the default bootstrap behavior where horizontal description lists
+        will truncate terms that are too long to fit in the left column.
+        Also, add a 8pm to the bottom margin
         */
         .dl-horizontal dt {
             white-space: normal;
@@ -71,39 +71,46 @@
 <body>
 
     <nav class="navbar navbar-inverse navbar-fixed-top">
-      <div class="container">
+    <div class="container">
         <div class="navbar-header">
-          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+        <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
             <span class="sr-only">Toggle navigation</span>
             <span class="icon-bar">A</span>
             <span class="icon-bar">B</span>
             <span class="icon-bar">C</span>
-          </button>
-          <a href="{!! url('/') !!}" class="navbar-brand">{{ config('app.name', 'booking-engine') }}</a>
+        </button>
+        <a href="{!! url('/') !!}" class="navbar-brand">{{ config('app.name', 'booking-engine') }}</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
-          @if (Auth::check())
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="{!! url('/users') !!}">Users</a></li>
-          </ul>
-          <ul class="nav navbar-nav">
-            <li class="active"><a href="{!! url('/roles') !!}">Roles</a></li>
-          </ul>
-          @endif
-
-          @if (Route::has('login'))
-            <ul class="nav navbar-nav navbar-right">
-            @if (Auth::check())
-                <li><a href="{{ url('/logout') }}">Logout</a></li>
+            <!-- Authentication Links -->
+            <ul class="nav navbar-nav">
+            @guest
+                <li><a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a></li>
+                <li><a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a></li>
             @else
-                <li><a href="{{ url('/login') }}">Login</a></li>
-                <li><a href="{{ url('/register') }}">Register</a></li>
-            @endif
-            </ul>
-          @endif
+                <li><a class="nav-link" href="{{ route('users.index') }}">Manage Users</a></li>
+                <li><a class="nav-link" href="{{ route('roles.index') }}">Manage Role</a></li>
+                <li class="nav-item dropdown">
+                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                        {{ Auth::user()->name }} <span class="caret"></span>
+                    </a>
 
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                        <a class="dropdown-item" href="{{ route('logout') }}"
+                        onclick="event.preventDefault();
+                                            document.getElementById('logout-form').submit();">
+                            {{ __('Logout') }}
+                        </a>
+
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                            @csrf
+                        </form>
+                    </div>
+                </li>
+            @endguest
+            </ul>
         </div><!--/.nav-collapse -->
-      </div>
+    </div>
     </nav>
 
     <div class="container body-content">
@@ -111,7 +118,7 @@
     </div>
 
     <!-- Scripts -->
-    
+
     <script src="https://code.jquery.com/jquery-1.12.4.min.js"
         integrity="sha256-ZosEbRLbNQzLpnKIkEdrPv7lOy9C27hHQ+Xp8a4MxAQ="
         crossorigin="anonymous"></script>
@@ -120,7 +127,7 @@
     <script type="text/javascript">
         $(function(){
 
-             // sends the uploaded file file to the fielselect event
+            // sends the uploaded file file to the fielselect event
             $(document).on('change', ':file', function() {
                 var input = $(this);
                 var label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
@@ -132,7 +139,7 @@
             $(':file').on('fileselect', function(event, label) {
                 $(this).closest('.uploaded-file-group').find('.uploaded-file-name').val(label);
             });
-            
+
             // Deals with the upload file in edit mode
             $('.custom-delete-file:checkbox').change(function(e){
                 var self = $(this);

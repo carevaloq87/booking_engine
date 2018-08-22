@@ -11,11 +11,11 @@
             </div>
             <div class="btn-group btn-group-sm pull-right" role="group">
 
-                <a href="{{ route('roles.role.index') }}" class="btn btn-primary" title="Show All Role">
+                <a href="{{ route('roles.index') }}" class="btn btn-primary" title="Show All Role">
                     <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
                 </a>
 
-                <a href="{{ route('roles.role.create') }}" class="btn btn-success" title="Create New Role">
+                <a href="{{ route('roles.create') }}" class="btn btn-success" title="Create New Role">
                     <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
                 </a>
 
@@ -32,19 +32,30 @@
                 </ul>
             @endif
 
-            <form method="POST" action="{{ route('roles.role.update', $role->id) }}" id="edit_role_form" name="edit_role_form" accept-charset="UTF-8" class="form-horizontal">
-            {{ csrf_field() }}
-            <input name="_method" type="hidden" value="PUT">
-            @include ('roles.form', [
-                                        'role' => $role,
-                                      ])
-
-                <div class="form-group">
-                    <div class="col-md-offset-2 col-md-10">
-                        <input class="btn btn-primary" type="submit" value="Update">
+            {!! Form::model($role, ['method' => 'PATCH','route' => ['roles.update', $role->id]]) !!}
+            <div class="row">
+                <div class="col-xs-12 col-sm-12 col-md-12">
+                    <div class="form-group">
+                        <strong>Name:</strong>
+                        {!! Form::text('name', null, array('placeholder' => 'Name','class' => 'form-control')) !!}
                     </div>
                 </div>
-            </form>
+                <div class="col-xs-12 col-sm-12 col-md-12">
+                    <div class="form-group">
+                        <strong>Permission:</strong>
+                        <br/>
+                        @foreach($permission as $value)
+                            <label>{{ Form::checkbox('permission[]', $value->id, in_array($value->id, $rolePermissions) ? true : false, array('class' => 'name')) }}
+                            {{ $value->name }}</label>
+                        <br/>
+                        @endforeach
+                    </div>
+                </div>
+                <div class="col-xs-12 col-sm-12 col-md-12 text-center">
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </div>
+            </div>
+            {!! Form::close() !!}
 
         </div>
     </div>
