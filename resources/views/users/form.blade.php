@@ -37,7 +37,7 @@
         <select class="form-control" id="roles" name="roles" required="true">
             <option value="" style="display: none;" {{ old('role', optional($user)->roles() ?: '') == '' ? 'selected' : '' }} disabled selected>Enter role here...</option>
             @foreach ($roles as $role)
-            <option value="{{ $role['id'] }}" {{ ( isset($user) && !$user->roles->pluck('id')->isEmpty() && $user->roles->pluck('id')[0] == $role['id'] ? 'selected' : '' ) }}>
+            <option value="{{ $role['id'] }}" {{ ( isset($user) && $user->roles->pluck('id')->isNotEmpty() && $user->roles->pluck('id')[0] == $role['id'] ? 'selected' : '' ) }}>
                 {{ $role['name'] }}
             </option>
 			@endforeach
