@@ -8,7 +8,7 @@ use App\Models\ServiceProvider;
 use App\Http\Controllers\Controller;
 use Exception;
 
-class ServicesController extends Controller
+class ServiceController extends Controller
 {
     /**
      * Create a new controller instance.

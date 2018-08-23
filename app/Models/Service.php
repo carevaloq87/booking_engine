@@ -28,15 +28,15 @@ class service extends Model
      * @var array
      */
     protected $fillable = [
-                  'name',
-                  'phone',
-                  'email',
-                  'description',
-                  'duration',
-                  'listed_duration',
-                  'spaces',
-                  'service_provider_id'
-              ];
+                            'name',
+                            'phone',
+                            'email',
+                            'description',
+                            'duration',
+                            'listed_duration',
+                            'spaces',
+                            'service_provider_id'
+                        ];
 
     /**
      * The attributes that should be mutated to dates.

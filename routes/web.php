@@ -126,28 +126,28 @@ Route::group(
     'prefix' => 'services',
 ], function () {
 
-    Route::get('/', 'ServicesController@index')
+    Route::get('/', 'ServiceController@index')
         ->name('services.service.index');
 
-    Route::get('/create','ServicesController@create')
+    Route::get('/create','ServiceController@create')
         ->name('services.service.create');
 
-    Route::get('/show/{service}','ServicesController@show')
+    Route::get('/show/{service}','ServiceController@show')
         ->name('services.service.show')
         ->where('id', '[0-9]+');
 
-    Route::get('/{service}/edit','ServicesController@edit')
+    Route::get('/{service}/edit','ServiceController@edit')
         ->name('services.service.edit')
         ->where('id', '[0-9]+');
 
-    Route::post('/', 'ServicesController@store')
+    Route::post('/', 'ServiceController@store')
         ->name('services.service.store');
 
-    Route::put('service/{service}', 'ServicesController@update')
+    Route::put('service/{service}', 'ServiceController@update')
         ->name('services.service.update')
         ->where('id', '[0-9]+');
 
-    Route::delete('/service/{service}','ServicesController@destroy')
+    Route::delete('/service/{service}','ServiceController@destroy')
         ->name('services.service.destroy')
         ->where('id', '[0-9]+');
 
