@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use Illuminate\Http\Request;
+use App\Models\ServiceProvider;
 use App\Http\Controllers\Controller;
 use Spatie\Permission\Models\Role;
 use DB;
@@ -33,20 +34,22 @@ class UserController extends Controller
      */
     public function index()
     {
-        $users = User::paginate(25);
+        $users = User::with('serviceprovider')->paginate(25);
 
         return view('users.index', compact('users'));
     }
 
     /**
-     * Show the form for creating a new 
+     * Show the form for creating a new
      *
      * @return Illuminate\View\View
      */
     public function create()
     {
         $roles = Role::all();
-        return view('users.create', compact('roles'));
+        $serviceProviders = ServiceProvider::pluck('name','id')->all();
+
+        return view('users.create', compact('roles','serviceProviders'));
     }
 
     /**
@@ -65,7 +68,8 @@ class UserController extends Controller
                 'name' => 'required',
                 'email' => 'required|email|unique:users,email',
                 'password'  => 'required|confirmed',
-                'roles' => 'required'
+                'roles' => 'required',
+                'service_provider_id' => 'nullable',
             ]);
 
             //create and save the user
@@ -87,7 +91,7 @@ class UserController extends Controller
     }
 
     /**
-     * Display the specified 
+     * Display the specified
      *
      * @param int $id
      *
@@ -95,13 +99,13 @@ class UserController extends Controller
      */
     public function show($id)
     {
-        $user = User::findOrFail($id);
+        $user = User::with('serviceprovider')->findOrFail($id);
 
         return view('users.show', compact('user'));
     }
 
     /**
-     * Show the form for editing the specified 
+     * Show the form for editing the specified
      *
      * @param int $id
      *
@@ -111,9 +115,10 @@ class UserController extends Controller
     {
         $user = User::findOrFail($id);
         $roles = Role::all();
-        $userRole = $user->roles->pluck('name','name')->all();
+        $userRole = $user->roles->pluck('id','name')->all();
+        $serviceProviders = ServiceProvider::pluck('name','id')->all();
 
-        return view('users.edit', compact('user','roles','userRole'));
+        return view('users.edit', compact('user','roles','userRole','serviceProviders'));
     }
 
     /**
@@ -132,7 +137,8 @@ class UserController extends Controller
                 'name' => 'required',
                 'email' => 'required|email|unique:users,email,'.$id,
                 //'password' => 'same:confirm-password',
-                'roles' => 'required'
+                'roles' => 'required',
+                'service_provider_id' => 'nullable'
             ]);
 
             $user = User::findOrFail($id);
@@ -209,11 +215,7 @@ class UserController extends Controller
 
         ];
 
-
         $data = $request->validate($rules);
-
-
-
 
         return $data;
     }

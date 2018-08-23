@@ -33,14 +33,15 @@ class User extends Authenticatable
      * @var array
      */
     protected $fillable = [
-                  'name',
-                  'email',
-                  'password'
-              ];
+                            'name',
+                            'email',
+                            'password',
+                            'service_provider_id'
+                        ];
     protected $hidden = [
-                'password',
-                'remember_token'
-             ];
+                            'password',
+                            'remember_token'
+                        ];
     /**
      * The attributes that should be mutated to dates.
      *
@@ -77,6 +78,14 @@ class User extends Authenticatable
     {
         return \DateTime::createFromFormat('j/n/Y g:i A', $value);
 
+    }
+
+    /**
+     * Get the serviceProvider for this model.
+     */
+    public function serviceProvider()
+    {
+        return $this->belongsTo('App\Models\ServiceProvider','service_provider_id');
     }
 
 }

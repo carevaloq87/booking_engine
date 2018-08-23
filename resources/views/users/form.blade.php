@@ -31,6 +31,7 @@
     </div>
 </div>
 @endif
+
 <div class="form-group {{ $errors->has('role') ? 'has-error' : '' }}">
     <label for="role" class="col-md-2 control-label">Role</label>
     <div class="col-md-10">
@@ -39,6 +40,21 @@
             @foreach ($roles as $role)
             <option value="{{ $role['id'] }}" {{ ( isset($user) && $user->roles->pluck('id')->isNotEmpty() && $user->roles->pluck('id')[0] == $role['id'] ? 'selected' : '' ) }}>
                 {{ $role['name'] }}
+            </option>
+			@endforeach
+        </select>
+        {!! $errors->first('roles', '<p class="help-block">:message</p>') !!}
+    </div>
+</div>
+
+<div class="form-group {{ $errors->has('service_provider_id') ? 'has-error' : '' }}">
+    <label for="role" class="col-md-2 control-label">Service Provider</label>
+    <div class="col-md-10">
+        <select class="form-control" id="service_provider_id" name="service_provider_id" required="true">
+            <option value="" style="display: none;" {{ old('service_provider_id', optional($user)->serviceProvider() ?: '') == '' ? 'selected' : '' }} disabled selected>Enter Service Provider here...</option>
+            @foreach ($serviceProviders as $sp_id => $service_provider)
+            <option value="{{ $sp_id }}" {{ ( isset($user) && isset($user->serviceProvider) && $user->serviceProvider->pluck('id')[0] == $sp_id ? 'selected' : '' ) }}>
+                {{ $service_provider }}
             </option>
 			@endforeach
         </select>
