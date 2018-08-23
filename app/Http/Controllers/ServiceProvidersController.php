@@ -16,6 +16,10 @@ class ServiceProvidersController extends Controller
      */
 	public function __construct()
 	{
+        $this->middleware('permission:service_provider-list');
+        $this->middleware('permission:service_provider-create', ['only' => ['create','store']]);
+        $this->middleware('permission:service_provider-edit', ['only' => ['edit','update']]);
+        $this->middleware('permission:service_provider-delete', ['only' => ['destroy']]);
 	    $this->middleware('auth');
 	}
 

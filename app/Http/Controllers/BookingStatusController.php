@@ -16,9 +16,13 @@ class BookingStatusController extends Controller
      */
 	public function __construct()
 	{
+        $this->middleware('permission:booking_status-list');
+        $this->middleware('permission:booking_status-create', ['only' => ['create','store']]);
+        $this->middleware('permission:booking_status-edit', ['only' => ['edit','update']]);
+        $this->middleware('permission:booking_status-delete', ['only' => ['destroy']]);
 	    $this->middleware('auth');
 	}
-	
+
     /**
      * Display a listing of the booking status.
      *
@@ -38,8 +42,8 @@ class BookingStatusController extends Controller
      */
     public function create()
     {
-        
-        
+
+
         return view('booking_status.create');
     }
 
@@ -53,9 +57,9 @@ class BookingStatusController extends Controller
     public function store(Request $request)
     {
         try {
-            
+
             $data = $this->getData($request);
-            
+
             BookingStatus::create($data);
 
             return redirect()->route('booking_status.booking_status.index')
@@ -92,7 +96,7 @@ class BookingStatusController extends Controller
     public function edit($id)
     {
         $bookingStatus = BookingStatus::findOrFail($id);
-        
+
 
         return view('booking_status.edit', compact('bookingStatus'));
     }
@@ -108,9 +112,9 @@ class BookingStatusController extends Controller
     public function update($id, Request $request)
     {
         try {
-            
+
             $data = $this->getData($request);
-            
+
             $bookingStatus = BookingStatus::findOrFail($id);
             $bookingStatus->update($data);
 
@@ -121,7 +125,7 @@ class BookingStatusController extends Controller
 
             return back()->withInput()
                          ->withErrors(['unexpected_error' => 'Unexpected error occurred while trying to process your request!']);
-        }        
+        }
     }
 
     /**
@@ -147,11 +151,11 @@ class BookingStatusController extends Controller
         }
     }
 
-    
+
     /**
      * Get the request's data from the request.
      *
-     * @param Illuminate\Http\Request\Request $request 
+     * @param Illuminate\Http\Request\Request $request
      * @return array
      */
     protected function getData(Request $request)
@@ -159,9 +163,9 @@ class BookingStatusController extends Controller
         $rules = [
             'name' => 'required|string|min:1',
             'description' => 'string|min:1|nullable',
-     
+
         ];
-        
+
         $data = $request->validate($rules);
 
 

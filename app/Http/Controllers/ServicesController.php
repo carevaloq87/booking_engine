@@ -17,6 +17,10 @@ class ServicesController extends Controller
      */
 	public function __construct()
 	{
+        $this->middleware('permission:service-list');
+        $this->middleware('permission:service-create', ['only' => ['create','store']]);
+        $this->middleware('permission:service-edit', ['only' => ['edit','update']]);
+        $this->middleware('permission:service-delete', ['only' => ['destroy']]);
 	    $this->middleware('auth');
 	}
 

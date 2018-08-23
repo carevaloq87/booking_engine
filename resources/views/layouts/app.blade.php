@@ -88,8 +88,15 @@
                 <li class="{{ Request::is('login','login/*') ? 'active' : null }}"><a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a></li>
                 <li class="{{ Request::is('register','register/*') ? 'active' : null }}"><a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a></li>
             @else
-                <li class="{{ Request::is('users','users/*') ? 'active' : null }}"><a class="nav-link" href="{{ route('users.index') }}">Manage Users</a></li>
-                <li class="{{ Request::is('roles','roles/*') ? 'active' : null }}"><a class="nav-link" href="{{ route('roles.index') }}">Manage Role</a></li>
+
+                <li class="{{ Request::is('services','services/*') ? 'active' : null }}"><a class="nav-link" href="{{ route('services.service.index') }}">Services</a></li>
+                <li class="{{ Request::is('resources','resources/*') ? 'active' : null }}"><a class="nav-link" href="{{ route('resources.resource.index') }}">Resources</a></li>
+
+                @if (Auth::user()->roles()->first()->name === 'Super Admin')
+                    <li class="{{ Request::is('users','users/*') ? 'active' : null }}"><a class="nav-link" href="{{ route('users.index') }}">Users</a></li>
+                    <li class="{{ Request::is('roles','roles/*') ? 'active' : null }}"><a class="nav-link" href="{{ route('roles.index') }}">Role</a></li>
+                    <li class="{{ Request::is('service_providers','service_providers/*') ? 'active' : null }}"><a class="nav-link" href="{{ route('service_providers.service_provider.index') }}">Service Providers</a></li>
+                @endif
                 <li class="nav-item dropdown">
                     <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                         {{ Auth::user()->name }} <span class="caret"></span>

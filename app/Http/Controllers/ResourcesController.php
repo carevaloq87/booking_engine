@@ -17,6 +17,10 @@ class ResourcesController extends Controller
      */
 	public function __construct()
 	{
+        $this->middleware('permission:resource-list');
+        $this->middleware('permission:resource-create', ['only' => ['create','store']]);
+        $this->middleware('permission:resource-edit', ['only' => ['edit','update']]);
+        $this->middleware('permission:resource-delete', ['only' => ['destroy']]);
 	    $this->middleware('auth');
 	}
 

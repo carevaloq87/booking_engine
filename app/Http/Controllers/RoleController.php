@@ -17,12 +17,12 @@ class RoleController extends Controller
      * @return void
      */
 	public function __construct()
-	{/*
+	{
         $this->middleware('permission:role-list');
         $this->middleware('permission:role-create', ['only' => ['create','store']]);
         $this->middleware('permission:role-edit', ['only' => ['edit','update']]);
         $this->middleware('permission:role-delete', ['only' => ['destroy']]);
-        $this->middleware('auth');*/
+        $this->middleware('auth');
 	}
 
     /**
@@ -38,7 +38,7 @@ class RoleController extends Controller
     }
 
     /**
-     * Show the form for creating a new 
+     * Show the form for creating a new
      *
      * @return Illuminate\View\View
      */
@@ -75,7 +75,7 @@ class RoleController extends Controller
     }
 
     /**
-     * Display the specified 
+     * Display the specified
      *
      * @param int $id
      *
@@ -93,7 +93,7 @@ class RoleController extends Controller
     }
 
     /**
-     * Show the form for editing the specified 
+     * Show the form for editing the specified
      *
      * @param int $id
      *
