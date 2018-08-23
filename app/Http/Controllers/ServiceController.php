@@ -31,7 +31,7 @@ class ServiceController extends Controller
      */
     public function index()
     {
-        $services = service::with('serviceprovider')->paginate(25);
+        $services = Service::with('serviceprovider')->paginate(25);
 
         return view('services.index', compact('services'));
     }
@@ -61,7 +61,7 @@ class ServiceController extends Controller
 
             $data = $this->getData($request);
 
-            service::create($data);
+            Service::create($data);
 
             return redirect()->route('services.service.index')
                              ->with('success_message', 'Service was successfully added!');
@@ -82,7 +82,7 @@ class ServiceController extends Controller
      */
     public function show($id)
     {
-        $service = service::with('serviceprovider')->findOrFail($id);
+        $service = Service::with('serviceprovider')->findOrFail($id);
 
         return view('services.show', compact('service'));
     }
@@ -96,7 +96,7 @@ class ServiceController extends Controller
      */
     public function edit($id)
     {
-        $service = service::findOrFail($id);
+        $service = Service::findOrFail($id);
         $serviceProviders = ServiceProvider::pluck('name','id')->all();
 
         return view('services.edit', compact('service','serviceProviders'));
@@ -116,7 +116,7 @@ class ServiceController extends Controller
 
             $data = $this->getData($request);
 
-            $service = service::findOrFail($id);
+            $service = Service::findOrFail($id);
             $service->update($data);
 
             return redirect()->route('services.service.index')
@@ -139,7 +139,7 @@ class ServiceController extends Controller
     public function destroy($id)
     {
         try {
-            $service = service::findOrFail($id);
+            $service = Service::findOrFail($id);
             $service->delete();
 
             return redirect()->route('services.service.index')
@@ -173,11 +173,7 @@ class ServiceController extends Controller
 
         ];
 
-
         $data = $request->validate($rules);
-
-
-
 
         return $data;
     }
