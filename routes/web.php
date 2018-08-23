@@ -60,28 +60,28 @@ Route::group(
     'prefix' => 'users'
 ], function () {
 
-    Route::get('/', 'UsersController@index')
+    Route::get('/', 'UserController@index')
         ->name('users.index');
 
-    Route::get('/create', 'UsersController@create')
+    Route::get('/create', 'UserController@create')
         ->name('users.create');
 
-    Route::get('/show/{user}', 'UsersController@show')
+    Route::get('/show/{user}', 'UserController@show')
         ->name('users.show')
         ->where('id', '[0-9]+');
 
-    Route::get('/{user}/edit', 'UsersController@edit')
+    Route::get('/{user}/edit', 'UserController@edit')
         ->name('users.edit')
         ->where('id', '[0-9]+');
 
-    Route::post('/', 'UsersController@store')
+    Route::post('/', 'UserController@store')
         ->name('users.store');
 
-    Route::put('user/{user}', 'UsersController@update')
+    Route::put('user/{user}', 'UserController@update')
         ->name('users.update')
         ->where('id', '[0-9]+');
 
-    Route::delete('/user/{user}', 'UsersController@destroy')
+    Route::delete('/user/{user}', 'UserController@destroy')
         ->name('users.destroy')
         ->where('id', '[0-9]+');
 

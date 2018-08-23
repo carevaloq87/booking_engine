@@ -10,7 +10,7 @@ use DB;
 use Exception;
 use Hash;
 
-class UsersController extends Controller
+class UserController extends Controller
 {
     /**
      * Create a new controller instance.
