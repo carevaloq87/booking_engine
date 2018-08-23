@@ -34,10 +34,10 @@
 <div class="form-group {{ $errors->has('role') ? 'has-error' : '' }}">
     <label for="role" class="col-md-2 control-label">Role</label>
     <div class="col-md-10">
-        <select class="form-control" id="role" name="role" required="true">
-        	    <option value="" style="display: none;" {{ old('role', optional($user)->roles() ?: '') == '' ? 'selected' : '' }} disabled selected>Enter role here...</option>
-        	@foreach ($roles as $role)
-            <option value="{{ $role['id'] }}" {{ ( isset($user) && $user->roles()->first()->id == $role['id'] ? 'selected' : '' ) }}>
+        <select class="form-control" id="roles" name="roles" required="true">
+            <option value="" style="display: none;" {{ old('role', optional($user)->roles() ?: '') == '' ? 'selected' : '' }} disabled selected>Enter role here...</option>
+            @foreach ($roles as $role)
+            <option value="{{ $role['id'] }}" {{ ( isset($user) && !$user->roles->pluck('id')->isEmpty() && $user->roles->pluck('id')[0] == $role['id'] ? 'selected' : '' ) }}>
                 {{ $role['name'] }}
             </option>
 			@endforeach
