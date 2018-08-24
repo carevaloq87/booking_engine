@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class ServiceProvider extends Model
 {
 
-
     /**
      * The database table used by the model.
      *
@@ -28,11 +27,11 @@ class ServiceProvider extends Model
      * @var array
      */
     protected $fillable = [
-                  'name',
-                  'contact_name',
-                  'phone',
-                  'email'
-              ];
+                            'name',
+                            'contact_name',
+                            'phone',
+                            'email'
+                        ];
 
     /**
      * The attributes that should be mutated to dates.
@@ -48,7 +47,24 @@ class ServiceProvider extends Model
      */
     protected $casts = [];
 
+    /**
+     * Get All services by service Provider
+     *
+     * @return void
+     */
+    public function services()
+    {
+        return $this->hasMany('App\Models\Service');
+    }
 
-
+    /**
+     * Get All resources by service Provider
+     *
+     * @return void
+     */
+    public function resources()
+    {
+        return $this->hasMany('App\Models\Resource');
+    }
 
 }
