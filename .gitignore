@@ -16,3 +16,4 @@ yarn-error.log
 /simplesaml
 .env.example
 phpunit.bat
+.env.testing
