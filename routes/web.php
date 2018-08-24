@@ -159,28 +159,28 @@ Route::group(
     'prefix' => 'resources',
 ], function () {
 
-    Route::get('/', 'ResourcesController@index')
+    Route::get('/', 'ResourceController@index')
         ->name('resources.resource.index');
 
-    Route::get('/create','ResourcesController@create')
+    Route::get('/create','ResourceController@create')
         ->name('resources.resource.create');
 
-    Route::get('/show/{resource}','ResourcesController@show')
+    Route::get('/show/{resource}','ResourceController@show')
         ->name('resources.resource.show')
         ->where('id', '[0-9]+');
 
-    Route::get('/{resource}/edit','ResourcesController@edit')
+    Route::get('/{resource}/edit','ResourceController@edit')
         ->name('resources.resource.edit')
         ->where('id', '[0-9]+');
 
-    Route::post('/', 'ResourcesController@store')
+    Route::post('/', 'ResourceController@store')
         ->name('resources.resource.store');
 
-    Route::put('resource/{resource}', 'ResourcesController@update')
+    Route::put('resource/{resource}', 'ResourceController@update')
         ->name('resources.resource.update')
         ->where('id', '[0-9]+');
 
-    Route::delete('/resource/{resource}','ResourcesController@destroy')
+    Route::delete('/resource/{resource}','ResourceController@destroy')
         ->name('resources.resource.destroy')
         ->where('id', '[0-9]+');
 
