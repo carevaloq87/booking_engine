@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Resource;
+use App\Models\Service;
 use Illuminate\Http\Request;
 use App\Models\ServiceProvider;
 use App\Http\Controllers\Controller;
@@ -44,8 +45,9 @@ class ResourceController extends Controller
     public function create()
     {
         $serviceProviders = ServiceProvider::pluck('name','id')->all();
+        $services = Service::userServiceProviderServices();
 
-        return view('resources.create', compact('serviceProviders'));
+        return view('resources.create', compact('serviceProviders','services'));
     }
 
     /**
@@ -59,9 +61,9 @@ class ResourceController extends Controller
     {
         try {
 
-            $data = $this->getData($request);
-
-            Resource::create($data);
+            $data = $this->getData($request);            
+            $resource = Resource::create($data);            
+            $resource->services()->attach($data['services']);
 
             return redirect()->route('resources.resource.index')
                              ->with('success_message', 'Resource was successfully added!');
@@ -98,8 +100,9 @@ class ResourceController extends Controller
     {
         $resource = Resource::findOrFail($id);
         $serviceProviders = ServiceProvider::pluck('name','id')->all();
+        $services = Service::userServiceProviderServices();
 
-        return view('resources.edit', compact('resource','serviceProviders'));
+        return view('resources.edit', compact('resource','serviceProviders','services'));
     }
 
     /**
@@ -118,6 +121,7 @@ class ResourceController extends Controller
 
             $resource = Resource::findOrFail($id);
             $resource->update($data);
+            $resource->services()->sync($data['services']);
 
             return redirect()->route('resources.resource.index')
                              ->with('success_message', 'Resource was successfully updated!');
@@ -166,15 +170,12 @@ class ResourceController extends Controller
             'phone' => 'string|min:10|nullable',
             'email' => 'nullable',
             'service_provider_id' => 'nullable',
+            'services' => 'nullable',
 
         ];
 
 
         $data = $request->validate($rules);
-
-
-
-
         return $data;
     }
 

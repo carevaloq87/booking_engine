@@ -39,3 +39,19 @@
     </div>
 </div>
 
+<div class="form-group {{ $errors->has('services') ? 'has-error' : '' }}">
+    <label for="services" class="col-md-2 control-label">Resources</label>
+    <div class="col-md-10">
+        <select class="form-control" id="services" name="services[]" multiple searchable="Search here..">
+        	    <option value="" style="display: none;" disabled selected>Select service</option>
+        	@foreach ($services as $key => $service)
+			    <option value="{{ $service->id }}" {{ old('resource', optional($service)->id) == $key ? 'selected' : '' }}>
+			    	{{ $service->name }}
+			    </option>
+			@endforeach
+        </select>
+        
+        {!! $errors->first('services', '<p class="help-block">:message</p>') !!}
+    </div>
+</div>
+

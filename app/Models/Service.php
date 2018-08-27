@@ -65,7 +65,7 @@ class service extends Model
      */
     public function resources()
     {
-        return $this->belongsToMany('App\Models\Resource','served_by','resource_id','service_id');
+        return $this->belongsToMany('App\Models\Resource','served_by','service_id','resource_id');
     }
 
     /**
