@@ -92,7 +92,7 @@
                 <li class="{{ Request::is('services','services/*') ? 'active' : null }}"><a class="nav-link" href="{{ route('services.service.index') }}">Services</a></li>
                 <li class="{{ Request::is('resources','resources/*') ? 'active' : null }}"><a class="nav-link" href="{{ route('resources.resource.index') }}">Resources</a></li>
 
-                @if (Auth::user()->roles()->first()->name === 'Super Admin')
+                @if (Auth::user()->isAdmin())
                     <li class="{{ Request::is('users','users/*') ? 'active' : null }}"><a class="nav-link" href="{{ route('users.index') }}">Users</a></li>
                     <li class="{{ Request::is('roles','roles/*') ? 'active' : null }}"><a class="nav-link" href="{{ route('roles.index') }}">Role</a></li>
                     <li class="{{ Request::is('service_providers','service_providers/*') ? 'active' : null }}"><a class="nav-link" href="{{ route('service_providers.service_provider.index') }}">Service Providers</a></li>

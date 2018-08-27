@@ -88,4 +88,14 @@ class User extends Authenticatable
         return $this->belongsTo('App\Models\ServiceProvider','service_provider_id');
     }
 
+    /**
+     * Check if current Users role is an admin
+     *
+     * @return boolean
+     */
+    public function isAdmin()
+    {
+        return $this->roles()->first()->name === 'Super Admin';
+    }
+
 }
