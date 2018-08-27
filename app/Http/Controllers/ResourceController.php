@@ -31,7 +31,7 @@ class ResourceController extends Controller
      */
     public function index()
     {
-        $resources = Resource::with('serviceprovider')->paginate(25);
+        $resources = Resource::userServiceProviderResources();
 
         return view('resources.index', compact('resources'));
     }

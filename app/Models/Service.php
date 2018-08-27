@@ -68,6 +68,20 @@ class service extends Model
         return $this->belongsToMany('App\Models\Resource','served_by','resource_id','service_id');
     }
 
-
+    /**
+     * Get all the Services that belongs to the current user service provider
+     *
+     * @return Collection
+     */
+    public static function userServiceProviderServices()
+    {
+        $user = auth()->user();
+        if($user->isAdmin()){
+            $services = Service::with('serviceprovider')->paginate(25);
+        } else {
+            $services = Service::with('serviceprovider')->where('service_provider_id', '=', $user->service_provider_id)->paginate(25);
+        }
+        return $services;
+    }
 
 }

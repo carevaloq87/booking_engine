@@ -31,7 +31,7 @@ class ServiceController extends Controller
      */
     public function index()
     {
-        $services = Service::with('serviceprovider')->paginate(25);
+        $services = Service::userServiceProviderServices();
 
         return view('services.index', compact('services'));
     }

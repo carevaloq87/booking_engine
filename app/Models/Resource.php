@@ -64,6 +64,23 @@ class Resource extends Model
         return $this->belongsToMany('App\Models\Service','served_by','service_id','resource_id');
     }
 
+    /**
+     * Get all the Resources that belongs to the current user service provider
+     *
+     * @return Collection
+     */
+    public static function userServiceProviderResources()
+    {
+        $user = auth()->user();
+
+        if($user->isAdmin()){
+            $services = Resource::with('serviceprovider')->paginate(25);
+        } else {
+            $services = Resource::with('serviceprovider')->where('service_provider_id', '=', $user->service_provider_id)->paginate(25);
+        }
+
+        return $services;
+    }
 
 
 }
