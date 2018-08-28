@@ -31,7 +31,7 @@ class ServiceController extends Controller
      */
     public function index()
     {
-        $services = Service::userServiceProviderServices();
+        $services = Service::getServicesByUserServiceProvider();
 
         return view('services.index', compact('services'));
     }

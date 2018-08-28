@@ -69,7 +69,7 @@ class Resource extends Model
      *
      * @return Collection
      */
-    public static function userServiceProviderResources()
+    public static function getResourcesByUserServiceProvider()
     {
         $user = auth()->user();
 

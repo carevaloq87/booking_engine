@@ -31,7 +31,7 @@ class ResourceController extends Controller
      */
     public function index()
     {
-        $resources = Resource::userServiceProviderResources();
+        $resources = Resource::getResourcesByUserServiceProvider();
 
         return view('resources.index', compact('resources'));
     }

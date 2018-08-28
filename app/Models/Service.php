@@ -73,7 +73,7 @@ class service extends Model
      *
      * @return Collection
      */
-    public static function userServiceProviderServices()
+    public static function getServicesByUserServiceProvider()
     {
         $user = auth()->user();
         if($user->isAdmin()){
