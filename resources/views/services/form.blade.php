@@ -71,3 +71,19 @@
     </div>
 </div>
 
+<div class="form-group {{ $errors->has('resources') ? 'has-error' : '' }}">
+    <label for="resources" class="col-md-2 control-label">Resources</label>
+    <div class="col-md-10">
+        <select class="form-control" id="resources" name="resources[]" multiple searchable="Search here..">
+        	    <option value="" style="display: none;" disabled selected>Select resource</option>
+        	@foreach ($resources as $key => $resource)
+			    <option value="{{ $resource->id }}" {{ old('resource', optional($resource)->id) == $key ? 'selected' : '' }}>
+			    	{{ $resource->name }}
+			    </option>
+			@endforeach
+        </select>
+        
+        {!! $errors->first('resources', '<p class="help-block">:message</p>') !!}
+    </div>
+</div>
+
