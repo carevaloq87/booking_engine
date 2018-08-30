@@ -46,6 +46,8 @@
                             <th>Email</th>
                             <th>Duration</th>
                             <th>Listed Duration</th>
+                            <th>Interpreter Duration</th>
+                            <th>Interpreter Listed Duration</th>
                             <th>Spaces</th>
                             <th>Service Provider</th>
 
@@ -60,6 +62,8 @@
                             <td>{{ $service->email }}</td>
                             <td>{{ $service->duration }}</td>
                             <td>{{ $service->listed_duration }}</td>
+                            <td>{{ $service->interpreter_duration }}</td>
+                            <td>{{ $service->listed_interpreter_duration }}</td>
                             <td>{{ $service->spaces }}</td>
                             <td>{{ optional($service->serviceProvider)->name }}</td>
 

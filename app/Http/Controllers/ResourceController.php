@@ -45,7 +45,7 @@ class ResourceController extends Controller
     public function create()
     {
         $serviceProviders = ServiceProvider::pluck('name','id')->all();
-        $services = Service::userServiceProviderServices();
+        $services = Service::getServicesByUserServiceProvider();
 
         return view('resources.create', compact('serviceProviders','services'));
     }
@@ -100,7 +100,7 @@ class ResourceController extends Controller
     {
         $resource = Resource::findOrFail($id);
         $serviceProviders = ServiceProvider::pluck('name','id')->all();
-        $services = Service::userServiceProviderServices();
+        $services = Service::getServicesByUserServiceProvider();
 
         return view('resources.edit', compact('resource','serviceProviders','services'));
     }

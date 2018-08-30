@@ -34,6 +34,8 @@ class service extends Model
                             'description',
                             'duration',
                             'listed_duration',
+                            'interpreter_duration',
+                            'listed_interpreter_duration',
                             'spaces',
                             'service_provider_id'
                         ];

@@ -34,7 +34,7 @@
 <div class="form-group {{ $errors->has('duration') ? 'has-error' : '' }}">
     <label for="duration" class="col-md-2 control-label">Duration</label>
     <div class="col-md-10">
-        <input class="form-control" name="duration" type="text" id="duration" value="{{ old('duration', optional($service)->duration) }}" minlength="1" placeholder="Enter duration here...">
+        <input class="form-control" name="duration" type="text" id="duration" value="{{ old('duration', optional($service)->duration) }}" minlength="1" placeholder="Enter duration here..." required>
         {!! $errors->first('duration', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
@@ -42,8 +42,24 @@
 <div class="form-group {{ $errors->has('listed_duration') ? 'has-error' : '' }}">
     <label for="listed_duration" class="col-md-2 control-label">Listed Duration</label>
     <div class="col-md-10">
-        <input class="form-control" name="listed_duration" type="text" id="listed_duration" value="{{ old('listed_duration', optional($service)->listed_duration) }}" minlength="1" placeholder="Enter listed duration here...">
+        <input class="form-control" name="listed_duration" type="text" id="listed_duration" value="{{ old('listed_duration', optional($service)->listed_duration) }}" minlength="1" placeholder="Enter listed duration here..." required>
         {!! $errors->first('listed_duration', '<p class="help-block">:message</p>') !!}
+    </div>
+</div>
+
+<div class="form-group {{ $errors->has('interpreter_duration') ? 'has-error' : '' }}">
+    <label for="interpreter_duration" class="col-md-2 control-label">Interpreter Duration</label>
+    <div class="col-md-10">
+        <input class="form-control" name="interpreter_duration" type="text" id="interpreter_duration" value="{{ old('interpreter_duration', optional($service)->interpreter_duration) }}" minlength="1" placeholder="Enter duration here..." required>
+        {!! $errors->first('interpreter_duration', '<p class="help-block">:message</p>') !!}
+    </div>
+</div>
+
+<div class="form-group {{ $errors->has('listed_interpreter_duration') ? 'has-error' : '' }}">
+    <label for="listed_interpreter_duration" class="col-md-2 control-label">Interpreter Listed Duration</label>
+    <div class="col-md-10">
+        <input class="form-control" name="listed_interpreter_duration" type="text" id="listed_interpreter_duration" value="{{ old('listed_interpreter_duration', optional($service)->listed_interpreter_duration) }}" minlength="1" placeholder="Enter listed duration here..." required>
+        {!! $errors->first('listed_interpreter_duration', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
 
@@ -55,18 +71,18 @@
     </div>
 </div>
 
-<div class="form-group {{ $errors->has('service_provider_id') ? 'has-error' : '' }}">
+<div class="form-group {{ $errors->has('service_provider_id') ? 'has-error' : '' }} {{ !auth()->user()->isAdmin() ? 'hidden' : '' }}">
     <label for="service_provider_id" class="col-md-2 control-label">Service Provider</label>
     <div class="col-md-10">
         <select class="form-control" id="service_provider_id" name="service_provider_id">
         	    <option value="" style="display: none;" {{ old('service_provider_id', optional($service)->service_provider_id ?: '') == '' ? 'selected' : '' }} disabled selected>Select service provider</option>
         	@foreach ($serviceProviders as $key => $serviceProvider)
-			    <option value="{{ $key }}" {{ old('service_provider_id', optional($service)->service_provider_id) == $key ? 'selected' : '' }}>
+			    <option value="{{ $key }}" {{ (old('service_provider_id', optional($service)->service_provider_id) == $key || auth()->user()->service_provider_id == $key) ? 'selected' : '' }}>
 			    	{{ $serviceProvider }}
 			    </option>
 			@endforeach
         </select>
-        
+
         {!! $errors->first('service_provider_id', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
@@ -77,12 +93,12 @@
         <select class="form-control" id="resources" name="resources[]" multiple searchable="Search here..">
         	    <option value="" style="display: none;" disabled selected>Select resource</option>
         	@foreach ($resources as $key => $resource)
-			    <option value="{{ $resource->id }}" {{ old('resource', optional($resource)->id) == $key ? 'selected' : '' }}>
+			    <option value="{{ $resource->id }}" {{ (old('resource', optional($resource)->id) == $key || (isset($selected_resources) && $selected_resources->contains($resource->id)) ) ? 'selected' : '' }}>
 			    	{{ $resource->name }}
 			    </option>
 			@endforeach
         </select>
-        
+
         {!! $errors->first('resources', '<p class="help-block">:message</p>') !!}
     </div>
 </div>

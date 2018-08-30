@@ -44,9 +44,13 @@ class ServiceController extends Controller
      */
     public function create()
     {
-        $serviceProviders = ServiceProvider::pluck('name','id')->all();
-        $resources = Resource::userServiceProviderResources();
-        
+        if(auth()->user()->isAdmin()) {
+            $serviceProviders = ServiceProvider::pluck('name','id')->all();
+        } else {
+            $serviceProviders = ServiceProvider::where('id',2)->pluck('name','id')->all();
+        }
+        $resources = Resource::getResourcesByUserServiceProvider();
+
         return view('services.create', compact('serviceProviders','resources'));
     }
 
@@ -70,9 +74,9 @@ class ServiceController extends Controller
                              ->with('success_message', 'Service was successfully added!');
 
         } catch (Exception $exception) {
-
+dd($exception->getMessage(), $request);
             return back()->withInput()
-                         ->withErrors(['unexpected_error' => 'Unexpected error occurred while trying to process your request!']);
+                         ->withErrors(['unexpected_error' => $exception->getMessage()]);
         }
     }
 
@@ -100,10 +104,17 @@ class ServiceController extends Controller
     public function edit($id)
     {
         $service = Service::findOrFail($id);
-        $serviceProviders = ServiceProvider::pluck('name','id')->all();
-        $resources = Resource::userServiceProviderResources();
 
-        return view('services.edit', compact('service','serviceProviders','resources'));
+        if(auth()->user()->isAdmin()) {
+            $serviceProviders = ServiceProvider::pluck('name','id')->all();
+        } else {
+            $serviceProviders = ServiceProvider::where('id',2)->pluck('name','id')->all();
+        }
+
+        $resources = Resource::getResourcesByUserServiceProvider();
+        $selected_resources = $service->resources->pluck('id');
+
+        return view('services.edit', compact('service','serviceProviders','resources', 'selected_resources'));
     }
 
     /**
@@ -171,8 +182,10 @@ class ServiceController extends Controller
             'phone' => 'string|min:1|nullable',
             'email' => 'nullable',
             'description' => 'string|min:1|max:1000|nullable',
-            'duration' => 'string|min:1|nullable',
-            'listed_duration' => 'string|min:1|nullable',
+            'duration' => 'string|min:1',
+            'listed_duration' => 'string|min:1',
+            'interpreter_duration' => 'string|min:1',
+            'listed_interpreter_duration' => 'string|min:1',
             'spaces' => 'string|min:1|nullable',
             'service_provider_id' => 'nullable',
             'resources' => 'nullable',
@@ -180,7 +193,6 @@ class ServiceController extends Controller
         ];
 
         $data = $request->validate($rules);
-        
 
         return $data;
     }

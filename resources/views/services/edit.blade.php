@@ -35,6 +35,7 @@
             <form method="POST" action="{{ route('services.service.update', $service->id) }}" id="edit_service_form" name="edit_service_form" accept-charset="UTF-8" class="form-horizontal">
             {{ csrf_field() }}
             <input name="_method" type="hidden" value="PUT">
+            
             @include ('services.form', [
                                         'service' => $service,
                                       ])
