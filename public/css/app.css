@@ -72,6 +72,10 @@
   height: 17px;
 }
 
+.service_days .btn-group {
+  margin-bottom: 20px;
+}
+
 .service_days .whiteLink {
   color: #fff;
   text-decoration: none;
@@ -98,7 +102,7 @@
 }
 
 .option_day {
-  padding: 1px 3px;
+  padding: 2px 3px;
 }
 
 .month_label {
