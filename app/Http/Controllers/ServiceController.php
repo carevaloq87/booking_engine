@@ -74,7 +74,7 @@ class ServiceController extends Controller
                              ->with('success_message', 'Service was successfully added!');
 
         } catch (Exception $exception) {
-dd($exception->getMessage(), $request);
+
             return back()->withInput()
                          ->withErrors(['unexpected_error' => $exception->getMessage()]);
         }
