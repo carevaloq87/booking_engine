@@ -44,11 +44,7 @@ class ServiceController extends Controller
      */
     public function create()
     {
-        if(auth()->user()->isAdmin()) {
-            $serviceProviders = ServiceProvider::pluck('name','id')->all();
-        } else {
-            $serviceProviders = ServiceProvider::where('id',2)->pluck('name','id')->all();
-        }
+        $serviceProviders = ServiceProvider::getServideProvidersByCurrentUser();
         $resources = Resource::getResourcesByUserServiceProvider();
 
         return view('services.create', compact('serviceProviders','resources'));
@@ -104,12 +100,7 @@ class ServiceController extends Controller
     public function edit($id)
     {
         $service = Service::findOrFail($id);
-
-        if(auth()->user()->isAdmin()) {
-            $serviceProviders = ServiceProvider::pluck('name','id')->all();
-        } else {
-            $serviceProviders = ServiceProvider::where('id',2)->pluck('name','id')->all();
-        }
+        $serviceProviders = ServiceProvider::getServideProvidersByCurrentUser();
 
         $resources = Resource::getResourcesByUserServiceProvider();
         $selected_resources = $service->resources->pluck('id');

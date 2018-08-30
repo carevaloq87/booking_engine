@@ -67,4 +67,19 @@ class ServiceProvider extends Model
         return $this->hasMany('App\Models\Resource');
     }
 
+    /**
+     * Retrieve the service providers available for the current user
+     *
+     * @return Collection of service providers
+     */
+    public static function getServideProvidersByCurrentUser()
+    {
+        if(auth()->user()->isAdmin()) {
+            $serviceProviders = ServiceProvider::pluck('name','id')->all();
+        } else {
+            $serviceProviders = ServiceProvider::where('id', auth()->user()->service_provider_id)->pluck('name','id')->all();
+        }
+        return $serviceProviders;
+    }
+
 }

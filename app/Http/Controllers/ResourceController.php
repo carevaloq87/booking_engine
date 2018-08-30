@@ -44,7 +44,7 @@ class ResourceController extends Controller
      */
     public function create()
     {
-        $serviceProviders = ServiceProvider::pluck('name','id')->all();
+        $serviceProviders = ServiceProvider::getServideProvidersByCurrentUser();
         $services = Service::getServicesByUserServiceProvider();
 
         return view('resources.create', compact('serviceProviders','services'));
@@ -61,8 +61,8 @@ class ResourceController extends Controller
     {
         try {
 
-            $data = $this->getData($request);            
-            $resource = Resource::create($data);            
+            $data = $this->getData($request);
+            $resource = Resource::create($data);
             $resource->services()->attach($data['services']);
 
             return redirect()->route('resources.resource.index')
@@ -99,10 +99,12 @@ class ResourceController extends Controller
     public function edit($id)
     {
         $resource = Resource::findOrFail($id);
-        $serviceProviders = ServiceProvider::pluck('name','id')->all();
-        $services = Service::getServicesByUserServiceProvider();
+        $serviceProviders = ServiceProvider::getServideProvidersByCurrentUser();
 
-        return view('resources.edit', compact('resource','serviceProviders','services'));
+        $services = Service::getServicesByUserServiceProvider();
+        $selected_services = $resource->services->pluck('id');
+
+        return view('resources.edit', compact('resource','serviceProviders','services', 'selected_services'));
     }
 
     /**
