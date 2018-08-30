@@ -158,6 +158,16 @@ class ResourceController extends Controller
         }
     }
 
+    /**
+     * Return resources filtered by user serv
+     *
+     * @return void
+     */
+    public function getResourcesByUserServiceProvider()
+    {
+        return Resource::getResourcesByUserServiceProvider();
+    }    
+
 
     /**
      * Get the request's data from the request.

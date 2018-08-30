@@ -150,7 +150,10 @@ Route::group(
     Route::delete('/service/{service}','ServiceController@destroy')
         ->name('services.service.destroy')
         ->where('id', '[0-9]+');
-
+    
+    Route::get('/getResources/{service}','ServiceController@getResources')
+        ->name('services.service.getResources')
+        ->where('id', '[0-9]+');    
 });
 
 Route::group(
@@ -183,6 +186,9 @@ Route::group(
     Route::delete('/resource/{resource}','ResourceController@destroy')
         ->name('resources.resource.destroy')
         ->where('id', '[0-9]+');
+    
+    Route::get('/getByUserServiceProvider', 'ResourceController@getResourcesByUserServiceProvider')
+        ->name('resource.resource.getByUserServiceProvider');
 
 });
 

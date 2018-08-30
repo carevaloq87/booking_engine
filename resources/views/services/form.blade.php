@@ -1,7 +1,7 @@
-
+<input id='id' type='hidden' value="{{ old('id', optional($service)->id) }}">
 <div class="form-group {{ $errors->has('name') ? 'has-error' : '' }}">
     <label for="name" class="col-md-2 control-label">Name</label>
-    <div class="col-md-10">
+    <div class="col-md-10">            
         <input class="form-control" name="name" type="text" id="name" value="{{ old('name', optional($service)->name) }}" minlength="1" maxlength="255" placeholder="Enter name here...">
         {!! $errors->first('name', '<p class="help-block">:message</p>') !!}
     </div>
@@ -87,18 +87,24 @@
     </div>
 </div>
 
-<div class="form-group {{ $errors->has('resources') ? 'has-error' : '' }}">
+<div class="form-group {{ $errors->has('resources') ? 'has-error' : '' }}" id="resources-select">    
     <label for="resources" class="col-md-2 control-label">Resources</label>
-    <div class="col-md-10">
-        <select class="form-control" id="resources" name="resources[]" multiple searchable="Search here..">
-        	    <option value="" style="display: none;" disabled selected>Select resource</option>
-        	@foreach ($resources as $key => $resource)
-			    <option value="{{ $resource->id }}" {{ (old('resource', optional($resource)->id) == $key || (isset($selected_resources) && $selected_resources->contains($resource->id)) ) ? 'selected' : '' }}>
-			    	{{ $resource->name }}
-			    </option>
-			@endforeach
-        </select>
-
+    <div class="col-md-10">        
+        <multiselect    v-model="selected"                         
+                        label="name"
+                        key = "id" 
+                        track-by="name" 
+                        placeholder="Type to search" 
+                        open-direction="bottom" 
+                        :options="options" 
+                        :multiple="true" 
+                        :searchable="true"                         
+                        :clear-on-select="true" 
+                        :close-on-select="true" 
+                        :show-no-results="false"
+                        :hide-selected="true">
+        </multiselect>
+        <input type="hidden" name="resources[]" v-for="value in selected" :value= "value.id" id="resources">        
         {!! $errors->first('resources', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
