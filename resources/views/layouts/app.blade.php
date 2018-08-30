@@ -121,6 +121,8 @@
         @yield('content')
     </div>
 
+    @include('layouts.loader')
+
     <!-- Scripts -->
 
     <script src="https://code.jquery.com/jquery-1.12.4.min.js"
@@ -130,6 +132,7 @@
 
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+    <script src="/js/modal-hierarchy.js"></script>
     <script src="{{ asset('js/app.js') }}"></script>
     <script type="text/javascript">
         $(function(){
