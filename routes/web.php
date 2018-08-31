@@ -251,3 +251,17 @@ Route::group(
         ->where('id', '[0-9]+');
 
 });
+
+Route::group(
+[
+    'middleware' => ['auth'],
+    'prefix' => 'calendar',
+], function () {
+    Route::get('/service/days/{serviceId}','CalendarController@getServiceDays')
+        ->where('id', '[0-9]+');
+
+    Route::get('/service/hours/{serviceId}','CalendarController@getServiceHours')
+        ->where('id', '[0-9]+');
+
+    Route::post('/service/days','CalendarController@storeDays');
+});

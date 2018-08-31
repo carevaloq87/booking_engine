@@ -41,7 +41,7 @@
             //Get schedules by service ID
             getSchedule(sv_id) {
                 var self = this;
-                let url = '/booking/services/hours/' + sv_id;
+                let url = '/calendar/service/hours/' + sv_id;
 
                 axios['get'](url, {})
                     .then(response => {

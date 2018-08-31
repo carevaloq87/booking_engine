@@ -2,11 +2,9 @@
 
     <div class="service_days">
 
-        <div class="btn-group margin-bottom-20" data-toggle="buttons">
-            <label class="btn btn-xs green active">
-                <input type="radio" class="toggle"> <a v-on:click="makeActive('currentActive')" class="whiteLink" href="#"> Current Year</a> </label>
-            <label class="btn btn-xs green">
-                <input type="radio" class="toggle"> <a v-on:click="makeActive('nextActive')" class="whiteLink" href="#"> Next Year</a> </label>
+        <div class="btn-group btn-group-xs" data-toggle="buttons">
+            <button type="button" class="btn btn-primary" v-on:click="makeActive('currentActive')"> Current Year </button>
+            <button type="button" class="btn btn-primary"  v-on:click="makeActive('nextActive')"> Next Year </button>
         </div>
 
         <div id="current" v-show="isActiveTab('currentActive')">
@@ -83,7 +81,7 @@
             //Get Calendar by service ID
             getCalendar(sv_id) {
                 var self = this;
-                let url = '/booking/services/days/' + sv_id;
+                let url = '/calendar/service/days/' + sv_id;
 
                 axios['get'](url, {})
                     .then(response => {
@@ -115,10 +113,26 @@
             },
             //TODO - Submit information to webservice
             submitInfo() {
-                console.log('Selection:' + this.ds_current.getSelection().map( item => item.id ));
-                console.log('Selection:' + this.ds_current_interpreter.getSelection().map( item => item.id ));
-                console.log('Selection:' + this.ds_next.getSelection().map( item => item.id ));
-                console.log('Selection:' + this.ds_next_interpreter.getSelection().map( item => item.id ));
+                let self = this;
+                let selections = {};
+                selections.current = self.ds_current.getSelection().map( item => item.id );
+                selections.current_interpreter = self.ds_current_interpreter.getSelection().map( item => item.id );
+                selections.next = self.ds_next.getSelection().map( item => item.id );
+                selections.next_interpreter = self.ds_next_interpreter.getSelection().map( item => item.id );
+
+                let url = '/calendar/service/days';
+
+                axios['post'](url, { id: self.service, dates: selections })
+                    .then(response => {
+                        console.log(response);
+                    })
+                    .then(() => {
+                        $("#contentLoading").modal("hide");
+                    })
+                    .catch(error => {
+                        $("#contentLoading").modal("hide");
+                        console.log(error);
+                    });
             }
         },
         watch: {

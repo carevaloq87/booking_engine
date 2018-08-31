@@ -199,7 +199,6 @@ class UserController extends Controller
         }
     }
 
-
     /**
      * Get the request's data from the request.
      *
