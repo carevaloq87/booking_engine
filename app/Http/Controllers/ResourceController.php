@@ -63,7 +63,9 @@ class ResourceController extends Controller
 
             $data = $this->getData($request);
             $resource = Resource::create($data);
-            $resource->services()->attach($data['services']);
+            if (isset($data['services'])) {
+                $resource->services()->attach($data['services']);
+            } 
 
             return redirect()->route('resources.resource.index')
                              ->with('success_message', 'Resource was successfully added!');
@@ -123,7 +125,11 @@ class ResourceController extends Controller
 
             $resource = Resource::findOrFail($id);
             $resource->update($data);
-            $resource->services()->sync($data['services']);
+            if (isset($data['services'])) {
+                $resource->services()->sync($data['services']);
+            } else {
+                $resource->services()->sync([]);
+            }  
 
             return redirect()->route('resources.resource.index')
                              ->with('success_message', 'Resource was successfully updated!');
@@ -157,7 +163,18 @@ class ResourceController extends Controller
                          ->withErrors(['unexpected_error' => 'Unexpected error occurred while trying to process your request!']);
         }
     }
-
+    /**
+     * Get services by resource id 
+     * (used in Vue)
+     *
+     * @param int $id resource id
+     * @return Object
+     */
+    public function getServices($id)
+    {
+        $resource = Resource::findOrFail($id);
+        return $resource->services;
+    }
     /**
      * Return resources filtered by user serv
      *

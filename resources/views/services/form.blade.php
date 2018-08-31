@@ -102,10 +102,14 @@
                         :clear-on-select="true" 
                         :close-on-select="true" 
                         :show-no-results="false"
-                        :hide-selected="true">
+                        :hide-selected="true">                        
         </multiselect>
         <input type="hidden" name="resources[]" v-for="value in selected" :value= "value.id" id="resources">        
         {!! $errors->first('resources', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
+@section('scripts')    
+    <script src="{{ asset('js/service.js')}}" />
+@endsection
+
 

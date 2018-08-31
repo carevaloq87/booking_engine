@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 514);
+/******/ 	return __webpack_require__(__webpack_require__.s = 516);
 /******/ })
 /************************************************************************/
 /******/ ({
@@ -980,15 +980,15 @@ module.exports = Cancel;
 
 /***/ }),
 
-/***/ 514:
+/***/ 516:
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(515);
+module.exports = __webpack_require__(517);
 
 
 /***/ }),
 
-/***/ 515:
+/***/ 517:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -1006,21 +1006,21 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 __WEBPACK_IMPORTED_MODULE_0_vue___default.a.component('multiselect', __WEBPACK_IMPORTED_MODULE_1_vue_multiselect___default.a);
 
 new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
-    el: '#resources-select',
+    el: '#service-select',
 
     data: {
         options: [],
         selected: []
     },
     methods: {
-        intitResources: function intitResources() {
+        intitServices: function intitServices() {
             var self = this;
-            var url = '/resources/getByUserServiceProvider';
+            var url = '/services/getByUserServiceProvider';
             var rs_id = document.getElementById('id');
             if (rs_id) {
                 rs_id = document.getElementById('id').value;
                 if (rs_id.localeCompare('') != 0) {
-                    this.initOldResources(rs_id);
+                    this.initOldServices(rs_id);
                 }
             }
             __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get(url).then(function (response) {
@@ -1029,9 +1029,9 @@ new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
                 console.log(error);
             });
         },
-        initOldResources: function initOldResources(rs_id) {
+        initOldServices: function initOldServices(rs_id) {
             var self = this;
-            var url = '/services/getResources/' + rs_id;
+            var url = '/resources/getServices/' + rs_id;
             __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get(url).then(function (response) {
                 self.selected = response.data;
             }).catch(function (error) {
@@ -1041,7 +1041,7 @@ new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
 
     },
     mounted: function mounted() {
-        this.intitResources();
+        this.intitServices();
     }
 });
 

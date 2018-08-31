@@ -62,7 +62,9 @@ class ServiceController extends Controller
             $data = $this->getData($request);
 
             $service=Service::create($data);
-            $service->resources()->attach($data['resources']);
+            if (isset($data['resources'])) {
+                $service->resources()->sync($data['resources']);
+            }
 
             return redirect()->route('services.service.index')
                              ->with('success_message', 'Service was successfully added!');
@@ -168,6 +170,16 @@ class ServiceController extends Controller
         $service = Service::findOrFail($id);
         return $service->resources;
     }
+
+    /**
+     * Return services filtered by user serv
+     *
+     * @return void
+     */
+    public function getServicesByUserServiceProvider()
+    {
+        return Service::getServicesByUserServiceProvider();
+    }    
 
     /**
      * Get the request's data from the request.
