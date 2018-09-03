@@ -89,3 +89,7 @@
         @include("services.modal.adhoc")
     </div>
 @endsection
+
+@section('scripts')
+    <script src="/js/booking_engine.js"></script>
+@endsection

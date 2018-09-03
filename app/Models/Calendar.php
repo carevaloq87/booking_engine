@@ -126,7 +126,7 @@ class Calendar extends Model
         $days_cy = array_map(
                                 function($item) use ($service_id, $selected_year, $is_interpreter)
                                 {
-                                    return ['service_id'=> $service_id, 'date' => $selected_year .'-'. $item, 'is_interpreter' => $is_interpreter];
+                                    return ['service_id'=> $service_id, 'available_date' => $selected_year .'-'. $item, 'is_interpreter' => $is_interpreter];
                                 },
                                 $selected_days
                             );

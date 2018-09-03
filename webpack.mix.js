@@ -13,5 +13,6 @@ let mix = require('laravel-mix');
 
 mix.js('resources/assets/js/app.js', 'public/js')
    .sass('resources/assets/sass/app.scss', 'public/css')
+   .js('resources/assets/js/booking_engine.js', 'public/js')
    .js('resources/assets/js/service.js','public/js')
    .js('resources/assets/js/resource.js','public/js');
