@@ -1,4 +1,4 @@
-
+<input id='id' type='hidden' value="{{ old('id', optional($resource)->id) }}">
 <div class="form-group {{ $errors->has('name') ? 'has-error' : '' }}">
     <label for="name" class="col-md-2 control-label">Name</label>
     <div class="col-md-10">
@@ -39,19 +39,30 @@
     </div>
 </div>
 
-<div class="form-group {{ $errors->has('services') ? 'has-error' : '' }}">
-    <label for="services" class="col-md-2 control-label">Resources</label>
+<div class="form-group {{ $errors->has('services') ? 'has-error' : '' }}" id="service-select">
+    <label for="services" class="col-md-2 control-label">Services</label>
     <div class="col-md-10">
-        <select class="form-control" id="services" name="services[]" multiple searchable="Search here..">
-        	    <option value="" style="display: none;" disabled selected>Select service</option>
-        	@foreach ($services as $key => $service)
-			    <option value="{{ $service->id }}" {{ (old('resource', optional($service)->id) == $key || (isset($selected_services) && $selected_services->contains($service->id))) ? 'selected' : '' }}>
-			    	{{ $service->name }}
-			    </option>
-			@endforeach
-        </select>
+        <multiselect    
+            v-model="selected"                         
+            label="name"
+            key = "id" 
+            track-by="name" 
+            placeholder="Type to search" 
+            open-direction="bottom" 
+            :options="options" 
+            :multiple="true" 
+            :searchable="true"                         
+            :clear-on-select="true" 
+            :close-on-select="true" 
+            :show-no-results="false"
+            :hide-selected="true">
+        </multiselect>
+        <input type="hidden" name="services[]" v-for="value in selected" :value= "value.id" id="services">        
 
         {!! $errors->first('services', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
 
+@section('scripts')    
+    <script src="{{ asset('js/resource.js')}}" />    
+@endsection

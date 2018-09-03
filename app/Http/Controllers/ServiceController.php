@@ -45,9 +45,7 @@ class ServiceController extends Controller
     public function create()
     {
         $serviceProviders = ServiceProvider::getServideProvidersByCurrentUser();
-        $resources = Resource::getResourcesByUserServiceProvider();
-
-        return view('services.create', compact('serviceProviders','resources'));
+        return view('services.create', compact('serviceProviders'));
     }
 
     /**
@@ -64,7 +62,9 @@ class ServiceController extends Controller
             $data = $this->getData($request);
 
             $service=Service::create($data);
-            $service->resources()->attach($data['resources']);
+            if (isset($data['resources'])) {
+                $service->resources()->sync($data['resources']);
+            }
 
             return redirect()->route('services.service.index')
                              ->with('success_message', 'Service was successfully added!');
@@ -101,11 +101,7 @@ class ServiceController extends Controller
     {
         $service = Service::findOrFail($id);
         $serviceProviders = ServiceProvider::getServideProvidersByCurrentUser();
-
-        $resources = Resource::getResourcesByUserServiceProvider();
-        $selected_resources = $service->resources->pluck('id');
-
-        return view('services.edit', compact('service','serviceProviders','resources', 'selected_resources'));
+        return view('services.edit', compact('service','serviceProviders'));
     }
 
     /**
@@ -124,7 +120,11 @@ class ServiceController extends Controller
 
             $service = Service::findOrFail($id);
             $service->update($data);
-            $service->resources()->sync($data['resources']);
+            if (isset($data['resources'])) {
+                $service->resources()->sync($data['resources']);
+            } else {
+                $service->resources()->sync([]);
+            }  
 
             return redirect()->route('services.service.index')
                              ->with('success_message', 'Service was successfully updated!');
@@ -158,7 +158,28 @@ class ServiceController extends Controller
                          ->withErrors(['unexpected_error' => 'Unexpected error occurred while trying to process your request!']);
         }
     }
+    /**
+     * Get resource by service id 
+     * (used in Vue)
+     *
+     * @param int $id service id
+     * @return Object
+     */
+    public function getResources($id)
+    {
+        $service = Service::findOrFail($id);
+        return $service->resources;
+    }
 
+    /**
+     * Return services filtered by user serv
+     *
+     * @return void
+     */
+    public function getServicesByUserServiceProvider()
+    {
+        return Service::getServicesByUserServiceProvider();
+    }    
 
     /**
      * Get the request's data from the request.
