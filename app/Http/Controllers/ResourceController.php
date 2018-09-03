@@ -45,9 +45,7 @@ class ResourceController extends Controller
     public function create()
     {
         $serviceProviders = ServiceProvider::getServideProvidersByCurrentUser();
-        $services = Service::getServicesByUserServiceProvider();
-
-        return view('resources.create', compact('serviceProviders','services'));
+        return view('resources.create', compact('serviceProviders'));
     }
 
     /**
@@ -64,7 +62,7 @@ class ResourceController extends Controller
             $data = $this->getData($request);
             $resource = Resource::create($data);
             if (isset($data['services'])) {
-                $resource->services()->attach($data['services']);
+                $resource->services()->sync($data['services']);
             } 
 
             return redirect()->route('resources.resource.index')
@@ -103,10 +101,7 @@ class ResourceController extends Controller
         $resource = Resource::findOrFail($id);
         $serviceProviders = ServiceProvider::getServideProvidersByCurrentUser();
 
-        $services = Service::getServicesByUserServiceProvider();
-        $selected_services = $resource->services->pluck('id');
-
-        return view('resources.edit', compact('resource','serviceProviders','services', 'selected_services'));
+        return view('resources.edit', compact('resource','serviceProviders'));
     }
 
     /**
