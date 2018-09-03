@@ -36,16 +36,6 @@ class Calendar extends Model
      *
      * @return void
      */
-    public function generateCalendars()
-    {
-        $calendar_current_year = self::generateCalendarByYear($this->current_year);
-        $calendar_next_year = self::generateCalendarByYear($this->next_year);
-        return  [
-                    'current_year' => $calendar_current_year,
-                    'next_year' => $calendar_next_year
-                ];
-    }
-
     public function generateCalendarByYear($year)
     {
         $start_time = new DateTime("first day of January ". $year);
@@ -67,29 +57,14 @@ class Calendar extends Model
         return $list;
     }
 
-    public function getServiceDays()
+    public function getServiceDays($request)
     {
-        //$sv_id = request('sv_id');
-        $calendars = self::generateCalendars();
-        $calendars['selected_current'] = self::generateCalendar();
-        $calendars['selected_current_interpreter'] = self::generateCalendar();
-        $calendars['selected_next'] = self::generateCalendar();
-        $calendars['selected_next_interpreter'] = self::generateCalendar();
+        $service_id = $request->serviceId;
+        $available_days = new AvailableDays();
+        $calendars = $available_days->getDaysByServiceId($service_id); // Selected services
+        $calendars['current_year'] = self::generateCalendarByYear($this->current_year); //Calendar structure current year
+        $calendars['next_year'] = self::generateCalendarByYear($this->next_year); //Calendar structure next year
         return $calendars;
-    }
-
-    public function generateCalendar()
-    {
-        $calendar = [];
-        $iterations = rand(1,10);
-        $two_digits = '%02d';
-        for($i = 1 ; $i <= $iterations; $i++) {
-            $random_month = rand(0,11);
-            $random_day = rand(1,31);
-            $day = sprintf($two_digits, $random_day);
-            $calendar[] = $this->months[$random_month] . '-' . $day;
-        }
-        return $calendar;
     }
 
     public function getServiceHours()

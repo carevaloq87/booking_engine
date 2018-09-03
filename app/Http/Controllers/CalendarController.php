@@ -35,12 +35,18 @@ class CalendarController extends Controller
      *
      * @return JSON
      */
-    public function getServiceDays()
+    public function getServiceDays(Request $request)
     {
         $calendar = new Calendar();
-        return $calendar->getServiceDays();
+        return $calendar->getServiceDays($request);
     }
 
+    /**
+     * Save available days for a service
+     *
+     * @param Request $request
+     * @return array
+     */
     public function storeDays(Request $request)
     {
         try {

@@ -71,6 +71,14 @@ class service extends Model
     }
 
     /**
+     * Get the available days for this model.
+     */
+    public function availableDays()
+    {
+        return $this->hasMany('App\Models\AvailableDays');
+    }
+
+    /**
      * Get all the Services that belongs to the current user service provider
      *
      * @return Collection

@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class AvailableDays extends Model
 {
 
-
     /**
      * The database table used by the model.
      *
@@ -28,7 +27,7 @@ class AvailableDays extends Model
      * @var array
      */
     protected $fillable = [
-                  'date',
+                  'available_date',
                   'is_interpreter',
                   'service_id'
               ];
@@ -47,6 +46,20 @@ class AvailableDays extends Model
      */
     protected $casts = [];
 
+    protected $current_year;
+    protected $next_year;
+
+    /**
+     * Create a new calendar instance.
+     *
+     * @return void
+     */
+	public function __construct()
+	{
+        $this->current_year = date('Y');
+        $this->next_year = date('Y', strtotime('+1 year'));
+    }
+
     /**
      * Get the service for this model.
      */
@@ -56,26 +69,31 @@ class AvailableDays extends Model
     }
 
     /**
-     * Set the date.
+     * Get days by service ID
      *
-     * @param  string  $value
-     * @return void
+     * @param int Service Dd
+     * @return array Days previously selected in a service
      */
-    public function setDateAttribute($value)
+    public function getDaysByServiceId($service_id)
     {
-        $this->attributes['date'] = !empty($value) ? \DateTime::createFromFormat($this->getDateFormat(), $value) : null;
+        $service = Service::findOrFail($service_id);
+        $available_days = $service->availableDays;
+        $service_dates = [];
+        foreach($available_days as $date) {
+            $is_current_year = date('Y', strtotime($date->available_date)) == $this->current_year;
+            if(!$date->is_interpreter && $is_current_year) {
+                $service_dates['selected_current'][] = date('M-d', strtotime($date->available_date));
+            }
+            if($date->is_interpreter && $is_current_year) {
+                $service_dates['selected_current_interpreter'][] = date('M-d', strtotime($date->available_date));
+            }
+            if(!$date->is_interpreter && !$is_current_year) {
+                $service_dates['selected_next'][] = date('M-d', strtotime($date->available_date));
+            }
+            if($date->is_interpreter && !$is_current_year) {
+                $service_dates['selected_next_interpreter'][] = date('M-d', strtotime($date->available_date));
+            }
+        }
+        return $service_dates;
     }
-
-    /**
-     * Get date in array format
-     *
-     * @param  string  $value
-     * @return array
-     */
-    public function getDateAttribute($value)
-    {
-        return \DateTime::createFromFormat('d-m-Y', $value);
-
-    }
-
 }
