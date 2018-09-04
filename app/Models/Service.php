@@ -79,6 +79,14 @@ class service extends Model
     }
 
     /**
+     * Get the available hours for this model.
+     */
+    public function availableHours()
+    {
+        return $this->hasMany('App\Models\AvailableHours');
+    }
+
+    /**
      * Get all the Services that belongs to the current user service provider
      *
      * @return Collection

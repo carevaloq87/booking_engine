@@ -24,10 +24,10 @@ class CalendarController extends Controller
      *
      * @return JSON
      */
-    public function getServiceHours()
+    public function getServiceHours(Request $request)
     {
         $calendar = new Calendar();
-        return $calendar->getServiceHours();
+        return $calendar->getServiceHours($request);
     }
 
     /**
@@ -62,6 +62,27 @@ class CalendarController extends Controller
     }
 
     /**
+     * Save available days for a service
+     *
+     * @param Request $request
+     * @return array
+     */
+    public function storeHours(Request $request)
+    {
+        try {
+            $data = $this->getHoursData($request);
+
+            $calendar = new Calendar();
+            $calendar->saveHoursInService($data);
+            return $data;
+
+        } catch (Exception $exception) {
+            return back()->withInput()
+                        ->withErrors(['unexpected_error' => $exception->getMessage()]);
+        }
+    }
+
+    /**
      * Get the request's data from the request.
      *
      * @param Illuminate\Http\Request\Request $request
@@ -72,6 +93,23 @@ class CalendarController extends Controller
         $rules = [
             'id' => 'required|min:1',
             'dates' => 'required'
+        ];
+        $data = $request->validate($rules);
+
+        return $data;
+    }
+
+    /**
+     * Get the request's data from the request.
+     *
+     * @param Illuminate\Http\Request\Request $request
+     * @return array
+     */
+    protected function getHoursData(Request $request)
+    {
+        $rules = [
+            'id' => 'required|min:1',
+            'hours' => 'required'
         ];
         $data = $request->validate($rules);
 

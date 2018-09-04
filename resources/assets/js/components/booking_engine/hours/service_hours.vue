@@ -30,7 +30,6 @@
         props:['service'],
         data() {
             return {
-                choice: 'currentActive',
                 ds_interpreter: {},
                 ds_regular: {},
                 schedule: {},
@@ -67,10 +66,34 @@
                 self.ds_regular.setInitialSelections('#regular .ds-button', self.schedule.regular.days); // Pre select values for an specific service
                 self.ds_interpreter.setInitialSelections('#interpreter .ds-button', self.schedule.interpreter.days); // Pre select values for an specific service
             },
-            //TODO - Submit information to webservice
+            // Submit information to webservice
             submitInfo() {
-                console.log('Selection:' + this.ds_regular.getSelection().map( item => item.id ));
-                console.log('Selection:' + this.ds_interpreter.getSelection().map( item => item.id ));
+                let self = this;
+                let hours = {
+                                regular: {
+                                    time_name: document.querySelector("#regular button.active").id,
+                                    days: self.ds_regular.getSelection().map( item => item.id )
+                                },
+                                interpreter: {
+                                    time_name: document.querySelector("#interpreter button.active").id,
+                                    days: self.ds_interpreter.getSelection().map( item => item.id )
+                                }
+                            };
+
+                let url = '/calendar/service/hours';
+
+                $("#contentLoading").modal("show");
+                axios['post'](url, { id: self.service, hours: hours })
+                    .then(response => {
+                        console.log(response);
+                    })
+                    .then(() => {
+                        $("#contentLoading").modal("hide");
+                    })
+                    .catch(error => {
+                        $("#contentLoading").modal("hide");
+                        console.log(error);
+                    });
             }
         },
         watch: {

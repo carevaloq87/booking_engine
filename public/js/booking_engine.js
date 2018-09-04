@@ -39692,7 +39692,6 @@ Vue.component('hours-container', __webpack_require__(503));
     props: ['service'],
     data: function data() {
         return {
-            choice: 'currentActive',
             ds_interpreter: {},
             ds_regular: {},
             schedule: {},
@@ -39729,14 +39728,35 @@ Vue.component('hours-container', __webpack_require__(503));
             self.ds_interpreter.setInitialSelections('#interpreter .ds-button', self.schedule.interpreter.days); // Pre select values for an specific service
         },
 
-        //TODO - Submit information to webservice
+        // Submit information to webservice
         submitInfo: function submitInfo() {
-            console.log('Selection:' + this.ds_regular.getSelection().map(function (item) {
-                return item.id;
-            }));
-            console.log('Selection:' + this.ds_interpreter.getSelection().map(function (item) {
-                return item.id;
-            }));
+            var self = this;
+            var hours = {
+                regular: {
+                    time_name: document.querySelector("#regular button.active").id,
+                    days: self.ds_regular.getSelection().map(function (item) {
+                        return item.id;
+                    })
+                },
+                interpreter: {
+                    time_name: document.querySelector("#interpreter button.active").id,
+                    days: self.ds_interpreter.getSelection().map(function (item) {
+                        return item.id;
+                    })
+                }
+            };
+
+            var url = '/calendar/service/hours';
+
+            $("#contentLoading").modal("show");
+            axios['post'](url, { id: self.service, hours: hours }).then(function (response) {
+                console.log(response);
+            }).then(function () {
+                $("#contentLoading").modal("hide");
+            }).catch(function (error) {
+                $("#contentLoading").modal("hide");
+                console.log(error);
+            });
         }
     },
     watch: {
@@ -39866,6 +39886,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
     data: function data() {
         return {
+            choice: '',
             week_days: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
             time_structure_active: 'hour',
             time_structure: {
@@ -39889,6 +39910,17 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     },
 
     methods: {
+        //Make tab/container visible or hidden
+        makeActive: function makeActive(val) {
+            this.choice = val;
+        },
+        //Check if a tab/container should be visible
+        isActiveTime: function isActiveTime(val) {
+            if (this.choice === val) {
+                return 'active';
+            }
+            return '';
+        },
         setTimeStructure: function setTimeStructure(time_structure_name) {
             var self = this;
             self.time_structure_active = time_structure_name; //i.e Hour, Half hour or quarter hour
@@ -39898,6 +39930,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 self.$emit('reload-ds', true); //This emits a message to the parent component in order to re-initialize drag all drag and select buttons
                 $("#contentLoading").modal("hide");
             }, 1000);
+            self.makeActive(time_structure_name);
         },
         drawHours: function drawHours(week_day, hour) {
             var self = this;
@@ -39917,6 +39950,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
     watch: {
         currentSchedule: function currentSchedule() {
             this.time_structure_active = this.currentSchedule.time_name;
+            this.choice = this.currentSchedule.time_name;
         }
     }
 });
@@ -39936,8 +39970,8 @@ var render = function() {
       _c(
         "button",
         {
-          staticClass: "btn btn-xs default",
-          attrs: { type: "button" },
+          class: "btn btn-xs default " + _vm.isActiveTime("quarter_hour"),
+          attrs: { type: "button", id: "quarter_hour" },
           on: {
             click: function($event) {
               _vm.setTimeStructure("quarter_hour")
@@ -39950,8 +39984,8 @@ var render = function() {
       _c(
         "button",
         {
-          staticClass: "btn btn-xs default",
-          attrs: { type: "button" },
+          class: "btn btn-xs default " + _vm.isActiveTime("half_hour"),
+          attrs: { type: "button", id: "half_hour" },
           on: {
             click: function($event) {
               _vm.setTimeStructure("half_hour")
@@ -39964,8 +39998,8 @@ var render = function() {
       _c(
         "button",
         {
-          staticClass: "btn btn-xs default",
-          attrs: { type: "button" },
+          class: "btn btn-xs default " + _vm.isActiveTime("hour"),
+          attrs: { type: "button", id: "hour" },
           on: {
             click: function($event) {
               _vm.setTimeStructure("hour")

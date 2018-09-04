@@ -57,6 +57,48 @@ class AvailableHours extends Model
         return $this->belongsTo('App\Models\Service','service_id');
     }
 
+    /**
+     * Get hours by service ID
+     *
+     * @param int Service iD
+     * @return array hours previously selected in a service
+     */
+    public function getHoursByServiceId($service_id)
+    {
+        $service = Service::findOrFail($service_id);
+        $available_hours = $service->availableHours;
+        $service_days = [];
+        foreach($available_hours as $hour) {
+            if(!$hour->is_interpreter) {
+                $service_days['regular']['days'][] = date('D', strtotime($hour->day_week)) . '-' . $hour->start_time;
+                $service_days['regular']['time_length'] = $hour->time_length;
+                $service_days['regular']['time_name'] = self::converHourToTextOrNumber($hour->time_length);
+            }
+            if($hour->is_interpreter) {
+                $service_days['interpreter']['days'][] = date('D', strtotime($hour->day_week)) . '-' . $hour->start_time;
+                $service_days['interpreter']['time_length'] = $hour->time_length;
+                $service_days['interpreter']['time_name'] = self::converHourToTextOrNumber($hour->time_length);
+            }
+        }
+        return $service_days;
+    }
 
-
+    /**
+     * Convert text or numbers to hours in text or numbers
+     *
+     * @param string $hour
+     * @return string int or string with hour
+     */
+    public static function converHourToTextOrNumber($hour)
+    {
+        $hours = [
+            'quarter_hour' => 15,
+            'half_hour' => 30,
+            'hour' => 60,
+            15 => 'quarter_hour',
+            30 => 'half_hour',
+            60 => 'hour',
+        ];
+        return $hours[$hour];
+    }
 }

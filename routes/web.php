@@ -277,4 +277,6 @@ Route::group(
         ->where('serviceId', '[0-9]+');
 
     Route::post('/service/days','CalendarController@storeDays');
+
+    Route::post('/service/hours','CalendarController@storeHours');
 });

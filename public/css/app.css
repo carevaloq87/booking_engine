@@ -72,6 +72,11 @@
   height: 17px;
 }
 
+#regular button.active,
+#interpreter button.active {
+  background-color: #17c4bb;
+}
+
 .service_days .btn-group {
   margin-bottom: 20px;
 }

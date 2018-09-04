@@ -3,9 +3,9 @@
     <div :class="tableClass">
         <div class="form-group">
             <span>Change time display: <small>(in minutes)</small></span>
-            <button type="button" class="btn btn-xs default" v-on:click="setTimeStructure('quarter_hour')">15</button>
-            <button type="button" class="btn btn-xs default" v-on:click="setTimeStructure('half_hour')">30</button>
-            <button type="button" class="btn btn-xs default" v-on:click="setTimeStructure('hour')">60</button>
+            <button type="button" :class="'btn btn-xs default ' + isActiveTime('quarter_hour')" id="quarter_hour" v-on:click="setTimeStructure('quarter_hour')">15</button>
+            <button type="button" :class="'btn btn-xs default ' + isActiveTime('half_hour')" id="half_hour" v-on:click="setTimeStructure('half_hour')">30</button>
+            <button type="button" :class="'btn btn-xs default ' + isActiveTime('hour')" id="hour" v-on:click="setTimeStructure('hour')">60</button>
         </div>
         <div class="form-group margin-top-10 hours_selection">
             <div class="col-sm-12">
@@ -59,6 +59,7 @@
         },
         data() {
             return {
+                choice: '',
                 week_days: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
                 time_structure_active: 'hour',
                 time_structure: {
@@ -81,6 +82,17 @@
             }
         },
         methods: {
+            //Make tab/container visible or hidden
+            makeActive: function(val) {
+                this.choice = val;
+            },
+            //Check if a tab/container should be visible
+            isActiveTime: function(val) {
+                if(this.choice === val) {
+                    return 'active';
+                }
+                return '';
+            },
             setTimeStructure(time_structure_name) {
                 let self = this;
                 self.time_structure_active = time_structure_name; //i.e Hour, Half hour or quarter hour
@@ -90,7 +102,7 @@
                     self.$emit('reload-ds',true); //This emits a message to the parent component in order to re-initialize drag all drag and select buttons
                     $("#contentLoading").modal("hide");
                 }, 1000);
-
+                self.makeActive(time_structure_name);
             },
             drawHours(week_day, hour) {
                 let self = this;
@@ -110,6 +122,7 @@
         watch: {
             currentSchedule: function () {
                 this.time_structure_active = this.currentSchedule.time_name;
+                this.choice = this.currentSchedule.time_name;
             }
         }
     }

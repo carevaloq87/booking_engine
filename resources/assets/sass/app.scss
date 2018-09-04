@@ -71,6 +71,12 @@ $white: #fff;
     height: 17px;
 }
 
+#regular,
+#interpreter {
+    button.active {
+        background-color: $orbit-blue;
+    }
+}
 // Days Calendar Styles
 .service_days {
     .btn-group{

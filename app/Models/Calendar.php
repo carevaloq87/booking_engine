@@ -34,7 +34,7 @@ class Calendar extends Model
     /**
      * Generate Calendars by year
      *
-     * @return void
+     * @return array
      */
     public function generateCalendarByYear($year)
     {
@@ -57,6 +57,12 @@ class Calendar extends Model
         return $list;
     }
 
+    /**
+     * Get days by service id
+     *
+     * @param request $request
+     * @return array
+     */
     public function getServiceDays($request)
     {
         $service_id = $request->serviceId;
@@ -67,31 +73,17 @@ class Calendar extends Model
         return $calendars;
     }
 
-    public function getServiceHours()
+    /**
+     * Get hours by service id
+     *
+     * @param request $request
+     * @return array
+     */
+    public function getServiceHours($request)
     {
-        $schedule['regular'] = [
-            'time_name' => 'half_hour',
-            'time_lenght' => $this->half_hour,
-            'days' => self::generateHour($this->half_hour)
-        ];
-        $schedule['interpreter'] = [
-            'time_name' => 'hour',
-            'time_lenght' => $this->hour,
-            'days' => self::generateHour($this->hour)
-        ];
-        return $schedule;
-    }
-
-    public function generateHour($lenght)
-    {
-        $hours = [];
-        $iterations = rand(1,10);
-        for($i = 1 ; $i <= $iterations; $i++) {
-            $week = rand(0,6);
-            $day = rand(0,23) * $lenght;
-            $hours[] = $this->days[$week] . '-' . $day;
-        }
-        return $hours;
+        $service_id = $request->serviceId;
+        $available_days = new AvailableHours();
+        return $available_days->getHoursByServiceId($service_id);
     }
 
     /**
@@ -133,4 +125,48 @@ class Calendar extends Model
         AvailableDays::insert($days_cy);
     }
 
+    /**
+     * Save Availagle Hours by service
+     *
+     * @param array $data
+     * @return void
+     */
+    public function saveHoursInService($data)
+    {
+        $service_id = $data['id'];
+        AvailableHours::where('service_id', $service_id)->delete();
+        $hours = $data['hours'];
+
+        $this->insertHoursInService($service_id, $hours['regular'], 0);
+        $this->insertHoursInService($service_id, $hours['interpreter'], 1);
+    }
+
+    /**
+     * Insert Available hours in the database
+     *
+     * @param int $service_id
+     * @param array $selected_days
+     * @param boolean $is_interpreter
+     * @return void
+     */
+    public function insertHoursInService($service_id, $selected_hours, $is_interpreter)
+    {
+        $time_name = $selected_hours['time_name'];
+        $time_length = AvailableHours::converHourToTextOrNumber($selected_hours['time_name']);
+        $days = array_map(
+                            function($item) use ($service_id, $time_length, $is_interpreter)
+                            {
+                                $day_start = explode('-', $item);
+                                return [
+                                            'service_id'=> $service_id,
+                                            'day_week' => $day_start[0],
+                                            'time_length' => $time_length,
+                                            'start_time' => $day_start[1],
+                                            'is_interpreter' => $is_interpreter
+                                        ];
+                            },
+                            $selected_hours['days']
+                        );
+        AvailableHours::insert($days);
+    }
 }
