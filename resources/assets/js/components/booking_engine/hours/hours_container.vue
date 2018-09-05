@@ -59,7 +59,7 @@
         },
         data() {
             return {
-                choice: '',
+                choice: 'hour',
                 week_days: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
                 time_structure_active: 'hour',
                 time_structure: {

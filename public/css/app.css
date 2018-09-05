@@ -33,6 +33,24 @@
   height: 17px;
 }
 
+#set_adhoc_booking #regular_journey,
+#set_adhoc_booking #interpreter_journey {
+  padding: 15px;
+}
+
+#set_adhoc_booking .adhoc_hours_selection {
+  width: 800px;
+  height: 160px;
+}
+
+#set_adhoc_booking .adhoc-rows {
+  margin-top: 15px;
+}
+
+#set_adhoc_booking label {
+  line-height: 30px;
+}
+
 .day_col {
   float: left;
   width: 45px;
@@ -73,8 +91,14 @@
 }
 
 #regular button.active,
-#interpreter button.active {
+#interpreter button.active,
+#regular_journey button.active,
+#interpreter_journey button.active {
   background-color: #17c4bb;
+}
+
+#set_hours .tab-content {
+  padding: 20px;
 }
 
 .service_days .btn-group {

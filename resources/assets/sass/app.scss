@@ -32,6 +32,20 @@ $white: #fff;
         font-size: 12px;
         height: 17px;
     }
+    #regular_journey,
+    #interpreter_journey {
+        padding: 15px;
+    }
+    .adhoc_hours_selection{
+        width: 800px;
+        height: 160px;
+    }
+    .adhoc-rows{
+        margin-top: 15px;
+    }
+    label {
+        line-height: 30px;
+    }
 }
 
 //Hours Calendar Styles
@@ -72,9 +86,17 @@ $white: #fff;
 }
 
 #regular,
-#interpreter {
+#interpreter,
+#regular_journey,
+#interpreter_journey {
     button.active {
         background-color: $orbit-blue;
+    }
+}
+
+#set_hours {
+    .tab-content{
+        padding: 20px;
     }
 }
 // Days Calendar Styles

@@ -91,5 +91,5 @@
 @endsection
 
 @section('scripts')
-    <script src="/js/booking_engine.js"></script>
+    <script src="/js/booking_engine.js?id={{ str_random(6) }}"></script>
 @endsection

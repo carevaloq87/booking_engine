@@ -29,6 +29,7 @@
         "bootstrap-datepicker": "^1.8.0",
         "dragselect": "^1.8.0",
         "moment": "^2.22.2",
-        "npm": "^6.4.0"
+        "npm": "^6.4.0",
+        "uiv": "^0.26.1"
     }
 }

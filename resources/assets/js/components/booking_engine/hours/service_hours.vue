@@ -5,7 +5,7 @@
             <li><a data-toggle="tab" href="#interpreter">Interpreter</a></li>
         </ul>
 
-        <div class="tab-content">
+        <div class="tab-content col-xs-12">
             <div id="regular" class="tab-pane fade in active">
                 <hours-container v-bind:currentSchedule="schedule.regular" tableClass="current" v-on:reload-ds="initDragSelect"> </hours-container>
             </div>
@@ -63,8 +63,12 @@
                 self.ds_interpreter = new SelectableDS('#interpreter .ds-button');
 
                 //Set previous selections
-                self.ds_regular.setInitialSelections('#regular .ds-button', self.schedule.regular.days); // Pre select values for an specific service
-                self.ds_interpreter.setInitialSelections('#interpreter .ds-button', self.schedule.interpreter.days); // Pre select values for an specific service
+                if(self.schedule.hasOwnProperty('regular') && self.schedule.regular.hasOwnProperty('days')){
+                    self.ds_regular.setInitialSelections('#regular .ds-button', self.schedule.regular.days); // Pre select values for an specific service
+                }
+                if(self.schedule.hasOwnProperty('interpreter') && self.schedule.interpreter.hasOwnProperty('days')){
+                    self.ds_interpreter.setInitialSelections('#interpreter .ds-button', self.schedule.interpreter.days); // Pre select values for an specific service
+                }
             },
             // Submit information to webservice
             submitInfo() {

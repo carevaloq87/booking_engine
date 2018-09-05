@@ -1,3 +1,5 @@
+import 'bootstrap/dist/css/bootstrap.min.css'
+
 import Vue from 'vue';
 
 import 'babel-polyfill'
@@ -5,6 +7,10 @@ import 'babel-polyfill'
 import axios from 'axios';
 
 import Form from './utils/form';
+
+import * as uiv from 'uiv'
+
+Vue.use(uiv)
 
 window.Vue = Vue;
 
