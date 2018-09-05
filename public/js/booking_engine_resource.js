@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 493);
+/******/ 	return __webpack_require__(__webpack_require__.s = 516);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -15768,7 +15768,115 @@ module.exports = function spread(callback) {
 
 
 /***/ }),
-/* 122 */,
+/* 122 */
+/***/ (function(module, exports) {
+
+/* globals __VUE_SSR_CONTEXT__ */
+
+// IMPORTANT: Do NOT use ES2015 features in this file.
+// This module is a runtime utility for cleaner component module output and will
+// be included in the final webpack user bundle.
+
+module.exports = function normalizeComponent (
+  rawScriptExports,
+  compiledTemplate,
+  functionalTemplate,
+  injectStyles,
+  scopeId,
+  moduleIdentifier /* server only */
+) {
+  var esModule
+  var scriptExports = rawScriptExports = rawScriptExports || {}
+
+  // ES6 modules interop
+  var type = typeof rawScriptExports.default
+  if (type === 'object' || type === 'function') {
+    esModule = rawScriptExports
+    scriptExports = rawScriptExports.default
+  }
+
+  // Vue.extend constructor export interop
+  var options = typeof scriptExports === 'function'
+    ? scriptExports.options
+    : scriptExports
+
+  // render functions
+  if (compiledTemplate) {
+    options.render = compiledTemplate.render
+    options.staticRenderFns = compiledTemplate.staticRenderFns
+    options._compiled = true
+  }
+
+  // functional template
+  if (functionalTemplate) {
+    options.functional = true
+  }
+
+  // scopedId
+  if (scopeId) {
+    options._scopeId = scopeId
+  }
+
+  var hook
+  if (moduleIdentifier) { // server build
+    hook = function (context) {
+      // 2.3 injection
+      context =
+        context || // cached call
+        (this.$vnode && this.$vnode.ssrContext) || // stateful
+        (this.parent && this.parent.$vnode && this.parent.$vnode.ssrContext) // functional
+      // 2.2 with runInNewContext: true
+      if (!context && typeof __VUE_SSR_CONTEXT__ !== 'undefined') {
+        context = __VUE_SSR_CONTEXT__
+      }
+      // inject component styles
+      if (injectStyles) {
+        injectStyles.call(this, context)
+      }
+      // register component module identifier for async chunk inferrence
+      if (context && context._registeredComponents) {
+        context._registeredComponents.add(moduleIdentifier)
+      }
+    }
+    // used by ssr in case component is cached and beforeCreate
+    // never gets called
+    options._ssrRegister = hook
+  } else if (injectStyles) {
+    hook = injectStyles
+  }
+
+  if (hook) {
+    var functional = options.functional
+    var existing = functional
+      ? options.render
+      : options.beforeCreate
+
+    if (!functional) {
+      // inject component registration as beforeCreate hook
+      options.beforeCreate = existing
+        ? [].concat(existing, hook)
+        : [hook]
+    } else {
+      // for template-only hot-reload because in that case the render fn doesn't
+      // go through the normalizer
+      options._injectStyles = hook
+      // register for functioal component in vue file
+      options.render = function renderWithStyleInjection (h, context) {
+        hook.call(context)
+        return existing(h, context)
+      }
+    }
+  }
+
+  return {
+    esModule: esModule,
+    exports: scriptExports,
+    options: options
+  }
+}
+
+
+/***/ }),
 /* 123 */
 /***/ (function(module, exports, __webpack_require__) {
 
@@ -22271,13 +22379,398 @@ var Errors = function () {
 /* harmony default export */ __webpack_exports__["a"] = (Errors);
 
 /***/ }),
-/* 362 */,
-/* 363 */,
-/* 364 */,
-/* 365 */,
-/* 366 */,
-/* 367 */,
-/* 368 */,
+/* 362 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_dragselect__ = __webpack_require__(364);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_dragselect___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_dragselect__);
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+
+
+var SelectableDS = function () {
+    /**
+     * Initialize Object Selectable
+     */
+    function SelectableDS(ds_class) {
+        _classCallCheck(this, SelectableDS);
+
+        this.selectable = new __WEBPACK_IMPORTED_MODULE_0_dragselect___default.a({
+            selectables: document.querySelectorAll(ds_class),
+            multiSelectMode: true
+        });
+    }
+
+    /**
+     * @param {String} CSS class including '.' where the functionality will be applied
+     * @param {Array} Array of ids that are pre-selected
+     */
+
+
+    _createClass(SelectableDS, [{
+        key: 'setInitialSelections',
+        value: function setInitialSelections(context, elements) {
+            var selection = '';
+
+            for (var i = 0; i < elements.length; i++) {
+                selection = elements[i];
+                this.selectable.addSelection(document.querySelector(context + '#' + selection));
+            }
+        }
+
+        /**
+         * Remove all the selected values
+         */
+
+    }, {
+        key: 'clear',
+        value: function clear() {
+            if (typeof this.selectable.clearSelection === "function") {
+                this.selectable.clearSelection();
+            }
+        }
+
+        /**
+         * Return an array of all the selected elements by id
+         */
+
+    }, {
+        key: 'getSelection',
+        value: function getSelection() {
+            return this.selectable.getSelection();
+        }
+
+        /**
+         * TODO - Submit Information
+         */
+
+    }, {
+        key: 'submit',
+        value: function submit() {
+            console.log('Selection:' + this.selectable.getSelection().map(function (item) {
+                return item.id;
+            }));
+            console.log('Selection:' + this.selectable.getSelection().map(function (item) {
+                return item.id;
+            }));
+        }
+    }]);
+
+    return SelectableDS;
+}();
+
+/* harmony default export */ __webpack_exports__["a"] = (SelectableDS);
+
+/***/ }),
+/* 363 */
+/***/ (function(module, exports) {
+
+module.exports = function(module) {
+	if(!module.webpackPolyfill) {
+		module.deprecate = function() {};
+		module.paths = [];
+		// module.parent = undefined by default
+		if(!module.children) module.children = [];
+		Object.defineProperty(module, "loaded", {
+			enumerable: true,
+			get: function() {
+				return module.l;
+			}
+		});
+		Object.defineProperty(module, "id", {
+			enumerable: true,
+			get: function() {
+				return module.i;
+			}
+		});
+		module.webpackPolyfill = 1;
+	}
+	return module;
+};
+
+
+/***/ }),
+/* 364 */
+/***/ (function(module, exports, __webpack_require__) {
+
+/* WEBPACK VAR INJECTION */(function(module) {var __WEBPACK_AMD_DEFINE_RESULT__;function DragSelect(e){this.multiSelectKeyPressed,this.initialCursorPos={x:0,y:0},this.newCursorPos={x:0,y:0},this.previousCursorPos={x:0,y:0},this.initialScroll,this.selected=[],this._prevSelected=[],this._createBindings(),this._setupOptions(e),this.start()}DragSelect.prototype._createBindings=function(){this._startUp=this._startUp.bind(this),this._handleMove=this._handleMove.bind(this),this.reset=this.reset.bind(this),this._onClick=this._onClick.bind(this)},DragSelect.prototype._setupOptions=function(e){if(this.selectedClass=e.selectedClass||"ds-selected",this.hoverClass=e.hoverClass||"ds-hover",this.selectorClass=e.selectorClass||"ds-selector",this.selectableClass=e.selectableClass||"ds-selectable",this.selectables=[],this._handleSelectables(this.toArray(e.selectables)),this.multiSelectKeys=e.multiSelectKeys||["ctrlKey","shiftKey","metaKey"],this.multiSelectMode=e.multiSelectMode||!1,this.autoScrollSpeed=e.autoScrollSpeed||1,this.selectCallback=e.onElementSelect||function(){},this.unselectCallback=e.onElementUnselect||function(){},this.moveStartCallback=e.onDragStart||function(){},this.moveCallback=e.onDragMove||function(){},this.callback=e.callback||function(){},this.area=e.area||document,this.customStyles=e.customStyles,this.area!==document){var t=getComputedStyle(this.area);"absolute"===t.position||"relative"===t.position||"fixed"===t.position||(this.area.style.position="relative")}this.selector=e.selector||this._createSelector(),this.addClass(this.selector,this.selectorClass)},DragSelect.prototype._handleSelectables=function(e,t,s){for(var i=0;i<e.length;i++){var o=e[i],r=this.selectables.indexOf(o);r<0&&!t?(this.addClass(o,this.selectableClass),o.addEventListener("click",this._onClick),this.selectables.push(o),s&&this.selected.indexOf(o)<0&&(this.addClass(o,this.selectedClass),this.selected.push(o))):r>-1&&t&&(this.removeClass(o,this.hoverClass),this.removeClass(o,this.selectableClass),o.removeEventListener("click",this._onClick),this.selectables.splice(r,1),s&&this.selected.indexOf(o)>-1&&(this.removeClass(o,this.selectedClass),this.selected.splice(this.selected.indexOf(o),1)))}},DragSelect.prototype._onClick=function(e){if(!this.mouseInteraction&&!this.isRightClick(e)){var t=e.target;this.isMultiSelectKeyPressed(e)?this._prevSelected=this.selected.slice():this._prevSelected=[],this.checkIfInsideSelection(!0),this.selectables.indexOf(t)>-1&&this.toggle(t),this.reset()}},DragSelect.prototype._createSelector=function(){var e=document.createElement("div");return e.style.position="absolute",this.customStyles||(e.style.background="rgba(0, 0, 255, 0.1)",e.style.border="1px solid rgba(0, 0, 255, 0.45)",e.style.display="none",e.style.pointerEvents="none"),(this.area===document?document.body:this.area).appendChild(e),e},DragSelect.prototype.start=function(){this.area.addEventListener("mousedown",this._startUp)},DragSelect.prototype._startUp=function(e){if(!this.isRightClick(e)){if(this.mouseInteraction=!0,this.selector.style.display="block",this.isMultiSelectKeyPressed(e)?this._prevSelected=this.selected.slice():this._prevSelected=[],this._getStartingPositions(e),this.checkIfInsideSelection(!0),this.selector.style.display="none",this.moveStartCallback(e),this._breaked)return!1;this.area.removeEventListener("mousedown",this._startUp),this.area.addEventListener("mousemove",this._handleMove),document.addEventListener("mouseup",this.reset)}},DragSelect.prototype.isMultiSelectKeyPressed=function(e){if(this.multiSelectKeyPressed=!1,this.multiSelectMode)this.multiSelectKeyPressed=!0;else for(var t=0;t<this.multiSelectKeys.length;t++){var s=this.multiSelectKeys[t];e[s]&&(this.multiSelectKeyPressed=!0)}return this.multiSelectKeyPressed},DragSelect.prototype._getStartingPositions=function(e){this.initialCursorPos=this.newCursorPos=this._getCursorPos(e,this.area),this.initialScroll=this.getScroll(this.area);var t={};t.x=this.initialCursorPos.x+this.initialScroll.x,t.y=this.initialCursorPos.y+this.initialScroll.y,t.w=0,t.h=0,this.updatePos(this.selector,t)},DragSelect.prototype._handleMove=function(e){var t=this.getPosition(e);if(this.moveCallback(e),this._breaked)return!1;this.selector.style.display="block",this.updatePos(this.selector,t),this.checkIfInsideSelection(),this._autoScroll(e)},DragSelect.prototype.getPosition=function(e){var t=this._getCursorPos(e,this.area),s=this.getScroll(this.area);this.newCursorPos=t;var i={x:s.x-this.initialScroll.x,y:s.y-this.initialScroll.y},o={};return t.x>this.initialCursorPos.x-i.x?(o.x=this.initialCursorPos.x+this.initialScroll.x,o.w=t.x-this.initialCursorPos.x+i.x):(o.x=t.x+s.x,o.w=this.initialCursorPos.x-t.x-i.x),t.y>this.initialCursorPos.y-i.y?(o.y=this.initialCursorPos.y+this.initialScroll.y,o.h=t.y-this.initialCursorPos.y+i.y):(o.y=t.y+s.y,o.h=this.initialCursorPos.y-t.y-i.y),o},DragSelect.prototype.checkIfInsideSelection=function(e){for(var t=!1,s=0,i=this.selectables.length;s<i;s++){var o=this.selectables[s];this.isElementTouching(o,this.selector,this.area)?(this._handleSelection(o,e),t=!0):this._handleUnselection(o,e)}return t},DragSelect.prototype._handleSelection=function(e,t){if(this.hasClass(e,this.hoverClass)&&!t)return!1;var s=this.selected.indexOf(e);s<0?this.select(e):s>-1&&this.multiSelectKeyPressed&&this.unselect(e),this.addClass(e,this.hoverClass)},DragSelect.prototype._handleUnselection=function(e,t){if(!this.hasClass(e,this.hoverClass)&&!t)return!1;var s=this.selected.indexOf(e),i=this._prevSelected.indexOf(e);s>-1&&i<0?this.unselect(e):s<0&&i>-1&&this.select(e),this.removeClass(e,this.hoverClass)},DragSelect.prototype.select=function(e){return!(this.selected.indexOf(e)>-1)&&(this.selected.push(e),this.addClass(e,this.selectedClass),this.selectCallback(e),!this._breaked&&e)},DragSelect.prototype.unselect=function(e){return!(this.selected.indexOf(e)<0)&&(this.selected.splice(this.selected.indexOf(e),1),this.removeClass(e,this.selectedClass),this.unselectCallback(e),!this._breaked&&e)},DragSelect.prototype.toggle=function(e){return this.selected.indexOf(e)>-1?this.unselect(e):this.select(e),e},DragSelect.prototype.isElementTouching=function(e,t,s){var i=this.getScroll(s),o={y:t.getBoundingClientRect().top+i.y,x:t.getBoundingClientRect().left+i.x,h:t.offsetHeight||e.getBoundingClientRect().height,w:t.offsetWidth||e.getBoundingClientRect().width},r={y:e.getBoundingClientRect().top+i.y,x:e.getBoundingClientRect().left+i.x,h:e.offsetHeight||e.getBoundingClientRect().height,w:e.offsetWidth||e.getBoundingClientRect().width};return o.x<r.x+r.w&&o.x+o.w>r.x&&o.y<r.y+r.h&&o.h+o.y>r.y},DragSelect.prototype._autoScroll=function(e){var t=this.isCursorNearEdge(e,this.area),s=this.area===document?this.area.body:this.area;"top"===t&&s.scrollTop>0?s.scrollTop-=1*this.autoScrollSpeed:"bottom"===t?s.scrollTop+=1*this.autoScrollSpeed:"left"===t&&s.scrollLeft>0?s.scrollLeft-=1*this.autoScrollSpeed:"right"===t&&(s.scrollLeft+=1*this.autoScrollSpeed)},DragSelect.prototype.isCursorNearEdge=function(e,t){var s=this._getCursorPos(e,t),i=this.getAreaRect(t),o={x:Math.max(i.width/10,30),y:Math.max(i.height/10,30)};return s.y<o.y?"top":i.height-s.y<o.y?"bottom":i.width-s.x<o.x?"right":s.x<o.x&&"left"},DragSelect.prototype.reset=function(e){if(this.previousCursorPos=this._getCursorPos(e,this.area),document.removeEventListener("mouseup",this.reset),this.area.removeEventListener("mousemove",this._handleMove),this.area.addEventListener("mousedown",this._startUp),this.callback(this.selected,e),this._breaked)return!1;this.selector.style.width="0",this.selector.style.height="0",this.selector.style.display="none",setTimeout(function(){this.mouseInteraction=!1}.bind(this),100)},DragSelect.prototype.break=function(){this._breaked=!0,setTimeout(function(){this._breaked=!1}.bind(this),100)},DragSelect.prototype.stop=function(){this.reset(),this.area.removeEventListener("mousedown",this._startUp),document.removeEventListener("mouseup",this.reset)},DragSelect.prototype.getSelection=function(){return this.selected},DragSelect.prototype.getCursorPos=function(e,t,s){if(!e)return!1;var i=t||!1!==t&&this.area,o=this._getCursorPos(e,i),r=s?{x:0,y:0}:this.getScroll(i);return{x:o.x+r.x,y:o.y+r.y}},DragSelect.prototype.addSelection=function(e,t,s){for(var i=this.toArray(e),o=0,r=i.length;o<r;o++){var l=i[o];this.select(l)}return s||this.addSelectables(i),t&&this.callback(this.selected,!1),this.selected},DragSelect.prototype.removeSelection=function(e,t,s){for(var i=this.toArray(e),o=0,r=i.length;o<r;o++){var l=i[o];this.unselect(l)}return s&&this.removeSelectables(i),t&&this.callback(this.selected,!1),this.selected},DragSelect.prototype.toggleSelection=function(e,t,s){for(var i=this.toArray(e),o=0,r=i.length;o<r;o++){var l=i[o];this.selected.indexOf(l)<0?this.addSelection(l,t,s):this.removeSelection(l,t,s)}return this.selected},DragSelect.prototype.setSelection=function(e,t,s){return this.clearSelection(),this.addSelection(e,t,s),this.selected},DragSelect.prototype.clearSelection=function(e){for(var t=this.selected.slice(),s=0,i=t.length;s<i;s++){var o=t[s];this.unselect(o)}return e&&this.callback(this.selected,!1),this.selected},DragSelect.prototype.addSelectables=function(e,t){var s=this.toArray(e);return this._handleSelectables(s,!1,t),e},DragSelect.prototype.getSelectables=function(){return this.selectables},DragSelect.prototype.removeSelectables=function(e,t){var s=this.toArray(e);return this._handleSelectables(s,!0,t),e},DragSelect.prototype.isRightClick=function(e){if(!e)return!1;var t=!1;return"which"in e?t=3===e.which:"button"in e&&(t=2===e.button),t},DragSelect.prototype.addClass=function(e,t){if(e.classList)return e.classList.add(t);var s=e.getAttribute("class")||"";return-1!==s.indexOf(t)?e:(""!==s&&(t=" "+t),e.setAttribute("class",s+t),e)},DragSelect.prototype.removeClass=function(e,t){if(e.classList)return e.classList.remove(t);var s=e.getAttribute("class")||"",i=new RegExp(t+"\\b","g");return s=s.replace(i,""),e.setAttribute("class",s),e},DragSelect.prototype.hasClass=function(e,t){return e.classList?e.classList.contains(t):(e.getAttribute("class")||"").indexOf(t)>-1},DragSelect.prototype.toArray=function(e){if(!e)return!1;if(!e.length&&this.isElement(e))return[e];for(var t=[],s=e.length-1;s>=0;s--)t[s]=e[s];return t},DragSelect.prototype.isElement=function(e){try{return e instanceof HTMLElement||e instanceof SVGElement}catch(t){return"object"==typeof e&&1===e.nodeType&&"object"==typeof e.style&&"object"==typeof e.ownerDocument}},DragSelect.prototype._getCursorPos=function(e,t){if(!e)return{x:0,y:0};var s={x:e.pageX||e.clientX,y:e.pageY||e.clientY},i=this.getAreaRect(t||document),o=this.getScroll();return{x:s.x-i.left-o.x,y:s.y-i.top-o.y}},DragSelect.prototype.getInitialCursorPosition=function(){return this.initialCursorPos},DragSelect.prototype.getCurrentCursorPosition=function(){return this.newCursorPos},DragSelect.prototype.getPreviousCursorPosition=function(){return this.previousCursorPos},DragSelect.prototype.getCursorPositionDifference=function(e){var t=this.getCurrentCursorPosition(),s=e?this.getPreviousCursorPosition():this.getInitialCursorPosition();return{x:t.x-s.x,y:t.y-s.y}},DragSelect.prototype.getScroll=function(e){var t={top:document.body.scrollTop>0?document.body.scrollTop:document.documentElement.scrollTop,left:document.body.scrollLeft>0?document.body.scrollLeft:document.documentElement.scrollLeft};return{y:e&&e.scrollTop>=0?e.scrollTop:t.top,x:e&&e.scrollLeft>=0?e.scrollLeft:t.left}},DragSelect.prototype.getAreaRect=function(e){if(e===document){var t={y:e.documentElement.clientHeight>0?e.documentElement.clientHeight:window.innerHeight,x:e.documentElement.clientWidth>0?e.documentElement.clientWidth:window.innerWidth};return{top:0,left:0,bottom:0,right:0,width:t.x,height:t.y}}return{top:e.getBoundingClientRect().top,left:e.getBoundingClientRect().left,bottom:e.getBoundingClientRect().bottom,right:e.getBoundingClientRect().right,width:e.offsetWidth,height:e.offsetHeight}},DragSelect.prototype.updatePos=function(e,t){return e.style.left=t.x+"px",e.style.top=t.y+"px",e.style.width=t.w+"px",e.style.height=t.h+"px",e},"undefined"!=typeof module&&null!==module?module.exports=DragSelect:"undefined"!="function"&&"function"=="function"&&__webpack_require__(365)?!(__WEBPACK_AMD_DEFINE_RESULT__ = (function(){return DragSelect}).call(exports, __webpack_require__, exports, module),
+				__WEBPACK_AMD_DEFINE_RESULT__ !== undefined && (module.exports = __WEBPACK_AMD_DEFINE_RESULT__)):window.DragSelect=DragSelect;
+/* WEBPACK VAR INJECTION */}.call(exports, __webpack_require__(363)(module)))
+
+/***/ }),
+/* 365 */
+/***/ (function(module, exports) {
+
+module.exports = function() {
+	throw new Error("define cannot be used indirect");
+};
+
+
+/***/ }),
+/* 366 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(122)
+/* script */
+var __vue_script__ = __webpack_require__(367)
+/* template */
+var __vue_template__ = __webpack_require__(368)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\booking_engine\\days\\calendar_container.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-6c6f49f0", Component.options)
+  } else {
+    hotAPI.reload("data-v-6c6f49f0", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 367 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: {
+        currentCalendar: Object,
+        tableClass: String
+    }
+});
+
+/***/ }),
+/* 368 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("table", { class: _vm.tableClass }, [
+    _vm._m(0),
+    _vm._v(" "),
+    _c(
+      "tbody",
+      _vm._l(_vm.currentCalendar, function(calendar, month) {
+        return _c(
+          "tr",
+          { key: month, staticClass: "month" },
+          [
+            _c("td", {
+              staticClass: "month_label",
+              domProps: { textContent: _vm._s(month) }
+            }),
+            _vm._v(" "),
+            _vm._l(calendar, function(day_number, day) {
+              return _c("td", { key: day, staticClass: "week_day" }, [
+                day_number !== ""
+                  ? _c("span", {
+                      class: _vm.tableClass + "_option_day option_day",
+                      attrs: { id: month + "-" + day_number },
+                      domProps: { innerHTML: _vm._s(day_number) }
+                    })
+                  : _vm._e(),
+                _vm._v(" "),
+                day_number === "" ? _c("span", [_vm._v(" ")]) : _vm._e()
+              ])
+            })
+          ],
+          2
+        )
+      })
+    )
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v(" ")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("M")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("T")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("W")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("T")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("F")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("S")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("S")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("M")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("T")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("W")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("T")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("F")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("S")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("S")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("M")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("T")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("W")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("T")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("F")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("S")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("S")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("M")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("T")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("W")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("T")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("F")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("S")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("S")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("M")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("T")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("W")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("T")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("F")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("S")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("S")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("M")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("T")])
+      ])
+    ])
+  }
+]
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-6c6f49f0", module.exports)
+  }
+}
+
+/***/ }),
 /* 369 */,
 /* 370 */,
 /* 371 */,
@@ -22402,24 +22895,417 @@ var Errors = function () {
 /* 490 */,
 /* 491 */,
 /* 492 */,
-/* 493 */
+/* 493 */,
+/* 494 */,
+/* 495 */,
+/* 496 */,
+/* 497 */,
+/* 498 */,
+/* 499 */,
+/* 500 */,
+/* 501 */,
+/* 502 */,
+/* 503 */,
+/* 504 */,
+/* 505 */,
+/* 506 */,
+/* 507 */,
+/* 508 */,
+/* 509 */,
+/* 510 */,
+/* 511 */,
+/* 512 */,
+/* 513 */,
+/* 514 */,
+/* 515 */,
+/* 516 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(494);
-module.exports = __webpack_require__(495);
+module.exports = __webpack_require__(517);
 
 
 /***/ }),
-/* 494 */
+/* 517 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(157);
 
-/***/ }),
-/* 495 */
-/***/ (function(module, exports) {
+Vue.component('resource-days', __webpack_require__(518));
+//Vue.component('resource-hours', require('./components/booking_engine/hours/resource_hours.vue'));
+//Vue.component('resource-adhoc', require('./components/booking_engine/adhoc/resource_adhoc.vue'));
 
-// removed by extract-text-webpack-plugin
+new Vue({
+    el: '#booking_engine_resource',
+
+    data: {
+        rs_id: 0
+    },
+    methods: {
+        openCalendar: function openCalendar(id) {
+            var self = this;
+            self.rs_id = id;
+            $('#set_days').modal('show');
+        },
+        openSchedule: function openSchedule(id) {
+            var self = this;
+            self.rs_id = id;
+            $('#set_hours').modal('show');
+        },
+        openAdhoc: function openAdhoc(id) {
+            var self = this;
+            self.rs_id = id;
+            $('#set_adhoc_booking').modal('show');
+        }
+    },
+    mounted: function mounted() {}
+});
+
+/***/ }),
+/* 518 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var disposed = false
+var normalizeComponent = __webpack_require__(122)
+/* script */
+var __vue_script__ = __webpack_require__(519)
+/* template */
+var __vue_template__ = __webpack_require__(520)
+/* template functional */
+var __vue_template_functional__ = false
+/* styles */
+var __vue_styles__ = null
+/* scopeId */
+var __vue_scopeId__ = null
+/* moduleIdentifier (server only) */
+var __vue_module_identifier__ = null
+var Component = normalizeComponent(
+  __vue_script__,
+  __vue_template__,
+  __vue_template_functional__,
+  __vue_styles__,
+  __vue_scopeId__,
+  __vue_module_identifier__
+)
+Component.options.__file = "resources\\assets\\js\\components\\booking_engine\\days\\resource_days.vue"
+
+/* hot reload */
+if (false) {(function () {
+  var hotAPI = require("vue-hot-reload-api")
+  hotAPI.install(require("vue"), false)
+  if (!hotAPI.compatible) return
+  module.hot.accept()
+  if (!module.hot.data) {
+    hotAPI.createRecord("data-v-dab01a60", Component.options)
+  } else {
+    hotAPI.reload("data-v-dab01a60", Component.options)
+  }
+  module.hot.dispose(function (data) {
+    disposed = true
+  })
+})()}
+
+module.exports = Component.exports
+
+
+/***/ }),
+/* 519 */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__selectableDS__ = __webpack_require__(362);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+Vue.component('calendar-container', __webpack_require__(366));
+/* harmony default export */ __webpack_exports__["default"] = ({
+    props: ['resource'],
+    data: function data() {
+        return {
+            calendars: {},
+            choice: 'currentActive',
+            ds_current: {},
+            ds_current_interpreter: {},
+            ds_next: {},
+            ds_next_interpreter: {},
+            rs_id: this.$root.rs_id
+        };
+    },
+
+    methods: {
+        //Make tab/container visible or hidden
+        makeActive: function makeActive(val) {
+            this.choice = val;
+        },
+        //Check if a tab/container should be visible
+        isActiveTab: function isActiveTab(val) {
+            return this.choice === val;
+        },
+        //Get Calendar by service ID
+        getCalendar: function getCalendar(rs_id) {
+            var self = this;
+            var url = '/calendar/resource/days/' + rs_id;
+
+            axios['get'](url, {}).then(function (response) {
+                self.calendars = response.data;
+            }).then(function () {
+                self.initDragSelect();
+                $("#contentLoading").modal("hide");
+            }).catch(function (error) {
+                $("#contentLoading").modal("hide");
+                console.log(error);
+            });
+        },
+
+        //Initialize Drage and select object for regular and interpreter elements
+        initDragSelect: function initDragSelect() {
+            var self = this;
+            //Initialize Drag Select in for calendars
+            self.ds_current = new __WEBPACK_IMPORTED_MODULE_0__selectableDS__["a" /* default */]('.current_option_day');
+            self.ds_next = new __WEBPACK_IMPORTED_MODULE_0__selectableDS__["a" /* default */]('.next_option_day');
+            //Set previous selections                
+            if (self.calendars.selected_current) {
+                self.ds_current.setInitialSelections('.current ', self.calendars.selected_current); // Pre select values for an specific resource                                                
+            }
+            if (self.calendars.selected_next) {
+                self.ds_next.setInitialSelections('.next ', self.calendars.selected_next); // Pre select values for an specific resource
+            }
+        },
+        submitInfo: function submitInfo() {
+            var self = this;
+            var selections = {};
+            selections.current = self.ds_current.getSelection().map(function (item) {
+                return item.id;
+            });
+            selections.next = self.ds_next.getSelection().map(function (item) {
+                return item.id;
+            });
+
+            var url = '/calendar/resource/days';
+
+            $("#contentLoading").modal("show");
+            axios['post'](url, { id: self.resource, dates: selections }).then(function (response) {
+                console.log(response);
+            }).then(function () {
+                $("#contentLoading").modal("hide");
+            }).catch(function (error) {
+                $("#contentLoading").modal("hide");
+                console.log(error);
+            });
+        }
+    },
+    watch: {
+        //Watch change of service
+        resource: function resource() {
+            $("#contentLoading").modal("show");
+            var self = this;
+            if (typeof this.ds_current.clear === "function") {
+                self.ds_current.clear();
+                self.ds_current = {};
+                self.ds_current_interpreter.clear();
+                self.ds_current_interpreter = {};
+                self.ds_next.clear();
+                self.ds_next = {};
+                self.ds_next_interpreter.clear();
+                self.ds_next_interpreter = {};
+            }
+            this.getCalendar(this.resource);
+        }
+    }
+});
+
+/***/ }),
+/* 520 */
+/***/ (function(module, exports, __webpack_require__) {
+
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "resource_days" }, [
+    _c(
+      "div",
+      {
+        staticClass: "btn-group btn-group-xs",
+        attrs: { "data-toggle": "buttons" }
+      },
+      [
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-primary",
+            attrs: { type: "button" },
+            on: {
+              click: function($event) {
+                _vm.makeActive("currentActive")
+              }
+            }
+          },
+          [_vm._v(" Current Year ")]
+        ),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass: "btn btn-primary",
+            attrs: { type: "button" },
+            on: {
+              click: function($event) {
+                _vm.makeActive("nextActive")
+              }
+            }
+          },
+          [_vm._v(" Next Year ")]
+        )
+      ]
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        directives: [
+          {
+            name: "show",
+            rawName: "v-show",
+            value: _vm.isActiveTab("currentActive"),
+            expression: "isActiveTab('currentActive')"
+          }
+        ],
+        attrs: { id: "current" }
+      },
+      [
+        _c("div", { staticClass: "tab-content" }, [
+          _c(
+            "div",
+            {
+              staticClass: "tab-pane fade in active",
+              attrs: { id: "current_regular" }
+            },
+            [
+              _c("calendar-container", {
+                attrs: {
+                  currentCalendar: _vm.calendars.current_year,
+                  tableClass: "current"
+                }
+              })
+            ],
+            1
+          )
+        ])
+      ]
+    ),
+    _vm._v(" "),
+    _c(
+      "div",
+      {
+        directives: [
+          {
+            name: "show",
+            rawName: "v-show",
+            value: _vm.isActiveTab("nextActive"),
+            expression: "isActiveTab('nextActive')"
+          }
+        ],
+        attrs: { id: "next" }
+      },
+      [
+        _c("div", { staticClass: "tab-content" }, [
+          _c(
+            "div",
+            {
+              staticClass: "tab-pane fade in active",
+              attrs: { id: "next_regular" }
+            },
+            [
+              _c("calendar-container", {
+                attrs: {
+                  currentCalendar: _vm.calendars.next_year,
+                  tableClass: "next"
+                }
+              })
+            ],
+            1
+          ),
+          _vm._v(" "),
+          _c(
+            "div",
+            { staticClass: "tab-pane fade", attrs: { id: "next_interpreter" } },
+            [
+              _c("calendar-container", {
+                attrs: {
+                  currentCalendar: _vm.calendars.next_year,
+                  tableClass: "next_interpreter"
+                }
+              })
+            ],
+            1
+          )
+        ])
+      ]
+    ),
+    _vm._v(" "),
+    _c("div", { staticClass: "col-sm-12 margin-top-10" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn green pull-right",
+          attrs: { id: "" },
+          on: { click: _vm.submitInfo }
+        },
+        [_vm._v("Submit")]
+      )
+    ])
+  ])
+}
+var staticRenderFns = []
+render._withStripped = true
+module.exports = { render: render, staticRenderFns: staticRenderFns }
+if (false) {
+  module.hot.accept()
+  if (module.hot.data) {
+    require("vue-hot-reload-api")      .rerender("data-v-dab01a60", module.exports)
+  }
+}
 
 /***/ })
 /******/ ]);

@@ -1,5 +1,6 @@
 {
     "/js/booking_engine.js": "/js/booking_engine.js",
+    "/js/booking_engine_resource.js": "/js/booking_engine_resource.js",
     "/js/app.js": "/js/app.js",
     "/css/app.css": "/css/app.css",
     "/js/service.js": "/js/service.js",

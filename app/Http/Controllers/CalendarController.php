@@ -42,6 +42,17 @@ class CalendarController extends Controller
     }
 
     /**
+     * Return calendar files
+     *
+     * @return JSON
+     */
+    public function getResourceDays(Request $request)
+    {
+        $calendar = new Calendar();
+        return $calendar->getResourceDays($request);        
+    }
+
+    /**
      * Save available days for a service
      *
      * @param Request $request
@@ -81,6 +92,28 @@ class CalendarController extends Controller
                         ->withErrors(['unexpected_error' => $exception->getMessage()]);
         }
     }
+
+
+    /**
+     * Save unavailable days for a resource
+     *
+     * @param Request $request
+     * @return array
+     */
+    public function storeResourceDays(Request $request)
+    {
+        try {
+            $data = $this->getData($request);
+            $calendar = new Calendar();
+            $calendar->saveDaysInResource($data);
+            return $data;
+
+        } catch (Exception $exception) {
+            return back()->withInput()
+                        ->withErrors(['unexpected_error' => $exception->getMessage()]);
+        }
+    }    
+
 
     /**
      * Get the request's data from the request.

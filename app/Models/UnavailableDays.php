@@ -7,7 +7,16 @@ use Illuminate\Database\Eloquent\Model;
 class UnavailableDays extends Model
 {
 
-
+    /**
+     * Create a new unavailabledays instance.
+     *
+     * @return void
+     */
+	public function __construct()
+	{
+        $this->current_year = date('Y');
+        $this->next_year = date('Y', strtotime('+1 year'));
+    }
     /**
      * The database table used by the model.
      *
@@ -28,10 +37,9 @@ class UnavailableDays extends Model
      * @var array
      */
     protected $fillable = [
-                  'date',
-                  'day_week',
-                  'resource_id'
-              ];
+                'date',                  
+                'resource_id'
+                ];
 
     /**
      * The attributes that should be mutated to dates.
@@ -55,27 +63,29 @@ class UnavailableDays extends Model
         return $this->belongsTo('App\Models\Resource','resource_id');
     }
 
-    /**
-     * Set the date.
-     *
-     * @param  string  $value
-     * @return void
-     */
-    public function setDateAttribute($value)
-    {
-        $this->attributes['date'] = !empty($value) ? \DateTime::createFromFormat($this->getDateFormat(), $value) : null;
-    }
 
     /**
-     * Get date in array format
+     * Get days by resource ID
      *
-     * @param  string  $value
-     * @return array
+     * @param int Resource id
+     * @return array Days previously selected in a resource
      */
-    public function getDateAttribute($value)
+    public function getDaysByResourceId($resource_id)
     {
-        return \DateTime::createFromFormat('d-m-Y', $value);
+        $resource = Resource::findOrFail($resource_id);        
+        $unavailable_days = $resource->unavailableDays;
+        $resource_dates = [];        
+        foreach($unavailable_days as $date) {            
+            $is_current_year = date('Y', strtotime($date->date)) == $this->current_year;
+            if( $is_current_year ) {
+                $resource_dates['selected_current'][] = date('M-d', strtotime($date->date));
+            }
+            else {
+                $resource_dates['selected_next'][] = date('M-d', strtotime($date->date));
+            }
+        }        
+        return $resource_dates;
 
-    }
+    }    
 
 }

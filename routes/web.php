@@ -279,4 +279,9 @@ Route::group(
     Route::post('/service/days','CalendarController@storeDays');
 
     Route::post('/service/hours','CalendarController@storeHours');
+	
+ 	Route::get('/resource/days/{resourceId}','CalendarController@getResourceDays')
+    ->where('resourceId', '[0-9]+');
+    
+    Route::post('/resource/days','CalendarController@storeResourceDays');
 });

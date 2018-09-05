@@ -74,6 +74,22 @@ class Calendar extends Model
     }
 
     /**
+     * Get resource days
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function getResourceDays($request)
+    {
+        $resource_id = $request->resourceId;
+        $unavailable_days = new UnavailableDays();
+        $calendars = $unavailable_days->getDaysByResourceId($resource_id); // Selected services
+        $calendars['current_year'] = self::generateCalendarByYear($this->current_year); //Calendar structure current year
+        $calendars['next_year'] = self::generateCalendarByYear($this->next_year); //Calendar structure next year        
+        return $calendars;
+    }
+
+    /**
      * Get hours by service id
      *
      * @param request $request
@@ -169,4 +185,41 @@ class Calendar extends Model
                         );
         AvailableHours::insert($days);
     }
+
+
+    /**
+     * Save unavailable days by resource
+     *
+     * @param array $data
+     * @return void
+     */
+    public function saveDaysInResource($data)
+    {        
+        $resource_id = $data['id'];
+        UnavailableDays::where('resource_id', $resource_id)->delete();
+        $dates = $data['dates'];
+        
+        $this->insertDaysInResource($resource_id, $this->current_year, $dates['current']);        
+        $this->insertDaysInResource($resource_id, $this->next_year, $dates['next']);        
+    }
+    
+    /**
+     * Insert Available days in the database
+     *
+     * @param int $resource_id
+     * @param int $selected_year
+     * @param array $selected_days     
+     * @return void
+     */
+    public function insertDaysInResource($resource_id, $selected_year, $selected_days)
+    {
+        $days_cy = array_map(
+                                function($item) use ($resource_id, $selected_year)
+                                {
+                                    return ['resource_id'=> $resource_id, 'date' => $selected_year .'-'. $item];
+                                },
+                                $selected_days
+                            );                    
+        UnavailableDays::insert($days_cy);
+    }  
 }
