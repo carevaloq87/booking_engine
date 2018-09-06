@@ -49,7 +49,7 @@ class CalendarController extends Controller
     public function getResourceDays(Request $request)
     {
         $calendar = new Calendar();
-        return $calendar->getResourceDays($request);        
+        return $calendar->getResourceDays($request);
     }
 
     /**
@@ -73,7 +73,7 @@ class CalendarController extends Controller
     }
 
     /**
-     * Save available days for a service
+     * Save available hours for a service
      *
      * @param Request $request
      * @return array
@@ -93,6 +93,26 @@ class CalendarController extends Controller
         }
     }
 
+    /**
+     * Save adhoc days and hours for a service
+     *
+     * @param Request $request
+     * @return array
+     */
+    public function storeAdhoc(Request $request)
+    {
+        try {
+            $data = $this->getAdhocData($request);
+
+            $calendar = new Calendar();
+            $calendar->saveAdhocInService($data);
+            return $data;
+
+        } catch (Exception $exception) {
+            return back()->withInput()
+                        ->withErrors(['unexpected_error' => $exception->getMessage()]);
+        }
+    }
 
     /**
      * Save unavailable days for a resource
@@ -112,8 +132,7 @@ class CalendarController extends Controller
             return back()->withInput()
                         ->withErrors(['unexpected_error' => $exception->getMessage()]);
         }
-    }    
-
+    }
 
     /**
      * Get the request's data from the request.
@@ -139,6 +158,23 @@ class CalendarController extends Controller
      * @return array
      */
     protected function getHoursData(Request $request)
+    {
+        $rules = [
+            'id' => 'required|min:1',
+            'hours' => 'required'
+        ];
+        $data = $request->validate($rules);
+
+        return $data;
+    }
+
+    /**
+     * Get the request's data from the request.
+     *
+     * @param Illuminate\Http\Request\Request $request
+     * @return array
+     */
+    protected function getAdhocData(Request $request)
     {
         $rules = [
             'id' => 'required|min:1',

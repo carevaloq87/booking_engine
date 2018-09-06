@@ -150,13 +150,13 @@ Route::group(
     Route::delete('/service/{service}','ServiceController@destroy')
         ->name('services.service.destroy')
         ->where('id', '[0-9]+');
-    
+
     Route::get('/getResources/{service}','ServiceController@getResources')
         ->name('services.service.getResources')
         ->where('id', '[0-9]+');
 
     Route::get('/getByUserServiceProvider', 'ServiceController@getServicesByUserServiceProvider')
-        ->name('services.service.getByUserServiceProvider');            
+        ->name('services.service.getByUserServiceProvider');
 });
 
 Route::group(
@@ -192,8 +192,8 @@ Route::group(
 
     Route::get('/getServices/{resource}','ResourceController@getServices')
         ->name('resources.resource.getResources')
-        ->where('id', '[0-9]+');        
-    
+        ->where('id', '[0-9]+');
+
     Route::get('/getByUserServiceProvider', 'ResourceController@getResourcesByUserServiceProvider')
         ->name('resources.resource.getByUserServiceProvider');
 
@@ -276,12 +276,14 @@ Route::group(
     Route::get('/service/hours/{serviceId}','CalendarController@getServiceHours')
         ->where('serviceId', '[0-9]+');
 
+    Route::get('/resource/days/{resourceId}','CalendarController@getResourceDays')
+        ->where('resourceId', '[0-9]+');
+
+    Route::post('/resource/days','CalendarController@storeResourceDays');
+
     Route::post('/service/days','CalendarController@storeDays');
 
     Route::post('/service/hours','CalendarController@storeHours');
-	
- 	Route::get('/resource/days/{resourceId}','CalendarController@getResourceDays')
-    ->where('resourceId', '[0-9]+');
-    
-    Route::post('/resource/days','CalendarController@storeResourceDays');
+
+    Route::post('/service/adhoc','CalendarController@storeAdhoc');
 });

@@ -45632,10 +45632,30 @@ Vue.component('journey-container', __webpack_require__(522));
         //Initialize Drage and select object for regular and interpreter elements
         initDragSelect: function initDragSelect() {
             var self = this;
+            var selected_regular = [];
+            var selected_interpreter = [];
+
+            if (self.ds_regular.hasOwnProperty('selectable')) {
+                selected_regular = self.ds_regular.getSelection().map(function (item) {
+                    return item.id;
+                });
+            }
+            if (self.ds_interpreter.hasOwnProperty('selectable')) {
+                selected_interpreter = self.ds_interpreter.getSelection().map(function (item) {
+                    return item.id;
+                });
+            }
+
             //Initialize Drag Select in for calendars
             self.ds_regular = new __WEBPACK_IMPORTED_MODULE_0__selectableDS__["a" /* default */]('#regular_journey .ds-button');
             self.ds_interpreter = new __WEBPACK_IMPORTED_MODULE_0__selectableDS__["a" /* default */]('#interpreter_journey .ds-button');
             //There are no previous selections
+            if (selected_regular.length > 0) {
+                self.ds_regular.setInitialSelections('#regular_journey .ds-button', selected_regular); // Pre select values for an specific service
+            }
+            if (selected_interpreter.length > 0) {
+                self.ds_interpreter.setInitialSelections('#interpreter_journey .ds-button', selected_interpreter); // Pre select values for an specific service
+            }
         },
 
         //Submit information to webservice
@@ -45644,21 +45664,22 @@ Vue.component('journey-container', __webpack_require__(522));
             var hours = {
                 regular: {
                     time_name: document.querySelector("#regular button.active").id,
-                    days: self.ds_regular.getSelection().map(function (item) {
+                    hours: self.ds_regular.getSelection().map(function (item) {
                         return item.id;
-                    })
+                    }),
+                    duration: document.querySelector("#regular_duration").value
                 },
                 interpreter: {
                     time_name: document.querySelector("#interpreter button.active").id,
-                    days: self.ds_interpreter.getSelection().map(function (item) {
+                    hours: self.ds_interpreter.getSelection().map(function (item) {
                         return item.id;
-                    })
+                    }),
+                    duration: document.querySelector("#interpreter_duration").value
                 },
                 date: self.adhoc_date
             };
 
             var url = '/calendar/service/adhoc';
-
             $("#contentLoading").modal("show");
             axios['post'](url, { id: self.service, hours: hours }).then(function (response) {
                 console.log(response);
@@ -46123,7 +46144,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
             for (var index = 0; index < current_time_structure.el_in_col; index++) {
                 var element_id = (initial_minute + index) * current_time_structure.lenght;
-                var btn = '<button type="button" class="btn ds-button ' + self.time_structure_active + '" id="' + element_id + '">&nbsp;</button>';
+                var btn = '<button type="button" class="btn ds-button ' + self.time_structure_active + '" id="adhoc-' + element_id + '">&nbsp;</button>';
                 standard_container += btn;
             }
             return standard_container;

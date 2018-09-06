@@ -114,7 +114,7 @@
 
                 for (let index = 0; index < current_time_structure.el_in_col; index++) {
                     let element_id = (initial_minute + index) * current_time_structure.lenght;
-                    let btn = '<button type="button" class="btn ds-button ' + self.time_structure_active + '" id="' + element_id + '">&nbsp;</button>';
+                    let btn = '<button type="button" class="btn ds-button ' + self.time_structure_active + '" id="adhoc-' + element_id + '">&nbsp;</button>';
                     standard_container += btn;
                 }
                 return standard_container;

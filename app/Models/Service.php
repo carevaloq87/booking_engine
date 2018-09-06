@@ -87,6 +87,14 @@ class service extends Model
     }
 
     /**
+     * Get the adhoc hours and days for this model.
+     */
+    public function AvailableAdhocs()
+    {
+        return $this->hasMany('App\Models\AvailableAdhocs');
+    }
+
+    /**
      * Get all the Services that belongs to the current user service provider
      *
      * @return Collection

@@ -69,10 +69,26 @@
             //Initialize Drage and select object for regular and interpreter elements
             initDragSelect() {
                 var self = this;
+                let selected_regular = [];
+                let selected_interpreter = [];
+
+                if(self.ds_regular.hasOwnProperty('selectable')){
+                    selected_regular = self.ds_regular.getSelection().map( item => item.id );
+                }
+                if(self.ds_interpreter.hasOwnProperty('selectable')){
+                    selected_interpreter = self.ds_interpreter.getSelection().map( item => item.id );
+                }
+
                 //Initialize Drag Select in for calendars
                 self.ds_regular = new SelectableDS('#regular_journey .ds-button');
                 self.ds_interpreter = new SelectableDS('#interpreter_journey .ds-button');
                 //There are no previous selections
+                if(selected_regular.length > 0) {
+                    self.ds_regular.setInitialSelections('#regular_journey .ds-button', selected_regular); // Pre select values for an specific service
+                }
+                if(selected_interpreter.length > 0) {
+                    self.ds_interpreter.setInitialSelections('#interpreter_journey .ds-button', selected_interpreter); // Pre select values for an specific service
+                }
             },
             //Submit information to webservice
             submitInfo() {
@@ -80,17 +96,18 @@
                 let hours = {
                                 regular: {
                                     time_name: document.querySelector("#regular button.active").id,
-                                    days: self.ds_regular.getSelection().map( item => item.id )
+                                    hours: self.ds_regular.getSelection().map( item => item.id ),
+                                    duration: document.querySelector("#regular_duration").value
                                 },
                                 interpreter: {
                                     time_name: document.querySelector("#interpreter button.active").id,
-                                    days: self.ds_interpreter.getSelection().map( item => item.id )
+                                    hours: self.ds_interpreter.getSelection().map( item => item.id ),
+                                    duration: document.querySelector("#interpreter_duration").value
                                 },
                                 date: self.adhoc_date
                             };
 
                 let url = '/calendar/service/adhoc';
-
                 $("#contentLoading").modal("show");
                 axios['post'](url, { id: self.service, hours: hours })
                     .then(response => {

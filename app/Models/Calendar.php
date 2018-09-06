@@ -85,7 +85,7 @@ class Calendar extends Model
         $unavailable_days = new UnavailableDays();
         $calendars = $unavailable_days->getDaysByResourceId($resource_id); // Selected services
         $calendars['current_year'] = self::generateCalendarByYear($this->current_year); //Calendar structure current year
-        $calendars['next_year'] = self::generateCalendarByYear($this->next_year); //Calendar structure next year        
+        $calendars['next_year'] = self::generateCalendarByYear($this->next_year); //Calendar structure next year
         return $calendars;
     }
 
@@ -186,7 +186,6 @@ class Calendar extends Model
         AvailableHours::insert($days);
     }
 
-
     /**
      * Save unavailable days by resource
      *
@@ -194,21 +193,21 @@ class Calendar extends Model
      * @return void
      */
     public function saveDaysInResource($data)
-    {        
+    {
         $resource_id = $data['id'];
         UnavailableDays::where('resource_id', $resource_id)->delete();
         $dates = $data['dates'];
-        
-        $this->insertDaysInResource($resource_id, $this->current_year, $dates['current']);        
-        $this->insertDaysInResource($resource_id, $this->next_year, $dates['next']);        
+
+        $this->insertDaysInResource($resource_id, $this->current_year, $dates['current']);
+        $this->insertDaysInResource($resource_id, $this->next_year, $dates['next']);
     }
-    
+
     /**
      * Insert Available days in the database
      *
      * @param int $resource_id
      * @param int $selected_year
-     * @param array $selected_days     
+     * @param array $selected_days
      * @return void
      */
     public function insertDaysInResource($resource_id, $selected_year, $selected_days)
@@ -219,7 +218,59 @@ class Calendar extends Model
                                     return ['resource_id'=> $resource_id, 'date' => $selected_year .'-'. $item];
                                 },
                                 $selected_days
-                            );                    
+                            );
         UnavailableDays::insert($days_cy);
-    }  
+    }
+
+    /**
+     * Save Adhoc Hours and Days by service
+     *
+     * @param array $data
+     * @return void
+     */
+    public function saveAdhocInService($data)
+    {
+        $service_id = $data['id'];
+        $hours = $data['hours'];
+        $date = $hours['date'];
+        AvailableAdhocs::where('service_id', $service_id)
+                        ->where('date', $date)
+                        ->delete();
+
+        $this->insertAdhocInService($service_id, $date, $hours['interpreter'], 1);
+        $this->insertAdhocInService($service_id, $date, $hours['regular'], 0);
+    }
+
+    /**
+     * Insert Adhoc Hours and Days in the database
+     *
+     * @param int $service_id
+     * @param string $date
+     * @param array $selected_hours
+     * @param boolean $is_interpreter
+     * @return void
+     */
+    public function insertAdhocInService($service_id, $date, $selected_hours, $is_interpreter)
+    {
+        $time_name = $selected_hours['time_name'];
+        $time_length = AvailableHours::converHourToTextOrNumber($selected_hours['time_name']);
+        $duration = $selected_hours['duration'];
+        $days = array_map(
+                            function($item) use ($service_id, $date, $duration, $time_length, $is_interpreter)
+                            {
+                                $day_start = explode('-', $item);
+                                return [
+                                            'service_id'    => $service_id,
+                                            'date'          => $date,
+                                            'time_length'   => $time_length,
+                                            'start_time'    => $day_start[1],
+                                            'duration'    => $duration,
+                                            'is_interpreter' => $is_interpreter
+                                        ];
+                            },
+                            $selected_hours['hours']
+                        );
+
+        AvailableAdhocs::insert($days);
+    }
 }
