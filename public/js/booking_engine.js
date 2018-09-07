@@ -45001,7 +45001,7 @@ Vue.component('calendar-container', __webpack_require__(378));
             self.ds_next_interpreter.setInitialSelections('.next_interpreter ', self.calendars.selected_next_interpreter); // Pre select values for an specific service
         },
 
-        //TODO - Submit information to webservice
+        //Submit information to webservice
         submitInfo: function submitInfo() {
             var self = this;
             var selections = {};
@@ -45346,7 +45346,9 @@ Vue.component('hours-container', __webpack_require__(381));
             ds_interpreter: {},
             ds_regular: {},
             schedule: {},
-            sv_id: this.$root.sv_id
+            sv_id: this.$root.sv_id,
+            regular_selector: '#regular .ds-button',
+            interpreter_selector: '#interpreter .ds-button'
         };
     },
 
@@ -45361,6 +45363,8 @@ Vue.component('hours-container', __webpack_require__(381));
                 self.schedule = response.data;
             }).then(function () {
                 self.initDragSelect();
+            }).then(function () {
+                self.loadInitialSelections();
                 $("#contentLoading").modal("hide");
             }).catch(function (error) {
                 console.log(error);
@@ -45373,15 +45377,37 @@ Vue.component('hours-container', __webpack_require__(381));
         initDragSelect: function initDragSelect() {
             var self = this;
             //Initialize Drag Select in for calendars
-            self.ds_regular = new __WEBPACK_IMPORTED_MODULE_0__selectableDS__["a" /* default */]('#regular .ds-button');
-            self.ds_interpreter = new __WEBPACK_IMPORTED_MODULE_0__selectableDS__["a" /* default */]('#interpreter .ds-button');
+            self.ds_regular = new __WEBPACK_IMPORTED_MODULE_0__selectableDS__["a" /* default */](self.regular_selector);
+            self.ds_interpreter = new __WEBPACK_IMPORTED_MODULE_0__selectableDS__["a" /* default */](self.interpreter_selector);
+        },
 
+        //Select initial values
+        loadInitialSelections: function loadInitialSelections() {
+            var self = this;
             //Set previous selections
             if (self.schedule.hasOwnProperty('regular') && self.schedule.regular.hasOwnProperty('days')) {
-                self.ds_regular.setInitialSelections('#regular .ds-button', self.schedule.regular.days); // Pre select values for an specific service
+                self.ds_regular.setInitialSelections(self.regular_selector, self.schedule.regular.days); // Pre select values for an specific service
             }
             if (self.schedule.hasOwnProperty('interpreter') && self.schedule.interpreter.hasOwnProperty('days')) {
-                self.ds_interpreter.setInitialSelections('#interpreter .ds-button', self.schedule.interpreter.days); // Pre select values for an specific service
+                self.ds_interpreter.setInitialSelections(self.interpreter_selector, self.schedule.interpreter.days); // Pre select values for an specific service
+            }
+        },
+
+        //Keep selected values on interface update
+        updateDragSelect: function updateDragSelect() {
+            var self = this;
+            var selected_regular = self.ds_regular.getSelectedValues();
+            var selected_interpreter = self.ds_interpreter.getSelectedValues();
+
+            //Re-Initialize Drag Select
+            self.initDragSelect();
+
+            //Set previous selections
+            if (selected_regular.length > 0) {
+                self.ds_regular.setInitialSelections(self.regular_selector, selected_regular); // Pre select values for an specific service
+            }
+            if (selected_interpreter.length > 0) {
+                self.ds_interpreter.setInitialSelections(self.interpreter_selector, selected_interpreter); // Pre select values for an specific service
             }
         },
 
@@ -45408,7 +45434,6 @@ Vue.component('hours-container', __webpack_require__(381));
                 $("#contentLoading").modal("hide");
             }).catch(function (error) {
                 $("#contentLoading").modal("hide");
-                console.log(error);
             });
         }
     },
@@ -45445,7 +45470,7 @@ var render = function() {
               currentSchedule: _vm.schedule.regular,
               tableClass: "current"
             },
-            on: { "reload-ds": _vm.initDragSelect }
+            on: { "reload-ds": _vm.updateDragSelect }
           })
         ],
         1
@@ -45460,7 +45485,7 @@ var render = function() {
               currentSchedule: _vm.schedule.interpreter,
               tableClass: "current_interpreter"
             },
-            on: { "reload-ds": _vm.initDragSelect }
+            on: { "reload-ds": _vm.updateDragSelect }
           })
         ],
         1
@@ -45631,7 +45656,9 @@ Vue.component('journey-container', __webpack_require__(522));
             ds_regular: {},
             journey: {},
             limit_from: new Date().toISOString().split('T')[0],
-            sv_id: this.$root.sv_id
+            sv_id: this.$root.sv_id,
+            regular_selector: '#regular_journey .ds-button',
+            interpreter_selector: '#interpreter_journey .ds-button'
         };
     },
 
@@ -45639,25 +45666,26 @@ Vue.component('journey-container', __webpack_require__(522));
         //Initialize Drage and select object for regular and interpreter elements
         initDragSelect: function initDragSelect() {
             var self = this;
-            var selected_regular = [];
-            var selected_interpreter = [];
-
-            if (self.ds_regular.hasOwnProperty('selectable')) {
-                selected_regular = self.ds_regular.getSelectedValues();
-            }
-            if (self.ds_interpreter.hasOwnProperty('selectable')) {
-                selected_interpreter = self.ds_interpreter.getSelectedValues();
-            }
-
             //Initialize Drag Select in for calendars
-            self.ds_regular = new __WEBPACK_IMPORTED_MODULE_0__selectableDS__["a" /* default */]('#regular_journey .ds-button');
-            self.ds_interpreter = new __WEBPACK_IMPORTED_MODULE_0__selectableDS__["a" /* default */]('#interpreter_journey .ds-button');
-            //There are no previous selections
+            self.ds_regular = new __WEBPACK_IMPORTED_MODULE_0__selectableDS__["a" /* default */](self.regular_selector);
+            self.ds_interpreter = new __WEBPACK_IMPORTED_MODULE_0__selectableDS__["a" /* default */](self.interpreter_selector);
+        },
+
+        //Keep selected values on interface update
+        updateDragSelect: function updateDragSelect() {
+            var self = this;
+            var selected_regular = self.ds_regular.getSelectedValues();
+            var selected_interpreter = self.ds_interpreter.getSelectedValues();
+
+            //Re-Initialize Drag Select
+            self.initDragSelect();
+
+            //Set previous selections
             if (selected_regular.length > 0) {
-                self.ds_regular.setInitialSelections('#regular_journey .ds-button', selected_regular); // Pre select values for an specific service
+                self.ds_regular.setInitialSelections(self.regular_selector, selected_regular); // Pre select values for an specific service
             }
             if (selected_interpreter.length > 0) {
-                self.ds_interpreter.setInitialSelections('#interpreter_journey .ds-button', selected_interpreter); // Pre select values for an specific service
+                self.ds_interpreter.setInitialSelections(self.interpreter_selector, selected_interpreter); // Pre select values for an specific service
             }
         },
 
@@ -45665,12 +45693,12 @@ Vue.component('journey-container', __webpack_require__(522));
         submitInfo: function submitInfo() {
             var self = this;
             self.adhoc_object.regular = {
-                time_name: document.querySelector("#regular button.active").id,
+                time_name: document.querySelector("#regular_journey button.active").id,
                 hours: self.ds_regular.getSelectedValues(),
                 duration: document.querySelector("#regular_duration").value
             };
             self.adhoc_object.interpreter = {
-                time_name: document.querySelector("#interpreter button.active").id,
+                time_name: document.querySelector("#interpreter_journey button.active").id,
                 hours: self.ds_interpreter.getSelectedValues(),
                 duration: document.querySelector("#interpreter_duration").value
             };
@@ -45683,7 +45711,6 @@ Vue.component('journey-container', __webpack_require__(522));
                 $("#contentLoading").modal("hide");
             }).catch(function (error) {
                 $("#contentLoading").modal("hide");
-                console.log(error);
             });
         }
     },
@@ -46439,7 +46466,7 @@ var render = function() {
                   currentJourney: _vm.journey.regular,
                   tableClass: "regular"
                 },
-                on: { "reload-ds": _vm.initDragSelect }
+                on: { "reload-ds": _vm.updateDragSelect }
               })
             ],
             1
@@ -46457,7 +46484,7 @@ var render = function() {
                   currentJourney: _vm.journey.interpreter,
                   tableClass: "interpreter"
                 },
-                on: { "reload-ds": _vm.initDragSelect }
+                on: { "reload-ds": _vm.updateDragSelect }
               })
             ],
             1

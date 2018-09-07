@@ -114,7 +114,7 @@
                 self.ds_next.setInitialSelections('.next ', self.calendars.selected_next); // Pre select values for an specific service
                 self.ds_next_interpreter.setInitialSelections('.next_interpreter ', self.calendars.selected_next_interpreter); // Pre select values for an specific service
             },
-            //TODO - Submit information to webservice
+            //Submit information to webservice
             submitInfo() {
                 let self = this;
                 let selections = {};

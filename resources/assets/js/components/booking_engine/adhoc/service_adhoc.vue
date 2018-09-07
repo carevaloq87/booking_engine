@@ -30,11 +30,11 @@
 
             <div class="tab-content adhoc_hours_selection col-xs-12">
                 <div id="regular_journey" class="tab-pane fade in active">
-                    <journey-container v-bind:currentJourney="journey.regular" tableClass="regular" v-on:reload-ds="initDragSelect"> </journey-container>
+                    <journey-container v-bind:currentJourney="journey.regular" tableClass="regular" v-on:reload-ds="updateDragSelect"> </journey-container>
                 </div>
 
                 <div id="interpreter_journey" class="tab-pane fade">
-                    <journey-container v-bind:currentJourney="journey.interpreter" tableClass="interpreter" v-on:reload-ds="initDragSelect"> </journey-container>
+                    <journey-container v-bind:currentJourney="journey.interpreter" tableClass="interpreter" v-on:reload-ds="updateDragSelect"> </journey-container>
                 </div>
             </div>
         </div>
@@ -67,43 +67,45 @@
                 journey: {},
                 limit_from: new Date().toISOString().split('T')[0],
                 sv_id: this.$root.sv_id,
+                regular_selector: '#regular_journey .ds-button',
+                interpreter_selector: '#interpreter_journey .ds-button',
             }
         },
         methods: {
             //Initialize Drage and select object for regular and interpreter elements
             initDragSelect() {
                 var self = this;
-                let selected_regular = [];
-                let selected_interpreter = [];
-
-                if(self.ds_regular.hasOwnProperty('selectable')){
-                    selected_regular = self.ds_regular.getSelectedValues();
-                }
-                if(self.ds_interpreter.hasOwnProperty('selectable')){
-                    selected_interpreter = self.ds_interpreter.getSelectedValues();
-                }
-
                 //Initialize Drag Select in for calendars
-                self.ds_regular = new SelectableDS('#regular_journey .ds-button');
-                self.ds_interpreter = new SelectableDS('#interpreter_journey .ds-button');
-                //There are no previous selections
+                self.ds_regular = new SelectableDS(self.regular_selector);
+                self.ds_interpreter = new SelectableDS(self.interpreter_selector);
+            },
+            //Keep selected values on interface update
+            updateDragSelect() {
+                var self = this;
+                let selected_regular = self.ds_regular.getSelectedValues();
+                let selected_interpreter = self.ds_interpreter.getSelectedValues();
+
+                //Re-Initialize Drag Select
+                self.initDragSelect();
+
+                //Set previous selections
                 if(selected_regular.length > 0) {
-                    self.ds_regular.setInitialSelections('#regular_journey .ds-button', selected_regular); // Pre select values for an specific service
+                    self.ds_regular.setInitialSelections(self.regular_selector, selected_regular); // Pre select values for an specific service
                 }
                 if(selected_interpreter.length > 0) {
-                    self.ds_interpreter.setInitialSelections('#interpreter_journey .ds-button', selected_interpreter); // Pre select values for an specific service
+                    self.ds_interpreter.setInitialSelections(self.interpreter_selector, selected_interpreter); // Pre select values for an specific service
                 }
             },
             //Submit information to webservice
             submitInfo() {
                 let self = this;
                 self.adhoc_object.regular = {
-                                    time_name: document.querySelector("#regular button.active").id,
+                                    time_name: document.querySelector("#regular_journey button.active").id,
                                     hours: self.ds_regular.getSelectedValues(),
                                     duration: document.querySelector("#regular_duration").value
                                 };
                 self.adhoc_object.interpreter = {
-                                        time_name: document.querySelector("#interpreter button.active").id,
+                                        time_name: document.querySelector("#interpreter_journey button.active").id,
                                         hours: self.ds_interpreter.getSelectedValues(),
                                         duration: document.querySelector("#interpreter_duration").value
                                     };
@@ -119,7 +121,6 @@
                     })
                     .catch(error => {
                         $("#contentLoading").modal("hide");
-                        console.log(error);
                     });
             }
         },

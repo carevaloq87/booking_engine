@@ -7,11 +7,11 @@
 
         <div class="tab-content col-xs-12">
             <div id="regular" class="tab-pane fade in active">
-                <hours-container v-bind:currentSchedule="schedule.regular" tableClass="current" v-on:reload-ds="initDragSelect"> </hours-container>
+                <hours-container v-bind:currentSchedule="schedule.regular" tableClass="current" v-on:reload-ds="updateDragSelect"> </hours-container>
             </div>
 
             <div id="interpreter" class="tab-pane fade">
-                <hours-container v-bind:currentSchedule="schedule.interpreter" tableClass="current_interpreter" v-on:reload-ds="initDragSelect"> </hours-container>
+                <hours-container v-bind:currentSchedule="schedule.interpreter" tableClass="current_interpreter" v-on:reload-ds="updateDragSelect"> </hours-container>
             </div>
         </div>
 
@@ -34,6 +34,8 @@
                 ds_regular: {},
                 schedule: {},
                 sv_id: this.$root.sv_id,
+                regular_selector: '#regular .ds-button',
+                interpreter_selector: '#interpreter .ds-button',
             }
         },
         methods: {
@@ -49,6 +51,9 @@
                     })
                     .then(() => {
                         self.initDragSelect();
+                    })
+                    .then(() => {
+                        self.loadInitialSelections();
                         $("#contentLoading").modal("hide");
                     })
                     .catch(error => {
@@ -61,15 +66,35 @@
             initDragSelect() {
                 var self = this;
                 //Initialize Drag Select in for calendars
-                self.ds_regular = new SelectableDS('#regular .ds-button');
-                self.ds_interpreter = new SelectableDS('#interpreter .ds-button');
-
+                self.ds_regular = new SelectableDS(self.regular_selector);
+                self.ds_interpreter = new SelectableDS(self.interpreter_selector);
+            },
+            //Select initial values
+            loadInitialSelections() {
+                var self = this;
                 //Set previous selections
                 if(self.schedule.hasOwnProperty('regular') && self.schedule.regular.hasOwnProperty('days')){
-                    self.ds_regular.setInitialSelections('#regular .ds-button', self.schedule.regular.days); // Pre select values for an specific service
+                    self.ds_regular.setInitialSelections(self.regular_selector, self.schedule.regular.days); // Pre select values for an specific service
                 }
                 if(self.schedule.hasOwnProperty('interpreter') && self.schedule.interpreter.hasOwnProperty('days')){
-                    self.ds_interpreter.setInitialSelections('#interpreter .ds-button', self.schedule.interpreter.days); // Pre select values for an specific service
+                    self.ds_interpreter.setInitialSelections(self.interpreter_selector, self.schedule.interpreter.days); // Pre select values for an specific service
+                }
+            },
+            //Keep selected values on interface update
+            updateDragSelect() {
+                var self = this;
+                let selected_regular = self.ds_regular.getSelectedValues();
+                let selected_interpreter = self.ds_interpreter.getSelectedValues();
+
+                //Re-Initialize Drag Select
+                self.initDragSelect();
+
+                //Set previous selections
+                if(selected_regular.length > 0) {
+                    self.ds_regular.setInitialSelections(self.regular_selector, selected_regular); // Pre select values for an specific service
+                }
+                if(selected_interpreter.length > 0) {
+                    self.ds_interpreter.setInitialSelections(self.interpreter_selector, selected_interpreter); // Pre select values for an specific service
                 }
             },
             // Submit information to webservice
@@ -98,7 +123,6 @@
                     })
                     .catch(error => {
                         $("#contentLoading").modal("hide");
-                        console.log(error);
                     });
             }
         },
