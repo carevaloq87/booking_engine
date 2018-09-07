@@ -94,6 +94,17 @@ class CalendarController extends Controller
     }
 
     /**
+     * Return calendar files
+     *
+     * @return JSON
+     */
+    public function getResourceHours(Request $request)
+    {
+        $calendar = new Calendar();
+        return $calendar->getResourceHours($request);
+    }
+
+    /**
      * Save adhoc days and hours for a service
      *
      * @param Request $request
@@ -106,6 +117,28 @@ class CalendarController extends Controller
 
             $calendar = new Calendar();
             $calendar->saveAdhocInService($data);
+            return $data;
+
+        } catch (Exception $exception) {
+            return back()->withInput()
+                        ->withErrors(['unexpected_error' => $exception->getMessage()]);
+        }
+    }
+
+
+    /**
+     * Save unavailable hours for a resource
+     *
+     * @param Request $request
+     * @return array
+     */
+    public function storeResourceHours(Request $request)
+    {
+        try {
+            $data = $this->getHoursData($request);
+
+            $calendar = new Calendar();
+            $calendar->saveHoursInResource($data);
             return $data;
 
         } catch (Exception $exception) {

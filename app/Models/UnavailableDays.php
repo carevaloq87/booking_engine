@@ -37,7 +37,7 @@ class UnavailableDays extends Model
      * @var array
      */
     protected $fillable = [
-                'date',                  
+                'date',
                 'resource_id'
                 ];
 
@@ -72,10 +72,10 @@ class UnavailableDays extends Model
      */
     public function getDaysByResourceId($resource_id)
     {
-        $resource = Resource::findOrFail($resource_id);        
+        $resource = Resource::findOrFail($resource_id);
         $unavailable_days = $resource->unavailableDays;
-        $resource_dates = [];        
-        foreach($unavailable_days as $date) {            
+        $resource_dates = [];
+        foreach($unavailable_days as $date) {
             $is_current_year = date('Y', strtotime($date->date)) == $this->current_year;
             if( $is_current_year ) {
                 $resource_dates['selected_current'][] = date('M-d', strtotime($date->date));
@@ -83,9 +83,9 @@ class UnavailableDays extends Model
             else {
                 $resource_dates['selected_next'][] = date('M-d', strtotime($date->date));
             }
-        }        
+        }
         return $resource_dates;
 
-    }    
+    }
 
 }

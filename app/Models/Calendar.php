@@ -103,6 +103,19 @@ class Calendar extends Model
     }
 
     /**
+     * Get hours by resource id
+     *
+     * @param request $request
+     * @return array
+     */
+    public function getResourceHours($request)
+    {
+        $resource_id = $request->resourceId;
+        $unavailable_hours = new UnavailableHours();
+        return $unavailable_hours->getHoursByResourceId($resource_id);
+    }
+
+    /**
      * Save Availagle days by service
      *
      * @param array $data
@@ -157,6 +170,53 @@ class Calendar extends Model
         $this->insertHoursInService($service_id, $hours['interpreter'], 1);
     }
 
+
+    /**
+     * Save unavailable hours by resource
+     *
+     * @param array $data
+     * @return void
+     */
+    public function saveHoursInResource($data)
+    {
+        $resource_id = $data['id'];
+        UnavailableHours::where('resource_id', $resource_id)->delete();
+        $hours = $data['hours'];
+
+        $this->insertHoursInResource($resource_id, $hours['regular']);
+    }
+
+
+    /**
+     * Insert unavailable hours in the database
+     *
+     * @param int $resource_id
+     * @param array $selected_days
+     * @return void
+     */
+    public function insertHoursInResource($resource_id, $selected_hours)
+    {
+        $time_name = $selected_hours['time_name'];
+        $time_length = UnavailableHours::converHourToTextOrNumber($selected_hours['time_name']);
+        $user = auth()->user();
+        $days = array_map(
+                            function($item) use ($resource_id, $time_length,$user)
+                            {
+                                $day_start = explode('-', $item);
+                                return [
+                                            'resource_id'=> $resource_id,
+                                            'day_week' => $day_start[0],
+                                            'length' => $time_length,
+                                            'start_time' => $day_start[1],
+                                            'created_by'=>$user->id,
+                                            'created_at'=>date('Y-m-d H:i:s')
+                                        ];
+                            },
+                            $selected_hours['days']
+                        );
+        UnavailableHours::insert($days);
+    }
+
     /**
      * Insert Available hours in the database
      *
@@ -202,7 +262,7 @@ class Calendar extends Model
         $this->insertDaysInResource($resource_id, $this->next_year, $dates['next']);
     }
 
-    /**
+	/**
      * Insert Available days in the database
      *
      * @param int $resource_id
@@ -212,13 +272,18 @@ class Calendar extends Model
      */
     public function insertDaysInResource($resource_id, $selected_year, $selected_days)
     {
+        $user = auth()->user();
         $days_cy = array_map(
-                                function($item) use ($resource_id, $selected_year)
+                                function($item) use ($resource_id, $selected_year, $user)
                                 {
-                                    return ['resource_id'=> $resource_id, 'date' => $selected_year .'-'. $item];
+                                    return ['resource_id'=> $resource_id,
+                                            'date' => $selected_year .'-'. $item,
+                                            'created_by'=>$user->id,
+                                            'created_at'=>date('Y-m-d H:i:s')];
                                 },
                                 $selected_days
                             );
+
         UnavailableDays::insert($days_cy);
     }
 

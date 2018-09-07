@@ -270,6 +270,7 @@ Route::group(
     'middleware' => ['auth'],
     'prefix' => 'calendar',
 ], function () {
+
     Route::get('/service/days/{serviceId}','CalendarController@getServiceDays')
         ->where('serviceId', '[0-9]+');
 
@@ -279,11 +280,16 @@ Route::group(
     Route::get('/resource/days/{resourceId}','CalendarController@getResourceDays')
         ->where('resourceId', '[0-9]+');
 
-    Route::post('/resource/days','CalendarController@storeResourceDays');
+	Route::get('/resource/hours/{resourceId}','CalendarController@getResourceHours')
+        ->where('resourceId', '[0-9]+');
 
     Route::post('/service/days','CalendarController@storeDays');
 
     Route::post('/service/hours','CalendarController@storeHours');
 
     Route::post('/service/adhoc','CalendarController@storeAdhoc');
+
+    Route::post('/resource/days','CalendarController@storeResourceDays');
+
+	Route::post('/resource/hours','CalendarController@storeResourceHours');
 });

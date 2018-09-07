@@ -72,6 +72,15 @@ class Resource extends Model
         return $this->hasMany('App\Models\UnavailableDays');
     }
 
+
+    /**
+     * Get the available hours for this model.
+     */
+    public function unavailableHours()
+    {
+        return $this->hasMany('App\Models\UnavailableHours');
+    }
+
     /**
      * Get all the Resources that belongs to the current user service provider
      *
