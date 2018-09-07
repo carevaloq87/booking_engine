@@ -6,17 +6,16 @@
         <div class="form-group col-xs-12">
             <label for="duration" class="col-md-2 control-label">Choose Day</label>
             <div class="col-sm-6 col-md-4">
-                <!-- <input type="text" class="form-control input-medium" id="adhoc_date" name="adhoc_date" placeholder="dd-mm-yyyy"> -->
                 <dropdown class="form-group">
                     <div class="input-group">
-                        <input class="form-control" type="text" v-model="adhoc_date" name="adhoc_date">
+                        <input class="form-control" type="text" v-model="adhoc_object.date" name="adhoc_date">
                         <div class="input-group-btn">
                         <btn class="dropdown-toggle"><i class="glyphicon glyphicon-calendar"></i></btn>
                         </div>
                     </div>
                     <template slot="dropdown">
                         <li>
-                        <date-picker v-model="adhoc_date" :width="200" :today-btn="false" :clear-btn="false" :limit-from="limit_from"/>
+                        <date-picker v-model="adhoc_object.date" :width="200" :today-btn="false" :clear-btn="false" :limit-from="limit_from"/>
                         </li>
                     </template>
                 </dropdown>
@@ -55,6 +54,11 @@
         props:['service'],
         data() {
             return {
+                adhoc_object: {
+                    date: null,
+                    regular: {},
+                    interpreter: {}
+                },
                 adhoc_date: null,
                 choice: 'currentActive',
                 duration: 60,
@@ -73,10 +77,10 @@
                 let selected_interpreter = [];
 
                 if(self.ds_regular.hasOwnProperty('selectable')){
-                    selected_regular = self.ds_regular.getSelection().map( item => item.id );
+                    selected_regular = self.ds_regular.getSelectedValues();
                 }
                 if(self.ds_interpreter.hasOwnProperty('selectable')){
-                    selected_interpreter = self.ds_interpreter.getSelection().map( item => item.id );
+                    selected_interpreter = self.ds_interpreter.getSelectedValues();
                 }
 
                 //Initialize Drag Select in for calendars
@@ -93,23 +97,20 @@
             //Submit information to webservice
             submitInfo() {
                 let self = this;
-                let hours = {
-                                regular: {
+                self.adhoc_object.regular = {
                                     time_name: document.querySelector("#regular button.active").id,
-                                    hours: self.ds_regular.getSelection().map( item => item.id ),
+                                    hours: self.ds_regular.getSelectedValues(),
                                     duration: document.querySelector("#regular_duration").value
-                                },
-                                interpreter: {
-                                    time_name: document.querySelector("#interpreter button.active").id,
-                                    hours: self.ds_interpreter.getSelection().map( item => item.id ),
-                                    duration: document.querySelector("#interpreter_duration").value
-                                },
-                                date: self.adhoc_date
-                            };
+                                };
+                self.adhoc_object.interpreter = {
+                                        time_name: document.querySelector("#interpreter button.active").id,
+                                        hours: self.ds_interpreter.getSelectedValues(),
+                                        duration: document.querySelector("#interpreter_duration").value
+                                    };
 
                 let url = '/calendar/service/adhoc';
                 $("#contentLoading").modal("show");
-                axios['post'](url, { id: self.service, hours: hours })
+                axios['post'](url, { id: self.service, hours: self.adhoc_object })
                     .then(response => {
                         console.log(response);
                     })

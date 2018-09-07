@@ -118,10 +118,10 @@
             submitInfo() {
                 let self = this;
                 let selections = {};
-                selections.current = self.ds_current.getSelection().map( item => item.id );
-                selections.current_interpreter = self.ds_current_interpreter.getSelection().map( item => item.id );
-                selections.next = self.ds_next.getSelection().map( item => item.id );
-                selections.next_interpreter = self.ds_next_interpreter.getSelection().map( item => item.id );
+                selections.current = self.ds_current.getSelectedValues();
+                selections.current_interpreter = self.ds_current_interpreter.getSelectedValues();
+                selections.next = self.ds_next.getSelectedValues();
+                selections.next_interpreter = self.ds_next_interpreter.getSelectedValues();
 
                 let url = '/calendar/service/days';
 

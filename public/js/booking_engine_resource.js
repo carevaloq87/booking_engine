@@ -16883,6 +16883,18 @@ var SelectableDS = function () {
         }
 
         /**
+         * Return an array of all the selected elements by id
+         */
+
+    }, {
+        key: 'getSelectedValues',
+        value: function getSelectedValues() {
+            return this.selectable.getSelection().map(function (item) {
+                return item.id;
+            });
+        }
+
+        /**
          * TODO - Submit Information
          */
 

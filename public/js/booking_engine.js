@@ -21395,6 +21395,18 @@ var SelectableDS = function () {
         }
 
         /**
+         * Return an array of all the selected elements by id
+         */
+
+    }, {
+        key: 'getSelectedValues',
+        value: function getSelectedValues() {
+            return this.selectable.getSelection().map(function (item) {
+                return item.id;
+            });
+        }
+
+        /**
          * TODO - Submit Information
          */
 
@@ -44993,18 +45005,10 @@ Vue.component('calendar-container', __webpack_require__(378));
         submitInfo: function submitInfo() {
             var self = this;
             var selections = {};
-            selections.current = self.ds_current.getSelection().map(function (item) {
-                return item.id;
-            });
-            selections.current_interpreter = self.ds_current_interpreter.getSelection().map(function (item) {
-                return item.id;
-            });
-            selections.next = self.ds_next.getSelection().map(function (item) {
-                return item.id;
-            });
-            selections.next_interpreter = self.ds_next_interpreter.getSelection().map(function (item) {
-                return item.id;
-            });
+            selections.current = self.ds_current.getSelectedValues();
+            selections.current_interpreter = self.ds_current_interpreter.getSelectedValues();
+            selections.next = self.ds_next.getSelectedValues();
+            selections.next_interpreter = self.ds_next_interpreter.getSelectedValues();
 
             var url = '/calendar/service/days';
 
@@ -45387,15 +45391,11 @@ Vue.component('hours-container', __webpack_require__(381));
             var hours = {
                 regular: {
                     time_name: document.querySelector("#regular button.active").id,
-                    days: self.ds_regular.getSelection().map(function (item) {
-                        return item.id;
-                    })
+                    days: self.ds_regular.getSelectedValues()
                 },
                 interpreter: {
                     time_name: document.querySelector("#interpreter button.active").id,
-                    days: self.ds_interpreter.getSelection().map(function (item) {
-                        return item.id;
-                    })
+                    days: self.ds_interpreter.getSelectedValues()
                 }
             };
 
@@ -45610,7 +45610,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
 
 
 
@@ -45620,6 +45619,11 @@ Vue.component('journey-container', __webpack_require__(522));
     props: ['service'],
     data: function data() {
         return {
+            adhoc_object: {
+                date: null,
+                regular: {},
+                interpreter: {}
+            },
             adhoc_date: null,
             choice: 'currentActive',
             duration: 60,
@@ -45639,14 +45643,10 @@ Vue.component('journey-container', __webpack_require__(522));
             var selected_interpreter = [];
 
             if (self.ds_regular.hasOwnProperty('selectable')) {
-                selected_regular = self.ds_regular.getSelection().map(function (item) {
-                    return item.id;
-                });
+                selected_regular = self.ds_regular.getSelectedValues();
             }
             if (self.ds_interpreter.hasOwnProperty('selectable')) {
-                selected_interpreter = self.ds_interpreter.getSelection().map(function (item) {
-                    return item.id;
-                });
+                selected_interpreter = self.ds_interpreter.getSelectedValues();
             }
 
             //Initialize Drag Select in for calendars
@@ -45664,27 +45664,20 @@ Vue.component('journey-container', __webpack_require__(522));
         //Submit information to webservice
         submitInfo: function submitInfo() {
             var self = this;
-            var hours = {
-                regular: {
-                    time_name: document.querySelector("#regular button.active").id,
-                    hours: self.ds_regular.getSelection().map(function (item) {
-                        return item.id;
-                    }),
-                    duration: document.querySelector("#regular_duration").value
-                },
-                interpreter: {
-                    time_name: document.querySelector("#interpreter button.active").id,
-                    hours: self.ds_interpreter.getSelection().map(function (item) {
-                        return item.id;
-                    }),
-                    duration: document.querySelector("#interpreter_duration").value
-                },
-                date: self.adhoc_date
+            self.adhoc_object.regular = {
+                time_name: document.querySelector("#regular button.active").id,
+                hours: self.ds_regular.getSelectedValues(),
+                duration: document.querySelector("#regular_duration").value
+            };
+            self.adhoc_object.interpreter = {
+                time_name: document.querySelector("#interpreter button.active").id,
+                hours: self.ds_interpreter.getSelectedValues(),
+                duration: document.querySelector("#interpreter_duration").value
             };
 
             var url = '/calendar/service/adhoc';
             $("#contentLoading").modal("show");
-            axios['post'](url, { id: self.service, hours: hours }).then(function (response) {
+            axios['post'](url, { id: self.service, hours: self.adhoc_object }).then(function (response) {
                 console.log(response);
             }).then(function () {
                 $("#contentLoading").modal("hide");
@@ -46367,19 +46360,19 @@ var render = function() {
                     {
                       name: "model",
                       rawName: "v-model",
-                      value: _vm.adhoc_date,
-                      expression: "adhoc_date"
+                      value: _vm.adhoc_object.date,
+                      expression: "adhoc_object.date"
                     }
                   ],
                   staticClass: "form-control",
                   attrs: { type: "text", name: "adhoc_date" },
-                  domProps: { value: _vm.adhoc_date },
+                  domProps: { value: _vm.adhoc_object.date },
                   on: {
                     input: function($event) {
                       if ($event.target.composing) {
                         return
                       }
-                      _vm.adhoc_date = $event.target.value
+                      _vm.$set(_vm.adhoc_object, "date", $event.target.value)
                     }
                   }
                 }),
@@ -46408,11 +46401,11 @@ var render = function() {
                         "limit-from": _vm.limit_from
                       },
                       model: {
-                        value: _vm.adhoc_date,
+                        value: _vm.adhoc_object.date,
                         callback: function($$v) {
-                          _vm.adhoc_date = $$v
+                          _vm.$set(_vm.adhoc_object, "date", $$v)
                         },
-                        expression: "adhoc_date"
+                        expression: "adhoc_object.date"
                       }
                     })
                   ],

@@ -40,6 +40,13 @@ export default class SelectableDS {
     }
 
     /**
+     * Return an array of all the selected elements by id
+     */
+    getSelectedValues() {
+        return this.selectable.getSelection().map(item => item.id);
+    }
+
+    /**
      * TODO - Submit Information
      */
     submit() {
