@@ -39,6 +39,7 @@
         methods: {
             //Get schedules by service ID
             getSchedule(sv_id) {
+                $("#contentLoading").modal("show");
                 var self = this;
                 let url = '/calendar/service/hours/' + sv_id;
 
@@ -53,6 +54,7 @@
                     .catch(error => {
                         console.log(error);
                         $("#contentLoading").modal("hide");
+                        self.getSchedule(self.service);
                     });
             },
             //Initialize Drage and select object for regular and interpreter elements
@@ -103,7 +105,6 @@
         watch: {
             //Watch change of service
             service: function() {
-                $("#contentLoading").modal("show");
                 if (typeof this.ds_regular.clear === "function" && typeof this.ds_interpreter.clear === "function") {
                     this.ds_regular.clear();
                     this.ds_interpreter.clear();

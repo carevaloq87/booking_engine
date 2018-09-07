@@ -80,6 +80,8 @@
             },
             //Get Calendar by service ID
             getCalendar(sv_id) {
+                $("#contentLoading").modal("show");
+
                 var self = this;
                 let url = '/calendar/service/days/' + sv_id;
 
@@ -93,6 +95,7 @@
                     })
                     .catch(error => {
                         $("#contentLoading").modal("hide");
+                        self.getCalendar(self.service);
                         console.log(error);
                     });
             },
@@ -139,7 +142,6 @@
         watch: {
             //Watch change of service
             service: function() {
-                $("#contentLoading").modal("show");
                 let self = this;
                 if (typeof this.ds_current.clear === "function") {
                     self.ds_current.clear();
