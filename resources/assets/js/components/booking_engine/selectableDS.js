@@ -17,9 +17,11 @@ export default class SelectableDS {
     setInitialSelections(context, elements) {
         let selection = '';
 
-        for (let i = 0; i < elements.length; i++) {
-            selection = elements[i];
-            this.selectable.addSelection(document.querySelector(context + '#' + selection));
+        if (typeof elements !== 'undefined' && elements.length > 0) {
+            for (let i = 0; i < elements.length; i++) {
+                selection = elements[i];
+                this.selectable.addSelection(document.querySelector(context + '#' + selection));
+            }
         }
     }
 
