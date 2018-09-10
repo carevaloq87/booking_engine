@@ -96,8 +96,7 @@
                     self.ds_interpreter.setInitialSelections(self.interpreter_selector, selected_interpreter); // Pre select values for an specific service
                 }
             },
-            //Submit information to webservice
-            submitInfo() {
+            updateAdhocObj() {
                 let self = this;
                 self.adhoc_object.regular = {
                                     time_name: document.querySelector("#regular_journey button.active").id,
@@ -109,19 +108,62 @@
                                         hours: self.ds_interpreter.getSelectedValues(),
                                         duration: document.querySelector("#interpreter_duration").value
                                     };
+            },
+            validateAdhocForm() {
+                let self = this;
+                let response = {
+                    can_submit: true,
+                    message: []
+                };
+                self.updateAdhocObj();
 
+                if(self.adhoc_object.date === null || self.adhoc_object.date === '') { //No date selected
+                    response.can_submit = false;
+                    response.message.push('date');
+                }
+                if( self.adhoc_object.regular.duration === '' && self.adhoc_object.interpreter.duration === '' ) { // No Duration
+                    response.can_submit = false;
+                    response.message.push('duration');
+                } else if (self.adhoc_object.regular.duration !== '' && self.adhoc_object.regular.hours.length === 0 ) { //Duration but not selected hours
+                    response.can_submit = false;
+                    response.message.push('regular hours');
+                } else if(self.adhoc_object.interpreter.duration !== '' && self.adhoc_object.interpreter.hours.length === 0) { //Duration but not selected hours
+                    response.can_submit = false;
+                    response.message.push('interpreter hours');
+                }
+
+                if (self.adhoc_object.regular.duration === '' && self.adhoc_object.regular.hours.length > 0 ) { //Selected Hours but not duration
+                    response.can_submit = false;
+                    response.message.push('regular duration');
+                }
+                if(self.adhoc_object.interpreter.duration === '' && self.adhoc_object.interpreter.hours.length > 0) { //Selected Hours but not duration
+                    response.can_submit = false;
+                    response.message.push('interpreter duration');
+                }
+                return response;
+            },
+            //Submit information to webservice
+            submitInfo() {
+                let self = this;
                 let url = '/calendar/service/adhoc';
-                $("#contentLoading").modal("show");
-                axios['post'](url, { id: self.service, hours: self.adhoc_object })
-                    .then(response => {
-                        console.log(response);
-                    })
-                    .then(() => {
-                        $("#contentLoading").modal("hide");
-                    })
-                    .catch(error => {
-                        $("#contentLoading").modal("hide");
-                    });
+                let form_validation = self.validateAdhocForm();
+                if(form_validation.can_submit) {
+                    $("#contentLoading").modal("show");
+                    axios['post'](url, { id: self.service, hours: self.adhoc_object })
+                        .then(response => {
+                            console.log(response);
+                        })
+                        .then(() => {
+                            $("#contentLoading").modal("hide");
+                        })
+                        .catch(error => {
+                            $("#contentLoading").modal("hide");
+                        });
+                } else {
+                    console.log(form_validation.message);
+                    let message = 'Please set ' + form_validation.message.join(', ');
+                    alert(message);
+                }
             }
         },
         watch: {

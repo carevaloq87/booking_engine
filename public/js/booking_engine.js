@@ -21366,9 +21366,11 @@ var SelectableDS = function () {
         value: function setInitialSelections(context, elements) {
             var selection = '';
 
-            for (var i = 0; i < elements.length; i++) {
-                selection = elements[i];
-                this.selectable.addSelection(document.querySelector(context + '#' + selection));
+            if (typeof elements !== 'undefined' && elements.length > 0) {
+                for (var i = 0; i < elements.length; i++) {
+                    selection = elements[i];
+                    this.selectable.addSelection(document.querySelector(context + '#' + selection));
+                }
             }
         }
 
@@ -44980,8 +44982,22 @@ Vue.component('calendar-container', __webpack_require__(378));
                 $("#contentLoading").modal("hide");
             }).catch(function (error) {
                 $("#contentLoading").modal("hide");
-                self.getCalendar(self.service);
-                console.log(error);
+                if (error.response) {
+                    // The request was made and the server responded with a status code
+                    // that falls out of the range of 2xx
+                    console.log(error.response.data);
+                    console.log(error.response.status);
+                    console.log(error.response.headers);
+                } else if (error.request) {
+                    // The request was made but no response was received
+                    // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                    // http.ClientRequest in node.js
+                    console.log(error.request);
+                } else {
+                    // Something happened in setting up the request that triggered an Error
+                    console.log('Error', error.message);
+                }
+                console.log(error.config);
             });
         },
 
@@ -45688,9 +45704,7 @@ Vue.component('journey-container', __webpack_require__(522));
                 self.ds_interpreter.setInitialSelections(self.interpreter_selector, selected_interpreter); // Pre select values for an specific service
             }
         },
-
-        //Submit information to webservice
-        submitInfo: function submitInfo() {
+        updateAdhocObj: function updateAdhocObj() {
             var self = this;
             self.adhoc_object.regular = {
                 time_name: document.querySelector("#regular_journey button.active").id,
@@ -45702,16 +45716,66 @@ Vue.component('journey-container', __webpack_require__(522));
                 hours: self.ds_interpreter.getSelectedValues(),
                 duration: document.querySelector("#interpreter_duration").value
             };
+        },
+        validateAdhocForm: function validateAdhocForm() {
+            var self = this;
+            var response = {
+                can_submit: true,
+                message: []
+            };
+            self.updateAdhocObj();
 
+            if (self.adhoc_object.date === null || self.adhoc_object.date === '') {
+                //No date selected
+                response.can_submit = false;
+                response.message.push('date');
+            }
+            if (self.adhoc_object.regular.duration === '' && self.adhoc_object.interpreter.duration === '') {
+                // No Duration
+                response.can_submit = false;
+                response.message.push('duration');
+            } else if (self.adhoc_object.regular.duration !== '' && self.adhoc_object.regular.hours.length === 0) {
+                //Duration but not selected hours
+                response.can_submit = false;
+                response.message.push('regular hours');
+            } else if (self.adhoc_object.interpreter.duration !== '' && self.adhoc_object.interpreter.hours.length === 0) {
+                //Duration but not selected hours
+                response.can_submit = false;
+                response.message.push('interpreter hours');
+            }
+
+            if (self.adhoc_object.regular.duration === '' && self.adhoc_object.regular.hours.length > 0) {
+                //Selected Hours but not duration
+                response.can_submit = false;
+                response.message.push('regular duration');
+            }
+            if (self.adhoc_object.interpreter.duration === '' && self.adhoc_object.interpreter.hours.length > 0) {
+                //Selected Hours but not duration
+                response.can_submit = false;
+                response.message.push('interpreter duration');
+            }
+            return response;
+        },
+
+        //Submit information to webservice
+        submitInfo: function submitInfo() {
+            var self = this;
             var url = '/calendar/service/adhoc';
-            $("#contentLoading").modal("show");
-            axios['post'](url, { id: self.service, hours: self.adhoc_object }).then(function (response) {
-                console.log(response);
-            }).then(function () {
-                $("#contentLoading").modal("hide");
-            }).catch(function (error) {
-                $("#contentLoading").modal("hide");
-            });
+            var form_validation = self.validateAdhocForm();
+            if (form_validation.can_submit) {
+                $("#contentLoading").modal("show");
+                axios['post'](url, { id: self.service, hours: self.adhoc_object }).then(function (response) {
+                    console.log(response);
+                }).then(function () {
+                    $("#contentLoading").modal("hide");
+                }).catch(function (error) {
+                    $("#contentLoading").modal("hide");
+                });
+            } else {
+                console.log(form_validation.message);
+                var message = 'Please set ' + form_validation.message.join(', ');
+                alert(message);
+            }
         }
     },
     watch: {
@@ -46202,7 +46266,9 @@ var render = function() {
           staticClass: "form-control",
           attrs: {
             name: "duration",
-            type: "text",
+            type: "number",
+            min: "0",
+            step: "1",
             id: _vm.tableClass + "_duration",
             minlength: "1",
             placeholder: "Enter duration here...",

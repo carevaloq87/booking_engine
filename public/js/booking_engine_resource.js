@@ -16854,9 +16854,11 @@ var SelectableDS = function () {
         value: function setInitialSelections(context, elements) {
             var selection = '';
 
-            for (var i = 0; i < elements.length; i++) {
-                selection = elements[i];
-                this.selectable.addSelection(document.querySelector(context + '#' + selection));
+            if (typeof elements !== 'undefined' && elements.length > 0) {
+                for (var i = 0; i < elements.length; i++) {
+                    selection = elements[i];
+                    this.selectable.addSelection(document.querySelector(context + '#' + selection));
+                }
             }
         }
 
