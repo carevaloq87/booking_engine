@@ -291,5 +291,7 @@ Route::group(
 
     Route::post('/resource/days','CalendarController@storeResourceDays');
 
-	Route::post('/resource/hours','CalendarController@storeResourceHours');
+    Route::post('/resource/hours','CalendarController@storeResourceHours');
+
+    Route::post('/resource/adhoc','CalendarController@storeResourceAdhoc');
 });
