@@ -26,7 +26,7 @@
 
             <div class="tab-content adhoc_hours_selection col-xs-12">
                 <div id="regular_journey" class="tab-pane fade in active">
-                    <journey-container v-bind:currentJourney="journey.regular" tableClass="regular" v-on:reload-ds="initDragSelect"> </journey-container>
+                    <journey-container v-bind:currentJourney="journey.regular" tableClass="regular" v-on:reload-ds="updateDragSelect"> </journey-container>
                 </div>
             </div>
         </div>
@@ -48,7 +48,7 @@
             return {
                 adhoc_object: {
                     date: null,
-                    regular: {}
+                    regular: {},
                 },
                 adhoc_date: null,
                 choice: 'currentActive',
@@ -57,54 +57,91 @@
                 journey: {},
                 limit_from: new Date().toISOString().split('T')[0],
                 rs_id: this.$root.rs_id,
+                regular_selector: '#regular_journey .ds-button'
             }
         },
         methods: {
-            //Initialize Drage and select object for regular and
+            //Initialize Drage and select object for regular and interpreter elements
             initDragSelect() {
                 var self = this;
-                let selected_regular = [];
-
-                if(self.ds_regular.hasOwnProperty('selectable')){
-                    selected_regular = self.ds_regular.getSelectedValues();
-                }
-
                 //Initialize Drag Select in for calendars
-                self.ds_regular = new SelectableDS('#regular_journey .ds-button');
-                //There are no previous selections
+                self.ds_regular = new SelectableDS(self.regular_selector);
+            },
+            //Keep selected values on interface update
+            updateDragSelect() {
+                var self = this;
+                let selected_regular = self.ds_regular.getSelectedValues();
+
+                //Re-Initialize Drag Select
+                self.initDragSelect();
+
+                //Set previous selections
                 if(selected_regular.length > 0) {
-                    self.ds_regular.setInitialSelections('#regular_journey .ds-button', selected_regular); // Pre select values for an specific resource
+                    self.ds_regular.setInitialSelections(self.regular_selector, selected_regular); // Pre select values for an specific service
                 }
+            },
+            updateAdhocObj() {
+                let self = this;
+                self.adhoc_object.regular = {
+                                    time_name: document.querySelector("#regular_journey button.active").id,
+                                    hours: self.ds_regular.getSelectedValues(),
+                                    duration: document.querySelector("#regular_duration").value
+                                };
+            },
+            validateAdhocForm() {
+                let self = this;
+                let response = {
+                    can_submit: true,
+                    message: []
+                };
+                self.updateAdhocObj();
+
+                if(self.adhoc_object.date === null || self.adhoc_object.date === '') { //No date selected
+                    response.can_submit = false;
+                    response.message.push('date');
+                }
+                if( self.adhoc_object.regular.duration === '' ) { // No Duration
+                    response.can_submit = false;
+                    response.message.push('duration');
+                } else if (self.adhoc_object.regular.duration !== '' && self.adhoc_object.regular.hours.length === 0 ) { //Duration but not selected hours
+                    response.can_submit = false;
+                    response.message.push('regular hours');
+                }
+                if (self.adhoc_object.regular.duration === '' && self.adhoc_object.regular.hours.length > 0 ) { //Selected Hours but not duration
+                    response.can_submit = false;
+                    response.message.push('regular duration');
+                }
+                return response;
             },
             //Submit information to webservice
             submitInfo() {
                 let self = this;
-                self.adhoc_object.regular = {
-                                    time_name: document.querySelector("#regular button.active").id,
-                                    hours: self.ds_regular.getSelectedValues(),
-                                    duration: document.querySelector("#regular_duration").value
-                                };
-
                 let url = '/calendar/resource/adhoc';
-                $("#contentLoading").modal("show");
-                axios['post'](url, { id: self.resource, hours: self.adhoc_object })
-                    .then(response => {
-                        console.log(response);
-                    })
-                    .then(() => {
-                        $("#contentLoading").modal("hide");
-                    })
-                    .catch(error => {
-                        $("#contentLoading").modal("hide");
-                        console.log(error);
-                    });
+                let form_validation = self.validateAdhocForm();
+                if(form_validation.can_submit) {
+                    $("#contentLoading").modal("show");
+                    axios['post'](url, { id: self.resource, hours: self.adhoc_object })
+                        .then(response => {
+                            console.log(response);
+                        })
+                        .then(() => {
+                            $("#contentLoading").modal("hide");
+                        })
+                        .catch(error => {
+                            $("#contentLoading").modal("hide");
+                        });
+                } else {
+                    console.log(form_validation.message);
+                    let message = 'Please set ' + form_validation.message.join(', ');
+                    alert(message);
+                }
             }
         },
         watch: {
             //Watch change of service
             resource: function() {
                 $("#contentLoading").modal("show");
-                if (typeof this.ds_regular.clear === "function") {
+                if (typeof this.ds_regular.clear === "function" ) {
                     this.ds_regular.clear();
                 }
             }
