@@ -125,6 +125,17 @@ class CalendarController extends Controller
         }
     }
 
+    /**
+     * Return calendar files
+     *
+     * @return JSON
+     */
+    public function getFutureAdhocs(Request $request)
+    {
+        $calendar = new Calendar();
+        return $calendar->getFutureAdhocs($request);
+    }
+
 
     /**
      * Save unavailable hours for a resource

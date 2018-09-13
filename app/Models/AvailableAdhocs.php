@@ -59,26 +59,13 @@ class AvailableAdhocs extends Model
     }
 
     /**
-     * Set the date.
+     * Get future Adhocs by service ID
      *
-     * @param  string  $value
-     * @return void
+     * @param int Service Id
+     * @return array Adhocs set in a service
      */
-    public function setDateAttribute($value)
+    public function getAdhocsByServiceId($service_id)
     {
-        $this->attributes['date'] = !empty($value) ? \DateTime::createFromFormat($this->getDateFormat(), $value) : null;
+        return self::where('service_id','=', $service_id)->where('date', '>=', date('Y-m-d'))->get();
     }
-
-    /**
-     * Get date in array format
-     *
-     * @param  string  $value
-     * @return array
-     */
-    public function getDateAttribute($value)
-    {
-        return \DateTime::createFromFormat('d-m-Y', $value);
-
-    }
-
 }

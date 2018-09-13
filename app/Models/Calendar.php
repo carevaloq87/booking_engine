@@ -338,4 +338,19 @@ class Calendar extends Model
 
         AvailableAdhocs::insert($days);
     }
+    
+    /**
+     * Get future adhoc appts by service id
+     *
+     * @param request $request
+     * @return array
+     */
+    public function getFutureAdhocs($request)
+    {
+        $service_id = $request->serviceId;
+        $available_adhocs = new AvailableAdhocs();
+        $adhocs = $available_adhocs->getAdhocsByServiceId($service_id); // Selected services
+        return $adhocs;
+    }
+
 }

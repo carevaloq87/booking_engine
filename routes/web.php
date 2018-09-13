@@ -277,6 +277,9 @@ Route::group(
     Route::get('/service/hours/{serviceId}','CalendarController@getServiceHours')
         ->where('serviceId', '[0-9]+');
 
+    Route::get('/service/adhoc/{serviceId}','CalendarController@getFutureAdhocs')
+        ->where('serviceId', '[0-9]+');
+
     Route::get('/resource/days/{resourceId}','CalendarController@getResourceDays')
         ->where('resourceId', '[0-9]+');
 

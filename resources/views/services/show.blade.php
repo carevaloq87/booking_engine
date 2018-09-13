@@ -82,6 +82,17 @@
                 </div>
             </div>
 
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="mt-5 mb-5">Selected Adhocs</h4>
+                </div>
+                <div class="panel-body">
+                    <div class="col-xs-12">
+                        <selected-adhoc :service="{{ $service->id }}"></selected-adhoc>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
         @include("services.modal.days")
