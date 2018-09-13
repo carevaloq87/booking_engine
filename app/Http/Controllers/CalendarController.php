@@ -135,6 +135,26 @@ class CalendarController extends Controller
         $calendar = new Calendar();
         return $calendar->getFutureAdhocs($request);
     }
+  /**
+     * Save adhoc days and hours for a service
+     *
+     * @param Request $request
+     * @return array
+     */
+    public function storeResourceAdhoc(Request $request)
+    {
+        try {
+
+            $data = $this->getAdhocData($request);
+            $calendar = new Calendar();
+            $calendar->saveAdhocInResource($data);
+            return $data;
+
+        } catch (Exception $exception) {
+            return back()->withInput()
+                        ->withErrors(['unexpected_error' => $exception->getMessage()]);
+        }
+    }
 
 
     /**

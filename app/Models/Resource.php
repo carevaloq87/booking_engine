@@ -74,11 +74,19 @@ class Resource extends Model
 
 
     /**
-     * Get the available hours for this model.
+     * Get the unavailable hours for this model.
      */
     public function unavailableHours()
     {
         return $this->hasMany('App\Models\UnavailableHours');
+    }
+
+     /**
+     * Get the unavailable adhoc for this model.
+     */
+    public function unavailableAdhocs()
+    {
+        return $this->hasMany('App\Models\UnavailableAdhocs');
     }
 
     /**

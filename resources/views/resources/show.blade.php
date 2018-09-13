@@ -80,6 +80,7 @@
         </div>
         @include("resources.modal.days")
         @include("resources.modal.hours")
+        @include("resources.modal.adhoc")
     </div>
 @endsection
 @section('scripts')

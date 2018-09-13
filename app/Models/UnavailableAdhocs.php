@@ -32,6 +32,7 @@ class UnavailableAdhocs extends Model
                   'time_length',
                   'start_time',
                   'details',
+                  'duration',
                   'type',
                   'resource_id'
               ];
@@ -58,27 +59,5 @@ class UnavailableAdhocs extends Model
         return $this->belongsTo('App\Models\Resource','resource_id');
     }
 
-    /**
-     * Set the date.
-     *
-     * @param  string  $value
-     * @return void
-     */
-    public function setDateAttribute($value)
-    {
-        $this->attributes['date'] = !empty($value) ? \DateTime::createFromFormat($this->getDateFormat(), $value) : null;
-    }
-
-    /**
-     * Get date in array format
-     *
-     * @param  string  $value
-     * @return array
-     */
-    public function getDateAttribute($value)
-    {
-        return \DateTime::createFromFormat('d-m-Y', $value);
-
-    }
 
 }
