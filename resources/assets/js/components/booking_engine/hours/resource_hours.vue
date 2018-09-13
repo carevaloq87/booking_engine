@@ -2,7 +2,7 @@
     <div>
         <div class="tab-content col-xs-12">
             <div id="regular" class="tab-pane fade in active">
-                <hours-container v-bind:currentSchedule="schedule.regular" tableClass="current" v-on:reload-ds="initDragSelect"> </hours-container>
+                <hours-container v-bind:currentSchedule="schedule.regular" tableClass="current" v-on:reload-ds="updateDragSelect"> </hours-container>
             </div>
         </div>
 
@@ -24,36 +24,59 @@
                 ds_regular: {},
                 schedule: {},
                 rs_id: this.$root.rs_id,
+                regular_selector: '#regular .ds-button',
             }
         },
         methods: {
             //Get schedules by resource ID
             getSchedule(rs_id) {
+                $("#contentLoading").modal("show");
                 var self = this;
                 let url = '/calendar/resource/hours/' + rs_id;
+
                 axios['get'](url, {})
                     .then(response => {
                         self.schedule = response.data;
                     })
                     .then(() => {
                         self.initDragSelect();
+                    })
+                    .then(() => {
+                        self.loadInitialSelections();
                         $("#contentLoading").modal("hide");
                     })
                     .catch(error => {
                         console.log(error);
                         $("#contentLoading").modal("hide");
+                        self.getSchedule(self.resource);
                     });
             },
             //Initialize Drage and select object for regular and interpreter elements
             initDragSelect() {
                 var self = this;
                 //Initialize Drag Select in for calendars
-                self.ds_regular = new SelectableDS('#regular .ds-button');
+                self.ds_regular = new SelectableDS(self.regular_selector);
+            },
+            //Select initial values
+            loadInitialSelections() {
+                var self = this;
                 //Set previous selections
                 if(self.schedule.hasOwnProperty('regular') && self.schedule.regular.hasOwnProperty('days')){
-                    self.ds_regular.setInitialSelections('#regular .ds-button', self.schedule.regular.days); // Pre select values for an specific resource
+                    self.ds_regular.setInitialSelections(self.regular_selector, self.schedule.regular.days); // Pre select values for an specific resource
                 }
+            },
+            //Keep selected values on interface update
+            updateDragSelect() {
+                var self = this;
+                let selected_regular = self.ds_regular.getSelectedValues();
 
+                //Re-Initialize Drag Select
+                self.initDragSelect();
+
+                //Set previous selections
+                if(selected_regular.length > 0) {
+                    self.ds_regular.setInitialSelections(self.regular_selector, selected_regular); // Pre select values for an specific resource
+                }
             },
             // Submit information to webservice
             submitInfo() {
@@ -61,8 +84,8 @@
                 let hours = {
                                 regular: {
                                     time_name: document.querySelector("#regular button.active").id,
-                                    days: self.ds_regular.getSelection().map( item => item.id )
-                                },
+                                    days: self.ds_regular.getSelectedValues()
+                                }
                             };
 
                 let url = '/calendar/resource/hours';
@@ -77,14 +100,12 @@
                     })
                     .catch(error => {
                         $("#contentLoading").modal("hide");
-                        console.log(error);
                     });
             }
         },
         watch: {
             //Watch change of resource
             resource: function() {
-                $("#contentLoading").modal("show");
                 if (typeof this.ds_regular.clear === "function") {
                     this.ds_regular.clear();
                 }
