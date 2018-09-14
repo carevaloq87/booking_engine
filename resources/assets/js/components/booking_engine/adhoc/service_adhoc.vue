@@ -30,11 +30,11 @@
 
             <div class="tab-content adhoc_hours_selection col-xs-12">
                 <div id="regular_journey" class="tab-pane fade in active">
-                    <journey-container v-bind:currentJourney="journey.regular" tableClass="regular" v-on:reload-ds="updateDragSelect"> </journey-container>
+                    <journey-container v-bind:currentJourney="journey.regular" tableClass="regular" v-on:reload-ds="updateDragSelect" is_service> </journey-container>
                 </div>
 
                 <div id="interpreter_journey" class="tab-pane fade">
-                    <journey-container v-bind:currentJourney="journey.interpreter" tableClass="interpreter" v-on:reload-ds="updateDragSelect"> </journey-container>
+                    <journey-container v-bind:currentJourney="journey.interpreter" tableClass="interpreter" v-on:reload-ds="updateDragSelect" is_service> </journey-container>
                 </div>
             </div>
         </div>

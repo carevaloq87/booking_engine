@@ -21,13 +21,15 @@
                 </dropdown>
             </div>
         </div>
-
-        <div class="form-group col-sm-12">
-
-            <div class="tab-content adhoc_hours_selection col-xs-12">
-                <div id="regular_journey" class="tab-pane fade in active">
-                    <journey-container v-bind:currentJourney="journey.regular" tableClass="regular" v-on:reload-ds="updateDragSelect"> </journey-container>
-                </div>
+        <div class="form-group col-xs-12">
+            <label for="details" class="col-md-2 control-label">Details</label>
+            <div class="col-sm-6 col-md-4">
+                <textarea class="form-control" name="details" id="details" rows="4" cols="50"  placeholder="Enter details here..."></textarea>
+            </div>
+        </div>
+        <div class="form-group col-sm-12" >
+            <div id="regular_journey" class="tab-pane fade in active">
+                <journey-container v-bind:currentJourney="journey.regular"  tableClass="regular" v-on:reload-ds="updateDragSelect"> </journey-container>
             </div>
         </div>
 
@@ -52,7 +54,7 @@
                 },
                 adhoc_date: null,
                 choice: 'currentActive',
-                duration: 60,
+                duration: 0,
                 ds_regular: {},
                 journey: {},
                 limit_from: new Date().toISOString().split('T')[0],
@@ -85,7 +87,8 @@
                 self.adhoc_object.regular = {
                                     time_name: document.querySelector("#regular_journey button.active").id,
                                     hours: self.ds_regular.getSelectedValues(),
-                                    duration: document.querySelector("#regular_duration").value
+                                    duration: 0,//  Duration in adhoc resource is not necessary. document.querySelector("#regular_duration").value
+                                    details:document.querySelector("#details").value
                                 };
             },
             validateAdhocForm() {

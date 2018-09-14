@@ -63,7 +63,7 @@ class ResourceController extends Controller
             $resource = Resource::create($data);
             if (isset($data['services'])) {
                 $resource->services()->sync($data['services']);
-            } 
+            }
 
             return redirect()->route('resources.resource.index')
                              ->with('success_message', 'Resource was successfully added!');
@@ -124,7 +124,7 @@ class ResourceController extends Controller
                 $resource->services()->sync($data['services']);
             } else {
                 $resource->services()->sync([]);
-            }  
+            }
 
             return redirect()->route('resources.resource.index')
                              ->with('success_message', 'Resource was successfully updated!');
@@ -159,7 +159,7 @@ class ResourceController extends Controller
         }
     }
     /**
-     * Get services by resource id 
+     * Get services by resource id
      * (used in Vue)
      *
      * @param int $id resource id
@@ -178,7 +178,7 @@ class ResourceController extends Controller
     public function getResourcesByUserServiceProvider()
     {
         return Resource::getResourcesByUserServiceProvider();
-    }    
+    }
 
 
     /**

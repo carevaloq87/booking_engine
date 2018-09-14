@@ -1,7 +1,7 @@
 <template>
 
     <div :class="tableClass">
-        <div class="row adhoc-rows">
+        <div class="row adhoc-rows" v-if="is_service">
             <label for="duration" class="col-md-2 control-label">Duration</label>
             <div class="col-sm-4 col-md-5">
                 <input class="form-control" name="duration" type="number" min="0" step="1" :id="tableClass + '_duration'" minlength="1" placeholder="Enter duration here..." required>
@@ -58,7 +58,8 @@
     export default {
         props: {
             currentJourney: Object,
-            tableClass: String
+            tableClass: String,
+            is_service: Boolean,
         },
         data() {
             return {

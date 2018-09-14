@@ -391,16 +391,18 @@ class Calendar extends Model
         $time_name = $selected_hours['time_name'];
         $time_length = UnavailableHours::converHourToTextOrNumber($selected_hours['time_name']);
         $duration = $selected_hours['duration'];
+        $details = $selected_hours['details'];
         $days = array_map(
-                            function($item) use ($resource_id, $date, $duration, $time_length)
+                            function($item) use ($resource_id, $date, $duration, $time_length, $details)
                             {
                                 $day_start = explode('-', $item);
                                 return [
-                                            'resource_id'    => $resource_id,
+                                            'resource_id'   => $resource_id,
                                             'date'          => $date,
                                             'time_length'   => $time_length,
                                             'start_time'    => $day_start[1],
-                                            'duration'    => $duration,
+                                            'duration'      => $duration,
+                                            'details'       => $details,
                                         ];
                             },
                             $selected_hours['hours']
