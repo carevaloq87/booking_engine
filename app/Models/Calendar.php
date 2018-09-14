@@ -373,7 +373,7 @@ class Calendar extends Model
     {
         $service_id = $request->serviceId;
         $available_adhocs = new AvailableAdhocs();
-        $adhocs = $available_adhocs->getAdhocsByServiceId($service_id); // Selected services
+        $adhocs = $available_adhocs->getAvailableAdhocHoursByServiceId($service_id); // Selected services
         return $adhocs;
     }
 
