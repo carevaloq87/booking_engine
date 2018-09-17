@@ -28,13 +28,13 @@ class AvailableAdhocs extends Model
      * @var array
      */
     protected $fillable = [
-                  'date',
-                  'time_length',
-                  'start_time',
-                  'duration',
-                  'is_interpreter',
-                  'service_id'
-              ];
+                    'date',
+                    'time_length',
+                    'start_time',
+                    'duration',
+                    'is_interpreter',
+                    'service_id'
+                ];
 
     /**
      * The attributes that should be mutated to dates.
@@ -69,20 +69,21 @@ class AvailableAdhocs extends Model
         $adhoc_regular = self::where('service_id','=', $service_id)->where('date', '>=', date('Y-m-d'))->where('is_interpreter', '=', 0)->orderBy('start_time')->get();
         $adhoc_interpreter = self::where('service_id','=', $service_id)->where('date', '>=', date('Y-m-d'))->where('is_interpreter', '=', 1)->orderBy('start_time')->get();
 
-        $adhocs['regular'] = self::getHoursFromCollection($adhoc_regular);
-        $adhocs['interpreter'] = self::getHoursFromCollection($adhoc_interpreter);
+        $adhocs['regular'] = self::getAdhocsFromCollection($adhoc_regular);
+        $adhocs['interpreter'] = self::getAdhocsFromCollection($adhoc_interpreter);
         return $adhocs;
     }
 
     /**
      * Get hours from an array of Available Adhocs
      *
-     * @param array $collection
+     * @param Collection $collection
      * @return array array of Available Adhoc hours and options
      */
     public function getHoursFromCollection($collection)
     {
         $hours_available = [];
+        $hours = [];
         $options = [];
         if(!empty($collection)){
             $in_a_row = 1;
@@ -102,8 +103,36 @@ class AvailableAdhocs extends Model
                     $in_a_row = 1;
                 }
             }
+            $hours_available = collect($hours_available)->flatten();
+            foreach ($hours_available as $value) {
+                $hours[$value] = self::valueToHour($value, $options['duration']);
+            }
         }
-        return ['hours' => collect($hours_available)->flatten(), 'options' => $options];
+        return ['hours' => $hours, 'options' => $options];
+    }
+
+    /**
+     * Get hours Adhoc informatrion from a colleciton
+     *
+     * @param Collection $collection A collection of Available adhocs
+     * @return array
+     */
+    public function getAdhocsFromCollection ($collection)
+    {
+        $hours_by_day = [];
+        $by_date = [];
+        if(!empty($collection)){
+            //Map days
+            $by_date = $collection->mapToGroups(function ($item, $key) {
+                            return [$item['date'] => $item];
+                        });
+            //Transform minute values per day to strings of hours and duration
+            foreach ($by_date as $day => $adhoc_info) {
+                $hours_by_day[$day] = self::getHoursFromCollection($adhoc_info);
+            }
+        }
+        ksort($hours_by_day);
+        return $hours_by_day;
     }
 
     /**
@@ -121,5 +150,45 @@ class AvailableAdhocs extends Model
             $hours[] = $initial_time + ($duration * $rep);
         }
         return $hours;
+    }
+
+    /**
+     * Transform time in minutes to Hours and minutes on plain text
+     *
+     * @param int $value Minutes 
+     * @param int $duration Duraton of the appt
+     * @return string
+     */
+    public function valueToHour($value, $duration)
+    {
+        $valute_in_hours = $value/60;
+        $hour = sprintf("%02d", floor($valute_in_hours) );
+        $minute = sprintf("%02d", round(fmod($valute_in_hours, 1) * 60));
+
+        $finish_time = ($value + $duration) / 60;
+        $finish_hour = sprintf("%02d",  floor($finish_time) );
+        $finish_minute = sprintf("%02d", round(fmod($finish_time, 1) * 60));
+
+        return "$hour:$minute - $finish_hour:$finish_minute";
+    }
+
+    public function deleteAdhoc($data)
+    {
+        $adhoc_info = explode('||', $data['adhoc']);
+        $service_id = $data['service_id'];
+        $result = false;
+        if($adhoc_info[1] == 0) {
+            $result = self::where('service_id','=', $service_id)
+                            ->where('date', '=', $adhoc_info[0])
+                            ->where('is_interpreter', '=', 0)
+                            ->delete();
+        }
+        if($adhoc_info[1] == 1) {
+            $result = self::where('service_id','=', $service_id)
+                            ->where('date', '=', $adhoc_info[0])
+                            ->where('is_interpreter', '=', 1)
+                            ->delete();
+        }
+        return $result;
     }
 }

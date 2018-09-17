@@ -48,6 +48,21 @@ $white: #fff;
     }
 }
 
+.adhoc-hours {
+    list-style: none;
+    float: left;
+    p {
+        margin-bottom: 5px;
+    }
+    li {
+        font-size: 12px;
+        line-height: 17px;
+        padding-left: 17px;
+    }
+    i {
+        color: red;
+    }
+}
 //Hours Calendar Styles
 .day_col {
     float: left;

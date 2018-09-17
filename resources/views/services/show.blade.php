@@ -84,7 +84,7 @@
 
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <h4 class="mt-5 mb-5">Selected Adhocs</h4>
+                    <h4 class="mt-5 mb-5">Future Adhocs</h4>
                 </div>
                 <div class="panel-body">
                     <div class="col-xs-12">

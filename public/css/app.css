@@ -51,6 +51,25 @@
   line-height: 30px;
 }
 
+.adhoc-hours {
+  list-style: none;
+  float: left;
+}
+
+.adhoc-hours p {
+  margin-bottom: 5px;
+}
+
+.adhoc-hours li {
+  font-size: 12px;
+  line-height: 17px;
+  padding-left: 17px;
+}
+
+.adhoc-hours i {
+  color: red;
+}
+
 .day_col {
   float: left;
   width: 45px;

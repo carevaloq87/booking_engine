@@ -292,6 +292,8 @@ Route::group(
 
     Route::post('/service/adhoc','CalendarController@storeAdhoc');
 
+    Route::post('/service/adhoc/delete','CalendarController@deleteServiceAdhoc');
+
     Route::post('/resource/days','CalendarController@storeResourceDays');
 
     Route::post('/resource/hours','CalendarController@storeResourceHours');

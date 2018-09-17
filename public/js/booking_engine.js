@@ -45167,7 +45167,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: {
         currentJourney: Object,
-        tableClass: String
+        tableClass: String,
+        is_service: Boolean
     },
     data: function data() {
         return {
@@ -45247,29 +45248,34 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { class: _vm.tableClass }, [
-    _c("div", { staticClass: "row adhoc-rows" }, [
-      _c(
-        "label",
-        { staticClass: "col-md-2 control-label", attrs: { for: "duration" } },
-        [_vm._v("Duration")]
-      ),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-sm-4 col-md-5" }, [
-        _c("input", {
-          staticClass: "form-control",
-          attrs: {
-            name: "duration",
-            type: "number",
-            min: "0",
-            step: "1",
-            id: _vm.tableClass + "_duration",
-            minlength: "1",
-            placeholder: "Enter duration here...",
-            required: ""
-          }
-        })
-      ])
-    ]),
+    _vm.is_service
+      ? _c("div", { staticClass: "row adhoc-rows" }, [
+          _c(
+            "label",
+            {
+              staticClass: "col-md-2 control-label",
+              attrs: { for: "duration" }
+            },
+            [_vm._v("Duration")]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-sm-4 col-md-5" }, [
+            _c("input", {
+              staticClass: "form-control",
+              attrs: {
+                name: "duration",
+                type: "number",
+                min: "0",
+                step: "1",
+                id: _vm.tableClass + "_duration",
+                minlength: "1",
+                placeholder: "Enter duration here...",
+                required: ""
+              }
+            })
+          ])
+        ])
+      : _vm._e(),
     _vm._v(" "),
     _c("div", { staticClass: "row col-xs-12 adhoc-rows" }, [
       _vm._m(0),
@@ -46394,9 +46400,7 @@ Vue.component('journey-container', __webpack_require__(508));
             if (form_validation.can_submit) {
                 $("#contentLoading").modal("show");
                 axios['post'](url, { id: self.service, hours: self.adhoc_object }).then(function (response) {
-                    console.log(response);
-                }).then(function () {
-                    $("#contentLoading").modal("hide");
+                    location.reload();
                 }).catch(function (error) {
                     $("#contentLoading").modal("hide");
                 });
@@ -46531,7 +46535,8 @@ var render = function() {
               _c("journey-container", {
                 attrs: {
                   currentJourney: _vm.journey.regular,
-                  tableClass: "regular"
+                  tableClass: "regular",
+                  is_service: ""
                 },
                 on: { "reload-ds": _vm.updateDragSelect }
               })
@@ -46549,7 +46554,8 @@ var render = function() {
               _c("journey-container", {
                 attrs: {
                   currentJourney: _vm.journey.interpreter,
-                  tableClass: "interpreter"
+                  tableClass: "interpreter",
+                  is_service: ""
                 },
                 on: { "reload-ds": _vm.updateDragSelect }
               })
@@ -46670,18 +46676,54 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: ['service'],
     data: function data() {
         return {
-            adhocs: {}
+            adhocs: {
+                interpreter: {},
+                regular: {}
+            }
         };
     },
 
     methods: {
-        getAdhocs: function getAdhocs() {
+        deleteAdhoc: function deleteAdhoc(value) {
+            $("#contentLoading").modal("show");
+            var self = this;
+            var url = '/calendar/service/adhoc/delete';
 
+            axios['post'](url, { service_id: self.service, adhoc: value }).then(function (response) {
+                self.getAdhocs();
+                $("#contentLoading").modal("hide");
+            }).catch(function (error) {
+                console.log(error);
+                $("#contentLoading").modal("hide");
+            });
+        },
+        getAdhocs: function getAdhocs() {
             $("#contentLoading").modal("show");
             var self = this;
             var url = '/calendar/service/adhoc/' + self.service;
@@ -46708,7 +46750,77 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div")
+  return _c("div", [
+    _c("div", { staticClass: "col-xs-6" }, [
+      _c("h4", [_vm._v("Regular Appointments")]),
+      _vm._v(" "),
+      _c(
+        "div",
+        _vm._l(_vm.adhocs.regular, function(hours, day) {
+          return _c(
+            "ul",
+            { key: day, staticClass: "adhoc-hours" },
+            [
+              _c("p", [
+                _c("i", {
+                  staticClass: "fa fa-times-circle",
+                  on: {
+                    click: function($event) {
+                      _vm.deleteAdhoc(day + "||" + 0)
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _c("strong", [_vm._v(_vm._s(day))])
+              ]),
+              _vm._v(" "),
+              _vm._l(hours.hours, function(hour, time) {
+                return _c("li", { key: time }, [
+                  _c("span", [_vm._v(_vm._s(hour))])
+                ])
+              })
+            ],
+            2
+          )
+        })
+      )
+    ]),
+    _vm._v(" "),
+    _c("div", { staticClass: "col-xs-6" }, [
+      _c("h4", [_vm._v("Interpreter Appointments")]),
+      _vm._v(" "),
+      _c(
+        "div",
+        _vm._l(_vm.adhocs.interpreter, function(hours, day) {
+          return _c(
+            "ul",
+            { key: day, staticClass: "adhoc-hours" },
+            [
+              _c("p", [
+                _c("i", {
+                  staticClass: "fa fa-times-circle",
+                  on: {
+                    click: function($event) {
+                      _vm.deleteAdhoc(day + "||" + 1)
+                    }
+                  }
+                }),
+                _vm._v(" "),
+                _c("strong", [_vm._v(_vm._s(day))])
+              ]),
+              _vm._v(" "),
+              _vm._l(hours.hours, function(hour, time) {
+                return _c("li", { key: time }, [
+                  _c("span", [_vm._v(_vm._s(hour))])
+                ])
+              })
+            ],
+            2
+          )
+        })
+      )
+    ])
+  ])
 }
 var staticRenderFns = []
 render._withStripped = true

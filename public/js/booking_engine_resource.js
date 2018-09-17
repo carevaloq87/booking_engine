@@ -45167,7 +45167,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: {
         currentJourney: Object,
-        tableClass: String
+        tableClass: String,
+        is_service: Boolean
     },
     data: function data() {
         return {
@@ -45247,29 +45248,34 @@ var render = function() {
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
   return _c("div", { class: _vm.tableClass }, [
-    _c("div", { staticClass: "row adhoc-rows" }, [
-      _c(
-        "label",
-        { staticClass: "col-md-2 control-label", attrs: { for: "duration" } },
-        [_vm._v("Duration")]
-      ),
-      _vm._v(" "),
-      _c("div", { staticClass: "col-sm-4 col-md-5" }, [
-        _c("input", {
-          staticClass: "form-control",
-          attrs: {
-            name: "duration",
-            type: "number",
-            min: "0",
-            step: "1",
-            id: _vm.tableClass + "_duration",
-            minlength: "1",
-            placeholder: "Enter duration here...",
-            required: ""
-          }
-        })
-      ])
-    ]),
+    _vm.is_service
+      ? _c("div", { staticClass: "row adhoc-rows" }, [
+          _c(
+            "label",
+            {
+              staticClass: "col-md-2 control-label",
+              attrs: { for: "duration" }
+            },
+            [_vm._v("Duration")]
+          ),
+          _vm._v(" "),
+          _c("div", { staticClass: "col-sm-4 col-md-5" }, [
+            _c("input", {
+              staticClass: "form-control",
+              attrs: {
+                name: "duration",
+                type: "number",
+                min: "0",
+                step: "1",
+                id: _vm.tableClass + "_duration",
+                minlength: "1",
+                placeholder: "Enter duration here...",
+                required: ""
+              }
+            })
+          ])
+        ])
+      : _vm._e(),
     _vm._v(" "),
     _c("div", { staticClass: "row col-xs-12 adhoc-rows" }, [
       _vm._m(0),
@@ -45566,10 +45572,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
 
 
 Vue.component('calendar-container', __webpack_require__(501));
@@ -45580,9 +45582,7 @@ Vue.component('calendar-container', __webpack_require__(501));
             calendars: {},
             choice: 'currentActive',
             ds_current: {},
-            ds_current_interpreter: {},
             ds_next: {},
-            ds_next_interpreter: {},
             rs_id: this.$root.rs_id
         };
     },
@@ -45596,8 +45596,10 @@ Vue.component('calendar-container', __webpack_require__(501));
         isActiveTab: function isActiveTab(val) {
             return this.choice === val;
         },
-        //Get Calendar by service ID
+        //Get Calendar by resource ID
         getCalendar: function getCalendar(rs_id) {
+            $("#contentLoading").modal("show");
+
             var self = this;
             var url = '/calendar/resource/days/' + rs_id;
 
@@ -45608,7 +45610,7 @@ Vue.component('calendar-container', __webpack_require__(501));
                 $("#contentLoading").modal("hide");
             }).catch(function (error) {
                 $("#contentLoading").modal("hide");
-                console.log(error);
+                console.log('Error', error.message);
             });
         },
 
@@ -45618,23 +45620,18 @@ Vue.component('calendar-container', __webpack_require__(501));
             //Initialize Drag Select in for calendars
             self.ds_current = new __WEBPACK_IMPORTED_MODULE_0__selectableDS__["a" /* default */]('.current_option_day');
             self.ds_next = new __WEBPACK_IMPORTED_MODULE_0__selectableDS__["a" /* default */]('.next_option_day');
-            //Set previous selections                
-            if (self.calendars.selected_current) {
-                self.ds_current.setInitialSelections('.current ', self.calendars.selected_current); // Pre select values for an specific resource                                                
-            }
-            if (self.calendars.selected_next) {
-                self.ds_next.setInitialSelections('.next ', self.calendars.selected_next); // Pre select values for an specific resource
-            }
+
+            //Set previous selections
+            self.ds_current.setInitialSelections('.current ', self.calendars.selected_current); // Pre select values for an specific resource
+            self.ds_next.setInitialSelections('.next ', self.calendars.selected_next); // Pre select values for an specific resource
         },
+
+        //Submit information to webservice
         submitInfo: function submitInfo() {
             var self = this;
             var selections = {};
-            selections.current = self.ds_current.getSelection().map(function (item) {
-                return item.id;
-            });
-            selections.next = self.ds_next.getSelection().map(function (item) {
-                return item.id;
-            });
+            selections.current = self.ds_current.getSelectedValues();
+            selections.next = self.ds_next.getSelectedValues();
 
             var url = '/calendar/resource/days';
 
@@ -45650,19 +45647,14 @@ Vue.component('calendar-container', __webpack_require__(501));
         }
     },
     watch: {
-        //Watch change of service
+        //Watch change of resource
         resource: function resource() {
-            $("#contentLoading").modal("show");
             var self = this;
             if (typeof this.ds_current.clear === "function") {
                 self.ds_current.clear();
                 self.ds_current = {};
-                self.ds_current_interpreter.clear();
-                self.ds_current_interpreter = {};
                 self.ds_next.clear();
                 self.ds_next = {};
-                self.ds_next_interpreter.clear();
-                self.ds_next_interpreter = {};
             }
             this.getCalendar(this.resource);
         }
@@ -45780,20 +45772,6 @@ var render = function() {
               })
             ],
             1
-          ),
-          _vm._v(" "),
-          _c(
-            "div",
-            { staticClass: "tab-pane fade", attrs: { id: "next_interpreter" } },
-            [
-              _c("calendar-container", {
-                attrs: {
-                  currentCalendar: _vm.calendars.next_year,
-                  tableClass: "next_interpreter"
-                }
-              })
-            ],
-            1
           )
         ])
       ]
@@ -45901,23 +45879,29 @@ Vue.component('hours-container', __webpack_require__(504));
         return {
             ds_regular: {},
             schedule: {},
-            rs_id: this.$root.rs_id
+            rs_id: this.$root.rs_id,
+            regular_selector: '#regular .ds-button'
         };
     },
 
     methods: {
         //Get schedules by resource ID
         getSchedule: function getSchedule(rs_id) {
+            $("#contentLoading").modal("show");
             var self = this;
             var url = '/calendar/resource/hours/' + rs_id;
+
             axios['get'](url, {}).then(function (response) {
                 self.schedule = response.data;
             }).then(function () {
                 self.initDragSelect();
+            }).then(function () {
+                self.loadInitialSelections();
                 $("#contentLoading").modal("hide");
             }).catch(function (error) {
                 console.log(error);
                 $("#contentLoading").modal("hide");
+                self.getSchedule(self.resource);
             });
         },
 
@@ -45925,10 +45909,29 @@ Vue.component('hours-container', __webpack_require__(504));
         initDragSelect: function initDragSelect() {
             var self = this;
             //Initialize Drag Select in for calendars
-            self.ds_regular = new __WEBPACK_IMPORTED_MODULE_0__selectableDS__["a" /* default */]('#regular .ds-button');
+            self.ds_regular = new __WEBPACK_IMPORTED_MODULE_0__selectableDS__["a" /* default */](self.regular_selector);
+        },
+
+        //Select initial values
+        loadInitialSelections: function loadInitialSelections() {
+            var self = this;
             //Set previous selections
             if (self.schedule.hasOwnProperty('regular') && self.schedule.regular.hasOwnProperty('days')) {
-                self.ds_regular.setInitialSelections('#regular .ds-button', self.schedule.regular.days); // Pre select values for an specific resource
+                self.ds_regular.setInitialSelections(self.regular_selector, self.schedule.regular.days); // Pre select values for an specific resource
+            }
+        },
+
+        //Keep selected values on interface update
+        updateDragSelect: function updateDragSelect() {
+            var self = this;
+            var selected_regular = self.ds_regular.getSelectedValues();
+
+            //Re-Initialize Drag Select
+            self.initDragSelect();
+
+            //Set previous selections
+            if (selected_regular.length > 0) {
+                self.ds_regular.setInitialSelections(self.regular_selector, selected_regular); // Pre select values for an specific resource
             }
         },
 
@@ -45938,9 +45941,7 @@ Vue.component('hours-container', __webpack_require__(504));
             var hours = {
                 regular: {
                     time_name: document.querySelector("#regular button.active").id,
-                    days: self.ds_regular.getSelection().map(function (item) {
-                        return item.id;
-                    })
+                    days: self.ds_regular.getSelectedValues()
                 }
             };
 
@@ -45953,14 +45954,12 @@ Vue.component('hours-container', __webpack_require__(504));
                 $("#contentLoading").modal("hide");
             }).catch(function (error) {
                 $("#contentLoading").modal("hide");
-                console.log(error);
             });
         }
     },
     watch: {
         //Watch change of resource
         resource: function resource() {
-            $("#contentLoading").modal("show");
             if (typeof this.ds_regular.clear === "function") {
                 this.ds_regular.clear();
             }
@@ -45988,7 +45987,7 @@ var render = function() {
               currentSchedule: _vm.schedule.regular,
               tableClass: "current"
             },
-            on: { "reload-ds": _vm.initDragSelect }
+            on: { "reload-ds": _vm.updateDragSelect }
           })
         ],
         1
@@ -46111,6 +46110,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
 
 
 
@@ -46126,7 +46127,7 @@ Vue.component('journey-container', __webpack_require__(508));
             },
             adhoc_date: null,
             choice: 'currentActive',
-            duration: 60,
+            duration: 0,
             ds_regular: {},
             journey: {},
             limit_from: new Date().toISOString().split('T')[0],
@@ -46161,7 +46162,8 @@ Vue.component('journey-container', __webpack_require__(508));
             self.adhoc_object.regular = {
                 time_name: document.querySelector("#regular_journey button.active").id,
                 hours: self.ds_regular.getSelectedValues(),
-                duration: document.querySelector("#regular_duration").value
+                duration: 0, //  Duration in adhoc resource is not necessary. document.querySelector("#regular_duration").value
+                details: document.querySelector("#details").value
             };
         },
         validateAdhocForm: function validateAdhocForm() {
@@ -46321,29 +46323,25 @@ var render = function() {
       )
     ]),
     _vm._v(" "),
+    _vm._m(1),
+    _vm._v(" "),
     _c("div", { staticClass: "form-group col-sm-12" }, [
       _c(
         "div",
-        { staticClass: "tab-content adhoc_hours_selection col-xs-12" },
+        {
+          staticClass: "tab-pane fade in active",
+          attrs: { id: "regular_journey" }
+        },
         [
-          _c(
-            "div",
-            {
-              staticClass: "tab-pane fade in active",
-              attrs: { id: "regular_journey" }
+          _c("journey-container", {
+            attrs: {
+              currentJourney: _vm.journey.regular,
+              tableClass: "regular"
             },
-            [
-              _c("journey-container", {
-                attrs: {
-                  currentJourney: _vm.journey.regular,
-                  tableClass: "regular"
-                },
-                on: { "reload-ds": _vm.updateDragSelect }
-              })
-            ],
-            1
-          )
-        ]
+            on: { "reload-ds": _vm.updateDragSelect }
+          })
+        ],
+        1
       )
     ]),
     _vm._v(" "),
@@ -46366,6 +46364,31 @@ var staticRenderFns = [
         _vm._v(
           "This will set an adhoc day only, you should provide a range of hours and duration for those appointments. Please include regular information when relevant."
         )
+      ])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "form-group col-xs-12" }, [
+      _c(
+        "label",
+        { staticClass: "col-md-2 control-label", attrs: { for: "details" } },
+        [_vm._v("Details")]
+      ),
+      _vm._v(" "),
+      _c("div", { staticClass: "col-sm-6 col-md-4" }, [
+        _c("textarea", {
+          staticClass: "form-control",
+          attrs: {
+            name: "details",
+            id: "details",
+            rows: "4",
+            cols: "50",
+            placeholder: "Enter details here..."
+          }
+        })
       ])
     ])
   }

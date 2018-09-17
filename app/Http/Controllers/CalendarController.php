@@ -248,4 +248,17 @@ class CalendarController extends Controller
 
         return $data;
     }
+
+    public function deleteServiceAdhoc(Request $request)
+    {
+        try {
+            $data = $request->all();
+            $available_adhocs = new \App\Models\AvailableAdhocs();
+            return $available_adhocs->deleteAdhoc($data);
+
+        } catch (Exception $exception) {
+            return back()->withInput()
+                        ->withErrors(['unexpected_error' => $exception->getMessage()]);
+        }
+    }
 }
