@@ -47,7 +47,6 @@
                         $("#contentLoading").modal("hide");
                     })
                     .catch(error => {
-                        console.log(error);
                         $("#contentLoading").modal("hide");
                     });
             },
@@ -62,7 +61,6 @@
                         $("#contentLoading").modal("hide");
                     })
                     .catch(error => {
-                        console.log(error);
                         $("#contentLoading").modal("hide");
                     });
             },

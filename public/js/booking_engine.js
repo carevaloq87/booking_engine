@@ -46719,7 +46719,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 self.getAdhocs();
                 $("#contentLoading").modal("hide");
             }).catch(function (error) {
-                console.log(error);
                 $("#contentLoading").modal("hide");
             });
         },
@@ -46732,7 +46731,6 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 self.adhocs = response.data;
                 $("#contentLoading").modal("hide");
             }).catch(function (error) {
-                console.log(error);
                 $("#contentLoading").modal("hide");
             });
         }

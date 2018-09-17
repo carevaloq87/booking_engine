@@ -155,7 +155,7 @@ class AvailableAdhocs extends Model
     /**
      * Transform time in minutes to Hours and minutes on plain text
      *
-     * @param int $value Minutes 
+     * @param int $value Minutes
      * @param int $duration Duraton of the appt
      * @return string
      */
@@ -172,6 +172,12 @@ class AvailableAdhocs extends Model
         return "$hour:$minute - $finish_hour:$finish_minute";
     }
 
+    /**
+     * Delete adhoc by service ID, date and is interpreter
+     *
+     * @param Request $data
+     * @return boolean
+     */
     public function deleteAdhoc($data)
     {
         $adhoc_info = explode('||', $data['adhoc']);
