@@ -410,4 +410,18 @@ class Calendar extends Model
 
         UnavailableAdhocs::insert($days);
     }
+
+    /**
+     * Get future adhoc appts by service id
+     *
+     * @param request $request
+     * @return array
+     */
+    public function getFutureResourceAdhocs($request)
+    {
+        $resource_id = $request->resourceId;
+        $unavailable_adhocs = new UnavailableAdhocs();
+        $adhocs = $unavailable_adhocs->getUnavailableAdhocHoursByResourceId($resource_id); // Selected resource
+        return $adhocs;
+    }
 }

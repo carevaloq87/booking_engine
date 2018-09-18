@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Calendar;
+use \App\Models\AvailableAdhocs;
+use \App\Models\UnavailableAdhocs;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Exception;
@@ -248,12 +250,17 @@ class CalendarController extends Controller
 
         return $data;
     }
-
+    /**
+     * Delete a available adhoc for service
+     *
+     * @param Request $request
+     * @return void
+     */
     public function deleteServiceAdhoc(Request $request)
     {
         try {
             $data = $request->all();
-            $available_adhocs = new \App\Models\AvailableAdhocs();
+            $available_adhocs = new AvailableAdhocs();
             return $available_adhocs->deleteAdhoc($data);
 
         } catch (Exception $exception) {
@@ -261,4 +268,35 @@ class CalendarController extends Controller
                         ->withErrors(['unexpected_error' => $exception->getMessage()]);
         }
     }
+
+    /**
+     * Return calendar files
+     *
+     * @return JSON
+     */
+    public function getFutureResourceAdhocs(Request $request)
+    {
+        $calendar = new Calendar();
+        return $calendar->getFutureResourceAdhocs($request);
+    }
+
+    /**
+     * Delete a unavailable adhoc for resource
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function deleteResourceAdhoc(Request $request)
+    {
+        try {
+            $data = $request->all();
+            $unavailable_adhocs = new UnavailableAdhocs();
+            return $unavailable_adhocs->deleteAdhoc($data);
+
+        } catch (Exception $exception) {
+            return back()->withInput()
+                        ->withErrors(['unexpected_error' => $exception->getMessage()]);
+        }
+    }
+
 }

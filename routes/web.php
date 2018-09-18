@@ -280,6 +280,9 @@ Route::group(
     Route::get('/service/adhoc/{serviceId}','CalendarController@getFutureAdhocs')
         ->where('serviceId', '[0-9]+');
 
+    Route::get('/resource/adhoc/{resourceId}','CalendarController@getFutureResourceAdhocs')
+        ->where('resourceId', '[0-9]+');
+
     Route::get('/resource/days/{resourceId}','CalendarController@getResourceDays')
         ->where('resourceId', '[0-9]+');
 
@@ -293,6 +296,8 @@ Route::group(
     Route::post('/service/adhoc','CalendarController@storeAdhoc');
 
     Route::post('/service/adhoc/delete','CalendarController@deleteServiceAdhoc');
+
+    Route::post('/resource/adhoc/delete','CalendarController@deleteResourceAdhoc');
 
     Route::post('/resource/days','CalendarController@storeResourceDays');
 

@@ -3,6 +3,7 @@ require('./bootstrap');
 Vue.component('resource-days', require('./components/booking_engine/days/resource_days.vue'));
 Vue.component('resource-hours', require('./components/booking_engine/hours/resource_hours.vue'));
 Vue.component('resource-adhoc', require('./components/booking_engine/adhoc/resource_adhoc.vue'));
+Vue.component('selected-adhoc', require('./components/booking_engine/adhoc/selected_resource_adhoc.vue'));
 
 new Vue({
     el: '#booking_engine_resource',
