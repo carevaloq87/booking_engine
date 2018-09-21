@@ -1922,12 +1922,15 @@ new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
             });
         },
         initOldResources: function initOldResources(rs_id) {
+            $("#contentLoading").modal("show");
             var self = this;
             var url = '/services/getResources/' + rs_id;
             __WEBPACK_IMPORTED_MODULE_2_axios___default.a.get(url).then(function (response) {
                 self.selected = response.data;
+                $("#contentLoading").modal("hide");
             }).catch(function (error) {
                 console.log(error);
+                $("#contentLoading").modal("hide");
             });
         }
 

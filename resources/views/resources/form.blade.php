@@ -42,27 +42,27 @@
 <div class="form-group {{ $errors->has('services') ? 'has-error' : '' }}" id="service-select">
     <label for="services" class="col-md-2 control-label">Services</label>
     <div class="col-md-10">
-        <multiselect    
-            v-model="selected"                         
+        <multiselect
+            v-model="selected"
             label="name"
-            key = "id" 
-            track-by="name" 
-            placeholder="Type to search" 
-            open-direction="bottom" 
-            :options="options" 
-            :multiple="true" 
-            :searchable="true"                         
-            :clear-on-select="true" 
-            :close-on-select="true" 
+            key = "id"
+            track-by="name"
+            placeholder="Type to search"
+            open-direction="bottom"
+            :options="options"
+            :multiple="true"
+            :searchable="true"
+            :clear-on-select="true"
+            :close-on-select="true"
             :show-no-results="false"
             :hide-selected="true">
         </multiselect>
-        <input type="hidden" name="services[]" v-for="value in selected" :value= "value.id" id="services">        
+        <input type="hidden" name="services[]" v-for="value in selected" :value= "value.id" id="services">
 
         {!! $errors->first('services', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
 
-@section('scripts')    
-    <script src="{{ asset('js/resource.js')}}" />    
+@section('scripts')
+    <script src="{{ asset('js/resource.js')}}" />
 @endsection
