@@ -399,7 +399,7 @@ class Calendar extends Model
                                 return [
                                             'resource_id'   => $resource_id,
                                             'date'          => $date,
-                                            'time_length'   => $time_length,
+                                            'length'        => $time_length,
                                             'start_time'    => $day_start[1],
                                             'duration'      => $duration,
                                             'details'       => $details,

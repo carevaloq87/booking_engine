@@ -29,7 +29,7 @@ class UnavailableAdhocs extends Model
      */
     protected $fillable = [
                 'date',
-                'time_length',
+                'length',
                 'start_time',
                 'details',
                 'duration',
@@ -86,7 +86,7 @@ class UnavailableAdhocs extends Model
         if(!empty($collection)){
             $in_a_row = 1;
             //$duration = $options['duration'] = $collection->pluck('duration')[0]; // Duration and time length is the same for all times in same date
-            $time_length = $options['time_length'] = $collection->pluck('time_length')[0]; // Duration and time length is the same for all times in same date
+            $time_length = $options['length'] = $collection->pluck('length')[0]; // Duration and time length is the same for all times in same date
             $options['details']=$collection->pluck('details')[0];
             $selected_times = $collection->pluck('start_time')->toArray();
             foreach($selected_times as $start_time) {
@@ -104,7 +104,7 @@ class UnavailableAdhocs extends Model
             }
             $hours_available = collect($hours_available)->flatten();
             foreach ($hours_available as $value) {
-                $hours[$value] = self::valueToHour($value, $options['time_length']);
+                $hours[$value] = self::valueToHour($value, $options['length']);
             }
         }
         return ['hours' => $hours, 'options' => $options];

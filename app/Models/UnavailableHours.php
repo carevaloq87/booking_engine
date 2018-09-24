@@ -69,7 +69,7 @@ class UnavailableHours extends Model
         $resource_days = [];
         foreach($unavailable_hours as $hour) {
             $resource_days['regular']['days'][] = date('D', strtotime($hour->day_week)) . '-' . $hour->start_time;
-            $resource_days['regular']['time_length'] = $hour->length;
+            $resource_days['regular']['length'] = $hour->length;
             $resource_days['regular']['time_name'] = self::converHourToTextOrNumber($hour->length);
         }
         return $resource_days;
