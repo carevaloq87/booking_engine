@@ -81,9 +81,7 @@ class ResourceUnvailability extends Model
             $adhoc_days = self::selectDays($resource_days['adhoc']);
         }
         $regular_merged =   $regular_days + $adhoc_days;//  self::mergeDays($regular_days['regular'], $adhoc_days['regular']);
-        dd($regular_merged);
-
-
+        return $regular_merged;
     }
 
     /**

@@ -49,7 +49,7 @@ class ServiceAvailability extends Model
     }
 
     /**
-     * Check if the type is adhoc or regular
+     * Split array between adhoc and regular
      *
      * @param array $availability
      * @return array
@@ -63,6 +63,12 @@ class ServiceAvailability extends Model
         return $data;
     }
 
+    /**
+     * Split array between interpreter or regular
+     *
+     * @param array $availability
+     * @return array
+     */
     public function categorizeIsInterpreterAvailability($availability)
     {
         $data = [];
@@ -76,22 +82,33 @@ class ServiceAvailability extends Model
         return $data;
     }
 
-    public function getResourcesAvailability()
+    /**
+     * Get availability of the current service resources
+     *
+     * @return array
+     */
+    public function getResourceUnavailability()
     {
         $resource_availability = [];
         $resources = $this->resources;
         foreach ($resources as $resource) {
-            $resource_availability[$resource->id] = DB::select('exec be_resource_unavailability_sp :resource_id', [':resource_id' => $resource->id]);
+            $resource_unvailability_obj = new \App\Models\ResourceUnvailability($resource);
+            $resource_availability[$resource->id] = $resource_unvailability_obj->getResourceUnavailability();
         }
         return $resource_availability;
     }
 
+    /**
+     * 
+     *
+     * @return void
+     */
     public function compare()
     {
         $service_days = self::getServiceAvailability();
+
         $regular_days = self::selectDays($service_days['regular']);
         $adhoc_days = self::selectDays($service_days['adhoc']);
-
         $regular_merged = [];
         $interpreter_merged = [];
 
@@ -99,10 +116,42 @@ class ServiceAvailability extends Model
         $interpreter_merged = self::mergeDays($regular_days['interpreter'], $adhoc_days['interpreter']);
 
         //Compare against Resources
-        //dd();
-        dd($service_days,$regular_days, $adhoc_days, $regular_merged, $interpreter_merged, $this->service );
+        $resources = self::getResourceUnavailability();
+        $availability = new \App\Models\Availability($resources, $regular_merged);
+        dd(/*$service_days,$regular_days, $adhoc_days, */$regular_days, $regular_merged, $interpreter_merged, $resources, $availability->compare());
     }
 
+    /**
+     * Undocumented function
+     *
+     * @param array $resource Times array
+     * @param array $service Times array
+     * @return void
+     */
+    public function compareServiceAndResourceHours($resource, $service) {
+        //get the service duration to normalize them
+        $service_duration = current($service)['duration'];
+        $service_times = array_column($service, 'start_time');
+        $resource_times = array_column($resource, 'start_time');
+        //Normalize resource time lenght to service duration
+        foreach($resource as $r_time) {
+            $next_resource = $r_time['start_time'] + $r_time['length'];
+            if( $next_resource ) {
+
+            }
+        }
+
+        //compare service and resource times
+            //if the resource and the service time are the same that means that is not available
+
+    }
+
+    /**
+     * Normalize array with interpreter and regular
+     *
+     * @param array $service
+     * @return array
+     */
     public function initServiceData($service)
     {
         if(!isset($service['regular'])){
@@ -114,24 +163,27 @@ class ServiceAvailability extends Model
         return $service;
     }
 
+    /**
+     * Add hours to available days
+     *
+     * @param array $available_days
+     * @return array
+     */
     public function selectDays($available_days)
     {
         $output = [];
         foreach($available_days as $slot){
             $slot->week_day = date('D', strtotime($slot->date));
+            $end_time = PHP_INT_MIN;
             if($slot->type == 'regular'){
+                $subset = [];
                 $times = $this->service->AvailableHours->where('day_week', $slot->week_day)->where('is_interpreter', $slot->is_interpreter);
-                $subset = $times->map(function($times) use ($slot) {
-                    $times->duration = ( ($slot->is_interpreter) ? $this->service->interpreter_duration : $this->service->duration);
-                    return $times->only(['start_time', 'time_length', 'duration']);
-                });
-                $slot->times = $subset->toArray();
+                $duration = ( ($slot->is_interpreter) ? $this->service->interpreter_duration : $this->service->duration );
+                $slot->times = self::getHourSlots($times, $duration);
             } else { // Adhoc
+                $subset = [];
                 $times = $this->service->AvailableAdhocs->where('date', $slot->date);
-                $subset = $times->map(function($times) {
-                    return $times->only(['start_time','time_length','duration']);
-                });
-                $slot->times = $subset->toArray();
+                $slot->times = self::getHourSlots($times);
             }
             if($slot->is_interpreter) {
                 if(!isset($output['interpreter'][$slot->date])) {
@@ -146,6 +198,36 @@ class ServiceAvailability extends Model
         return self::initServiceData($output);
     }
 
+    public function getHourSlots($times, $duration = 0)
+    {
+        $slots = [];
+        $time_length = 0 ;
+        $start_time = PHP_INT_MIN;
+        foreach($times as $time){
+            $duration = (isset($time['duration']) ? $time['duration'] : $duration);
+            if($time['start_time'] >= $start_time ){
+                $start_time = $time['start_time'];
+                //Keep looping if the duration fits more than one time in the time length
+                while ($start_time < ($time['start_time'] + $time['time_length'])) {
+                    $slots[] = [
+                                    'start_time' => $start_time,
+                                    'time_length' => $time['time_length'],
+                                    'duration' => $duration
+                                ];
+                    $start_time += $duration;
+                }
+            }
+        }
+        return $slots;
+    }
+
+    /**
+     * Remove adhoc days from regular available days and replace them with the adhoc ones
+     *
+     * @param array $adhoc_days
+     * @param array $regular_days
+     * @return array
+     */
     public function mergeDays($adhoc_days, $regular_days)
     {
         $diff_dates = array_diff_key($regular_days, $adhoc_days);
