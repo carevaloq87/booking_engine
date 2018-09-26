@@ -99,11 +99,11 @@ class ServiceAvailability extends Model
     }
 
     /**
-     * 
+     * returns the availability of a service
      *
-     * @return void
+     * @return array
      */
-    public function compare()
+    public function get()
     {
         $service_days = self::getServiceAvailability();
 
@@ -117,33 +117,10 @@ class ServiceAvailability extends Model
 
         //Compare against Resources
         $resources = self::getResourceUnavailability();
-        $availability = new \App\Models\Availability($resources, $regular_merged);
-        dd(/*$service_days,$regular_days, $adhoc_days, */$regular_days, $regular_merged, $interpreter_merged, $resources, $availability->compare());
-    }
-
-    /**
-     * Undocumented function
-     *
-     * @param array $resource Times array
-     * @param array $service Times array
-     * @return void
-     */
-    public function compareServiceAndResourceHours($resource, $service) {
-        //get the service duration to normalize them
-        $service_duration = current($service)['duration'];
-        $service_times = array_column($service, 'start_time');
-        $resource_times = array_column($resource, 'start_time');
-        //Normalize resource time lenght to service duration
-        foreach($resource as $r_time) {
-            $next_resource = $r_time['start_time'] + $r_time['length'];
-            if( $next_resource ) {
-
-            }
-        }
-
-        //compare service and resource times
-            //if the resource and the service time are the same that means that is not available
-
+        $availability_regular = new \App\Models\Availability($resources, $regular_merged);
+        $availability_interpreter = new \App\Models\Availability($resources, $interpreter_merged);
+        //dd(/*$service_days,$regular_days, $adhoc_days, */$regular_days, $regular_merged, $interpreter_merged, $resources, $availability->get());
+        return ['regular'=> $availability_regular->get(), 'interpreter' => $availability_interpreter->get()];
     }
 
     /**
@@ -198,6 +175,13 @@ class ServiceAvailability extends Model
         return self::initServiceData($output);
     }
 
+    /**
+     * organize slots of hours by duration
+     *
+     * @param array $times
+     * @param integer $duration
+     * @return array
+     */
     public function getHourSlots($times, $duration = 0)
     {
         $slots = [];

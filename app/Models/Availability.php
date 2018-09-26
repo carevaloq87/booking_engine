@@ -20,7 +20,7 @@ class Availability extends Model
     }
 
     //compare them using the algorithm
-    public function compare()
+    public function get()
     {
         $availability = [];
         $service_availability = $this->service_availability;
