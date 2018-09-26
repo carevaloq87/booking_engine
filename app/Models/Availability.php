@@ -27,19 +27,21 @@ class Availability extends Model
         $resources = $this->resources;
 
         foreach($resources as $resource_id => $resource_info){
-            $final_dates = array_diff_key($service_availability, $resource_info);
-            $check_dates = array_intersect_key($resource_info, $service_availability);
+            $final_dates = array_diff_key($service_availability, $resource_info); //Dates that are availables in the resource
+            $check_dates = array_intersect_key($resource_info, $service_availability); //Dates that the resouce and the service have in common
             foreach($final_dates as $date => $final_date){
-                $availability[$date] = $final_date->times;
+                foreach($final_date->times as $time){
+                    $availability[$date][$time['start_time']] = $time;
+                }
             }
-            foreach($check_dates as $resource_date => $resouce_date_info){
-                foreach($service_availability as $service_date => $service_info){
-                    foreach($service_info->times as $service_time){
+            foreach($check_dates as $resource_date => $resouce_date_info){ //Loop all the dates that the resouce and the service have in common
+                foreach($service_availability as $service_date => $service_info){ //Loop the serice avdates
+                    foreach($service_info->times as $service_time){ //Loop the times in the service
                         $service_start_time = $service_time['start_time'];
                         $service_duration = $service_time['duration'];
-                        if($resource_date === $service_date) {
+                        if($resource_date === $service_date) { //Check only the dates that match the service and the resource against each other
                             $is_available = true;
-                            foreach($resouce_date_info->times as $resource_time){
+                            foreach($resouce_date_info->times as $resource_time){//Loop the times in the service
                                 $resource_start_time = $resource_time['start_time'];
                                 $resource_length = $resource_time['length'];
 
@@ -50,56 +52,19 @@ class Availability extends Model
                                             'rs_final_time' => $resource_start_time + $resource_length,
                                 ];
 
-                                if(!self::compareRanges($args)){
+                                if(!self::compareRanges($args)){ //If resource is not available stop looping its times
                                     $is_available = false;
                                     break;
                                 }
                             }
                             if($is_available){
-                                $availability[$service_date][] = $service_time;
+                                $availability[$service_date][$service_time['start_time']] = $service_time;
                             }
                         }
                     }
                 }
             }
         }
-dd($availability);
-/******************************************************* Ignore me 
-        foreach($service_availability as $service_date => $service_info){
-            foreach($service_info->times as $service_time){
-
-                $service_start_time = $service_time['start_time'];
-                $service_duration = $service_time['duration'];
-
-                foreach($resources as $resource_id => $resource_info){
-                    foreach($resource_info as $resource_date => $resouce_date_info){
-
-                        if($resource_date === $service_date) {
-                            $is_available = true;
-                            foreach($resouce_date_info->times as $resource_time){
-                                $resource_start_time = $resource_time['start_time'];
-                                $resource_length = $resource_time['length'];
-
-                                $args = [
-                                            'sv_start_time' => $service_start_time,
-                                            'sv_final_time' => $service_start_time + $service_duration,
-                                            'rs_start_time' => $resource_start_time,
-                                            'rs_final_time' => $resource_start_time + $resource_length,
-                                ];
-
-                                if(!self::compareRanges($args)){
-                                    $is_available = false;
-                                    break;
-                                }
-                            }
-                            if($is_available){
-                                $availability[$service_date][] = $service_time;
-                            }
-                        }
-                    }
-                }
-            }
-        }*/
         return $availability;
     }
 
