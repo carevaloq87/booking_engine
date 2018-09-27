@@ -50,5 +50,9 @@
     {
         "model-name": "BookingStatus",
         "resource-file": "booking_statuses.json"
+    },
+    {
+        "model-name": "Booking",
+        "resource-file": "bookings.json"
     }
 ]

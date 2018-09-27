@@ -6,7 +6,9 @@ use App\Models\Service;
 use App\Models\Resource;
 use Illuminate\Http\Request;
 use App\Models\ServiceProvider;
+use App\Models\ServiceAvailability;
 use App\Http\Controllers\Controller;
+
 use Exception;
 
 class ServiceController extends Controller
@@ -209,6 +211,18 @@ class ServiceController extends Controller
         $data = $request->validate($rules);
 
         return $data;
+    }
+    /**
+     * Get Avaialability by Id
+     *
+     * @param int $id Service id
+     * @return void
+     */
+    public function getAvailabilityById($id)
+    {
+        $service = Service::findOrFail($id);
+        $serviceAvailability = new ServiceAvailability($service);
+        return $serviceAvailability->get();
     }
 
 }

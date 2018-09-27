@@ -157,6 +157,10 @@ Route::group(
 
     Route::get('/getByUserServiceProvider', 'ServiceController@getServicesByUserServiceProvider')
         ->name('services.service.getByUserServiceProvider');
+
+    Route::get('/getAvailabilitybyService/{service}', 'ServiceController@getAvailabilityById')
+        ->name('services.service.getAvailability')
+        ->where('id','[0-9]');
 });
 
 Route::group(
@@ -304,4 +308,16 @@ Route::group(
     Route::post('/resource/hours','CalendarController@storeResourceHours');
 
     Route::post('/resource/adhoc','CalendarController@storeResourceAdhoc');
+});
+
+
+Route::group(
+[
+    'middleware' => ['auth'],
+    'prefix' => 'bookings',
+], function () {
+
+    Route::get('/', 'BookingController@index')
+        ->name('bookings.index');
+
 });
