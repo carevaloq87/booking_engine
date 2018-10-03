@@ -105,15 +105,26 @@ class ServiceAvailability extends Model
      */
     public function get()
     {
-        $service_days = self::getServiceAvailability();
-
-        $regular_days = self::selectDays($service_days['regular']);
-        $adhoc_days = self::selectDays($service_days['adhoc']);
         $regular_merged = [];
         $interpreter_merged = [];
+        $regular_days = [];
+        $adhoc_days = [];
 
-        $regular_merged = self::mergeDays($regular_days['regular'], $adhoc_days['regular']);
-        $interpreter_merged = self::mergeDays($regular_days['interpreter'], $adhoc_days['interpreter']);
+        $service_days = self::getServiceAvailability();
+        if (isset($service_days['regular'])) {
+            $regular_days = self::selectDays($service_days['regular']);
+        }
+        if (isset($service_days['adhoc'])) {
+            $adhoc_days = self::selectDays($service_days['adhoc']);
+        }
+
+
+        $regular_merged = self::mergeDays(  array_key_exists('regular', $regular_days) ? $regular_days['regular']:[],
+                                            array_key_exists('regular', $adhoc_days) ? $adhoc_days['regular']:[]
+                                        );
+        $interpreter_merged = self::mergeDays(  array_key_exists('interpreter', $regular_days) ? $regular_days['interpreter']:[],
+                                                array_key_exists('interpreter', $adhoc_days) ? $adhoc_days['interpreter']:[]
+                                            );
 
         //Compare against Resources
         $resources = self::getResourceUnavailability();

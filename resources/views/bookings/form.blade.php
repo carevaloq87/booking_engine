@@ -20,19 +20,26 @@
             @input="getAvailability">
             </multiselect>
             <input v-if="service_selected" type="hidden" name="service" :value="service_selected.id" id="service">
-
             {!! $errors->first('service', '<p class="help-block">:message</p>') !!}
         </div>
     </div>
-    <div class="form-group ">
-        <label for="date" class="col-md-2 control-label">Date</label>
-        <div class="col-md-6">
-            <booking-date-picker></booking-date-picker>
+    <div class="form-group {{ $errors->has('interpreter') ? 'has-error' : '' }}">
+        <label for="interpreter" class="col-md-2 control-label">Interpreter required?</label>
+        <div class="col-md-6 mt-radio-inline" v-on:change="onChangeInterpreter">
+                <label class="mt-radio mt-radio-outline">
+                    <input type="radio" name="intepreter" id="is_interpreter" value="1">Yes<span></span>
+                </label>
+                <label class="mt-radio mt-radio-outline">
+                    <input type="radio" name="intepreter" id="is_interpreter" checked value="0">No<span></span>
+                </label>
         </div>
     </div>
+    <booking-date-picker></booking-date-picker>
+
+
 
 </div>
-    @section('scripts')
+@section('scripts')
     <script src="{{ asset('js/booking.js')}}" />
 @endsection
 

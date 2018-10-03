@@ -14,6 +14,7 @@ new Vue({
         service_options : [],
         service_selected: [],
         service_availability : [],
+        is_interpreter: false,
     },
     methods: {
         intitServices: function () {
@@ -32,19 +33,15 @@ new Vue({
         },
         getAvailability: function () {
             var self = this;
+            // Clean the date to clean the fields
+            self.$children[1].date = '';
             if(self.service_selected) {
                 $("#contentLoading").modal("show");
                 let url='/services/getAvailabilitybyService/'+self.service_selected.id;
                 axios.get(url)
                     .then(function (response) {
                         self.service_availability = response.data;
-                        self.$children[1].availability=self.service_availability;
-                        if (self.service_availability.regular) {
-                            self.$children[1].dates_regular = Object.keys(self.service_availability.regular);
-                        }
-                        if (self.service_availability.interpreter) {
-                            self.$children[1].dates_interpreter = Object.keys(self.service_availability.interpreter);
-                        }
+                        self.sendAvailabilityToChild();
                         $("#contentLoading").modal("hide");
                     })
                     .catch(function (error) {
@@ -52,6 +49,27 @@ new Vue({
                         $("#contentLoading").modal("hide");
                     });
             }
+        },
+        onChangeInterpreter: function (e) {
+            var self = this;
+            self.is_interpreter = false;
+            self.$children[1].date = '';
+            if (parseInt(e.srcElement.value) === 1) {
+                self.is_interpreter = true;
+            }
+            self.getAvailability();
+        },
+        sendAvailabilityToChild: function () {
+            var self = this;
+            self.$children[1].availability=self.service_availability;
+            self.$children[1].is_interpreter = self.is_interpreter;
+            if (self.service_availability.regular && !self.is_interpreter) {
+                self.$children[1].dates_regular = Object.keys(self.service_availability.regular);
+            }
+            if (self.service_availability.interpreter && self.is_interpreter) {
+                self.$children[1].dates_interpreter = Object.keys(self.service_availability.interpreter);
+            }
+
         }
 
 
