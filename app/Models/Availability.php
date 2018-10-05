@@ -42,7 +42,7 @@ class Availability extends Model
                 foreach($final_date->times as $time){
                     $time['text']=self::valueToHour($time['start_time'], $time['duration']);
                     $time['resource_id'] = $resource_id;
-                    $availability[$date][$time['start_time']] = $time;
+                    $availability[$date][$time['start_time']][] = $time;
                 }
             }
             foreach($check_dates as $resource_date => $resouce_date_info){ //Loop all the dates that the resouce and the service have in common
@@ -71,7 +71,7 @@ class Availability extends Model
                             }
                             if($is_available){
                                 $service_time['resource_id'] = $resource_id;
-                                $availability[$service_date][$service_time['start_time']] = $service_time;
+                                $availability[$service_date][$service_time['start_time']][] = $service_time;
                             }
                         }
                     }
@@ -87,7 +87,16 @@ class Availability extends Model
             if(isset($service_availability[$date])) {
                 foreach($booking_time as $time => $booking){
                     if(isset($service_availability[$date][$time])) {
-                        unset($service_availability[$date][$time]);
+                        $service_times = $service_availability[$date][$time];
+                        foreach($service_times as $key => $slot){
+                            if($slot['resource_id'] == $booking['resource_id']){
+                                unset($service_availability[$date][$time][$key]);
+                                if( empty($service_availability[$date][$time]) ){
+                                    unset($service_availability[$date][$time]);
+                                }
+                                break;
+                            }
+                        }
                     }
                 }
             }
@@ -104,6 +113,7 @@ class Availability extends Model
             $duration = $booking['time_length'];
             $date = date('Y-m-d', strtotime($booking['date']));
             $booked_dates[$date][$start_time]['date'] =  $date;
+            $booked_dates[$date][$start_time]['resource_id'] =  $booking['resource_id'];
             $booked_dates[$date][$start_time]['week_day'] =  $booking['day'];
             $booked_dates[$date][$start_time]['times'][] =  [
                 'start_time' => $start_time,
