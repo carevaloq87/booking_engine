@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\AvailableAdhocs;
 use App\Models\AvailableDays;
 use App\Models\AvailableHours;
+use App\Models\Booking  ;
 use DB;
 
 class ServiceAvailability extends Model
@@ -13,6 +14,7 @@ class ServiceAvailability extends Model
     protected $service;
     protected $service_id;
     protected $service_adhocs;
+    protected $service_bookings;
     protected $service_days;
     protected $service_hours;
     protected $resources;
@@ -29,11 +31,13 @@ class ServiceAvailability extends Model
         $available_adhocs = new AvailableAdhocs();
         $available_days = new AvailableDays();
         $available_hours = new AvailableHours();
+        $bookings_obj = new Booking();
 
         $this->service_adhocs = $available_adhocs->getAvailableAdhocHoursByServiceId($this->service_id);
         $this->service_days = $available_days->getDaysByServiceId($this->service_id);
         $this->service_hours = $available_hours->getHoursByServiceId($this->service_id);
         $this->resources = $service->resources;
+        $this->bookings = $bookings_obj->getFutureBookingsByService($service->id);
     }
 
     /**
@@ -105,32 +109,25 @@ class ServiceAvailability extends Model
      */
     public function get()
     {
-        $regular_merged = [];
-        $interpreter_merged = [];
-        $regular_days = [];
-        $adhoc_days = [];
-
         $service_days = self::getServiceAvailability();
-        if (isset($service_days['regular'])) {
-            $regular_days = self::selectDays($service_days['regular']);
-        }
-        if (isset($service_days['adhoc'])) {
-            $adhoc_days = self::selectDays($service_days['adhoc']);
-        }
 
+        $regular_days = self::selectDays( ( isset($service_days['regular']) ? $service_days['regular'] : [] ) );
+        $adhoc_days = self::selectDays( ( isset($service_days['adhoc']) ? $service_days['adhoc'] : [] ) );
 
-        $regular_merged = self::mergeDays(  array_key_exists('regular', $regular_days) ? $regular_days['regular']:[],
-                                            array_key_exists('regular', $adhoc_days) ? $adhoc_days['regular']:[]
-                                        );
-        $interpreter_merged = self::mergeDays(  array_key_exists('interpreter', $regular_days) ? $regular_days['interpreter']:[],
-                                                array_key_exists('interpreter', $adhoc_days) ? $adhoc_days['interpreter']:[]
-                                            );
+        $regular_merged = self::mergeDays($regular_days['regular'], $adhoc_days['regular']);
+        $interpreter_merged = self::mergeDays($regular_days['interpreter'], $adhoc_days['interpreter']);
 
+        //Compare against Bookings
+        $service_bookings = self::categorizeIsInterpreterAvailability($this->bookings);
+
+        $service_bookings_regular = (isset($service_bookings['regular']) ? $service_bookings['regular'] : []);
+        $service_bookings_interpreter = (isset($service_bookings['interpreter']) ? $service_bookings['interpreter'] : []);
+        //dd($regular_merged, $service_bookings_regular,$service_bookings_interpreter);
         //Compare against Resources
         $resources = self::getResourceUnavailability();
-        $availability_regular = new \App\Models\Availability($resources, $regular_merged);
-        $availability_interpreter = new \App\Models\Availability($resources, $interpreter_merged);
-        //dd(/*$service_days,$regular_days, $adhoc_days, */$regular_days, $regular_merged, $interpreter_merged, $resources, $availability->get());
+        $availability_regular = new \App\Models\Availability($resources, $regular_merged, $service_bookings_regular);
+        $availability_interpreter = new \App\Models\Availability($resources, $interpreter_merged, $service_bookings_interpreter);
+
         return ['regular'=> $availability_regular->get(), 'interpreter' => $availability_interpreter->get()];
     }
 

@@ -8,19 +8,28 @@ class Availability extends Model
 {
     protected $resources;
     protected $service_availability;
+    protected $service_bookings;
     /**
      * Create a new service availability instance.
      *
      * @return void
      */
-	public function __construct($resources, $service_availability)
+	public function __construct($resources, $service_availability, $service_bookings)
 	{
         $this->resources = $resources;
         $this->service_availability = $service_availability;
+        $this->service_bookings = $service_bookings;
     }
 
     //compare them using the algorithm
     public function get()
+    {
+        $service_availability = $this->compareServiceAndResources();
+        $bookings = $this->parseBookingsDates();
+        return $this->compareServiceAvailabilityAndBookings($service_availability, $bookings);
+    }
+
+    public function compareServiceAndResources()
     {
         $availability = [];
         $service_availability = $this->service_availability;
@@ -32,6 +41,7 @@ class Availability extends Model
             foreach($final_dates as $date => $final_date){
                 foreach($final_date->times as $time){
                     $time['text']=self::valueToHour($time['start_time'], $time['duration']);
+                    $time['resource_id'] = $resource_id;
                     $availability[$date][$time['start_time']] = $time;
                 }
             }
@@ -60,6 +70,7 @@ class Availability extends Model
                                 }
                             }
                             if($is_available){
+                                $service_time['resource_id'] = $resource_id;
                                 $availability[$service_date][$service_time['start_time']] = $service_time;
                             }
                         }
@@ -68,6 +79,38 @@ class Availability extends Model
             }
         }
         return $availability;
+    }
+
+    public function compareServiceAvailabilityAndBookings($service_availability, $bookings)
+    {
+        foreach($bookings as $date => $booking_time){
+            if(isset($service_availability[$date])) {
+                foreach($booking_time as $time => $booking){
+                    if(isset($service_availability[$date][$time])) {
+                        unset($service_availability[$date][$time]);
+                    }
+                }
+            }
+        }
+        return $service_availability;
+    }
+
+    public function parseBookingsDates()
+    {
+        $bookings = $this->service_bookings;
+        $booked_dates = [];
+        foreach($bookings as $booking){
+            $start_time = $booking['start_hour'];
+            $duration = $booking['time_length'];
+            $date = date('Y-m-d', strtotime($booking['date']));
+            $booked_dates[$date][$start_time]['date'] =  $date;
+            $booked_dates[$date][$start_time]['week_day'] =  $booking['day'];
+            $booked_dates[$date][$start_time]['times'][] =  [
+                'start_time' => $start_time,
+                'duration' => $duration,
+            ];
+        }
+        return $booked_dates;
     }
 
     public function compareRanges($args)
