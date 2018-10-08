@@ -6367,9 +6367,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             var day = date.getDate() < 10 ? "0" + date.getDate().toString() : date.getDate().toString();
             var date_formated = date.getFullYear().toString() + "-" + month + "-" + day;
             if (!self.is_interpreter && self.dates_regular.length > 0) {
-                return !self.dates_regular.includes(date_formated) ? 'disabled' : '';
+                return !self.dates_regular.includes(date_formated) ? 'date_disabled' : 'date_enabled';
             } else if (self.is_interpreter && self.dates_interpreter.length > 0) {
-                return !self.dates_interpreter.includes(date_formated) ? 'disabled' : '';
+                return !self.dates_interpreter.includes(date_formated) ? 'date_disabled' : 'date_enabled';
             }
         }
     },
@@ -6387,7 +6387,18 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             if (days.length > 0) {
                 days.forEach(function (day) {
                     if (date === day[0]) {
-                        times = Object.values(day[1]);
+                        var time = Object.values(day[1]).slice(0);
+                        time.forEach(function (hour) {
+                            if (Array.isArray(hour)) {
+                                var first = function first(element) {
+                                    return !!element;
+                                };
+                                times.push(hour.find(first));
+                            } else {
+                                var time_data = Object.values(hour);
+                                times.push(time_data[0]);
+                            }
+                        });
                     }
                 });
             }
@@ -6436,7 +6447,8 @@ var render = function() {
                     attrs: {
                       id: "booking_date",
                       type: "text",
-                      name: "booking_date"
+                      name: "booking_date",
+                      required: ""
                     },
                     domProps: { value: _vm.date },
                     on: {

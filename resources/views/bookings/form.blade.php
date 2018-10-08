@@ -17,7 +17,8 @@
             :close-on-select="true"
             :show-no-results="false"
             :show-labels="false"
-            @input="getAvailability">
+            @input="getAvailability"
+            >
             </multiselect>
             <input v-if="service_selected" type="hidden" name="service" :value="service_selected.id" id="service">
             {!! $errors->first('service', '<p class="help-block">:message</p>') !!}
@@ -35,8 +36,13 @@
         </div>
     </div>
     <booking-date-picker></booking-date-picker>
-
-
+    <div class="form-group {{ $errors->has('description') ? 'has-error' : '' }}">
+        <label for="interpreter" class="col-md-2 control-label">Description</label>
+        <div class="col-md-6 mt-radio-inline" v-on:change="onChangeInterpreter">
+            <textarea class="form-control" name="description" cols="50" rows="10" id="description" minlength="0"></textarea>
+            {!! $errors->first('description', '<p class="help-block">:message</p>') !!}
+        </div>
+    </div>
 
 </div>
 @section('scripts')

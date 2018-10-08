@@ -167,7 +167,7 @@ class ServiceAvailability extends Model
                 $slot->times = self::getHourSlots($times, $duration);
             } else { // Adhoc
                 $subset = [];
-                $times = $this->service->AvailableAdhocs->where('date', $slot->date);
+                $times = $this->service->AvailableAdhocs->where('date', $slot->date)->where('is_interpreter', $slot->is_interpreter);
                 $slot->times = self::getHourSlots($times);
             }
             if($slot->is_interpreter) {
@@ -184,30 +184,35 @@ class ServiceAvailability extends Model
     }
 
     /**
-     * organize slots of hours by duration
+     * Get the start time, time lengh and duration split
      *
-     * @param array $times
+     * @param array $times array of hours
      * @param integer $duration
-     * @return array
+     * @return void
      */
     public function getHourSlots($times, $duration = 0)
     {
         $slots = [];
-        $time_length = 0 ;
-        $start_time = PHP_INT_MIN;
+        $in_a_row = 1;
+        $start_times = $times->pluck('start_time')->toArray();
         foreach($times as $time){
             $duration = (isset($time['duration']) ? $time['duration'] : $duration);
-            if($time['start_time'] >= $start_time ){
-                $start_time = $time['start_time'];
-                //Keep looping if the duration fits more than one time in the time length
-                while ($start_time < ($time['start_time'] + $time['time_length'])) {
-                    $slots[] = [
-                                    'start_time' => $start_time,
-                                    'time_length' => $time['time_length'],
-                                    'duration' => $duration
-                                ];
-                    $start_time += $duration;
+            $next = $time['start_time'] + $time['time_length'];
+            if(in_array($next, $start_times)) {
+                $in_a_row++; //Count the number of blocks that are next to each other
+            } else {
+                $initial_time = ($time['start_time'] + $time['time_length']) - ($in_a_row * $time['time_length']);
+                $resultant = ($time['time_length'] * $in_a_row) / $duration;
+                if($resultant >= 1) {
+                    for ($rep=0; $rep < floor($resultant); $rep++) {
+                        $slots[] = [
+                            'start_time' => $initial_time + ($duration * $rep),
+                            'time_length' => $time['time_length'],
+                            'duration' => $duration
+                        ];
+                    }
                 }
+                $in_a_row = 1;
             }
         }
         return $slots;
