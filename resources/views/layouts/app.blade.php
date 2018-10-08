@@ -93,6 +93,7 @@
 
                 <li class="{{ Request::is('services','services/*') ? 'active' : null }}"><a class="nav-link" href="{{ route('services.service.index') }}">Services</a></li>
                 <li class="{{ Request::is('resources','resources/*') ? 'active' : null }}"><a class="nav-link" href="{{ route('resources.resource.index') }}">Resources</a></li>
+                <li class="{{ Request::is('bookings','bookings/*') ? 'active' : null }}"><a class="nav-link" href="{{ route('bookings.booking.index') }}">New Booking</a></li>
 
                 @if (Auth::user()->isAdmin())
                     <li class="{{ Request::is('users','users/*') ? 'active' : null }}"><a class="nav-link" href="{{ route('users.index') }}">Users</a></li>

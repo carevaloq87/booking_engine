@@ -16,9 +16,8 @@ class BookingController extends Controller
      */
 	public function __construct()
 	{
-        $this->middleware('permission:booking_status-list');
-        $this->middleware('permission:booking_status-create', ['only' => ['create','store']]);
-
+        $this->middleware('permission:booking-list');
+        $this->middleware('permission:booking-create', ['only' => ['create','store']]);
 	    $this->middleware('auth');
 	}
 

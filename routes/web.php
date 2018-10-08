@@ -318,9 +318,9 @@ Route::group(
 ], function () {
 
     Route::get('/', 'BookingController@index')
-        ->name('bookings.index');
+        ->name('bookings.booking.index');
 
     Route::post('/', 'BookingController@store')
-        ->name('booking.bookings.store');
+        ->name('bookings.booking.store');
 
 });
