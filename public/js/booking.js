@@ -6346,6 +6346,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 /* harmony default export */ __webpack_exports__["default"] = ({
     data: function data() {
@@ -6445,9 +6446,9 @@ var render = function() {
                     ],
                     staticClass: "form-control",
                     attrs: {
-                      id: "booking_date",
+                      id: "date",
                       type: "text",
-                      name: "booking_date",
+                      name: "date",
                       required: ""
                     },
                     domProps: { value: _vm.date },
@@ -6526,8 +6527,26 @@ var render = function() {
                 },
                 [
                   _c("input", {
-                    attrs: { type: "radio", name: "serviceTime" },
+                    attrs: { type: "radio", name: "start_hour", required: "" },
                     domProps: { value: time.start_time }
+                  }),
+                  _vm._v(" "),
+                  _c("input", {
+                    attrs: {
+                      type: "hidden",
+                      name: "resource_id",
+                      id: "resource_id"
+                    },
+                    domProps: { value: time.resource_id }
+                  }),
+                  _vm._v(" "),
+                  _c("input", {
+                    attrs: {
+                      type: "hidden",
+                      name: "time_length",
+                      id: "time_length"
+                    },
+                    domProps: { value: time.duration }
                   }),
                   _vm._v("\n                " + _vm._s(time.text)),
                   _c("span"),

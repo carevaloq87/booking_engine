@@ -6,7 +6,7 @@
                     <div class="col-sm-6 col-md-4">
                         <dropdown class="form-group">
                             <div class="input-group">
-                                <input class="form-control" id="booking_date" type="text" v-model="date" name="booking_date" required>
+                                <input class="form-control" id="date" type="text" v-model="date" name="date" required>
                                 <div class="input-group-btn">
                                 <btn class="dropdown-toggle"><i class="glyphicon glyphicon-calendar"></i></btn>
                                 </div>
@@ -29,8 +29,9 @@
             <label for="date" class="col-md-2 control-label">Available Times</label>
             <div class="col-md-6">
                 <label class="mt-radio mt-radio-outline" v-for= "time in times" :key="time.start_time" >
-                    <input type="radio" name="serviceTime"
-                    :value="time.start_time">
+                    <input type="radio" name="start_hour" :value="time.start_time" required>
+                    <input type="hidden" name="resource_id" id="resource_id" :value="time.resource_id">
+                    <input type="hidden" name="time_length" id="time_length" :value="time.duration">
                     {{ time.text }}<span></span><br>
                 </label>
             </div>
@@ -100,7 +101,6 @@
                     });
                 }
                 this.times = times;
-
             }
         }
     }

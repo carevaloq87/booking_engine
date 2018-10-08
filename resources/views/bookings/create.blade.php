@@ -22,7 +22,7 @@
                 </ul>
             @endif
 
-            <form method="POST" action="" accept-charset="UTF-8" id="create_booking_form" name="create_booking_form" class="form-horizontal">
+            <form method="POST" action="{{ route('booking.bookings.store') }}" accept-charset="UTF-8" id="create_booking_form" name="create_booking_form" class="form-horizontal">
             {{ csrf_field() }}
             @include ('bookings.form', [
                                         'bookingStatus' => null,

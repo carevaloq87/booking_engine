@@ -320,4 +320,7 @@ Route::group(
     Route::get('/', 'BookingController@index')
         ->name('bookings.index');
 
+    Route::post('/', 'BookingController@store')
+        ->name('booking.bookings.store');
+
 });
