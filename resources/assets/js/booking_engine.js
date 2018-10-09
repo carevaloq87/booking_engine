@@ -4,6 +4,7 @@ Vue.component('service-days', require('./components/booking_engine/days/service_
 Vue.component('service-hours', require('./components/booking_engine/hours/service_hours.vue'));
 Vue.component('service-adhoc', require('./components/booking_engine/adhoc/service_adhoc.vue'));
 Vue.component('selected-adhoc', require('./components/booking_engine/adhoc/selected_adhoc.vue'));
+Vue.component('Calendar', require('./components/calendar/calendar.vue'));
 
 new Vue({
     el: '#booking_engine',

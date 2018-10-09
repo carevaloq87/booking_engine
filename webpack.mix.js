@@ -17,4 +17,5 @@ mix.js('resources/assets/js/app.js', 'public/js')
    .js('resources/assets/js/booking_engine_resource.js', 'public/js')
    .js('resources/assets/js/service.js','public/js')
    .js('resources/assets/js/resource.js','public/js')
+   .js('resources/assets/js/calendar.js','public/js')
    .js('resources/assets/js/booking.js','public/js');

@@ -93,6 +93,19 @@
                 </div>
             </div>
 
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h4 class="mt-5 mb-5">Available Slots</h4>
+                </div>
+                <div class="panel-body">
+                    <div class="col-xs-12">
+                        <div id="calendar">
+                            <Calendar :sv_id="{{ $service->id }}"></Calendar>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         </div>
 
         @include("services.modal.days")

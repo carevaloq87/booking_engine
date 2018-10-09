@@ -1,16 +1,22 @@
-import 'bootstrap/dist/css/bootstrap.min.css'
+import 'fullcalendar/dist/fullcalendar.css';
+
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 import Vue from 'vue';
 
-import 'babel-polyfill'
+import 'babel-polyfill';
 
 import axios from 'axios';
 
 import Form from './utils/form';
 
-import * as uiv from 'uiv'
+import * as uiv from 'uiv';
 
-Vue.use(uiv)
+import FullCalendar from 'vue-full-calendar';
+
+Vue.use(FullCalendar);
+
+Vue.use(uiv);
 
 window.Vue = Vue;
 
