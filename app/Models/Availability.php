@@ -89,12 +89,15 @@ class Availability extends Model
                     if(isset($service_availability[$date][$time])) {
                         $service_times = $service_availability[$date][$time];
                         foreach($service_times as $key => $slot){
-                            if($slot['resource_id'] == $booking['resource_id']){
+                            $resource_id = $slot['resource_id'];
+                            if (isset($booking['times'][$resource_id] )) {
                                 unset($service_availability[$date][$time][$key]);
-                                if( empty($service_availability[$date][$time]) ){
+                                if ( empty($service_availability[$date][$time]) ) {
                                     unset($service_availability[$date][$time]);
                                 }
-                                break;
+                                if (empty($service_availability[$date])) {
+                                    unset($service_availability[$date]);
+                                }
                             }
                         }
                     }
@@ -111,11 +114,11 @@ class Availability extends Model
         foreach($bookings as $booking){
             $start_time = $booking['start_hour'];
             $duration = $booking['time_length'];
+            $resource = $booking['resource_id'];
             $date = date('Y-m-d', strtotime($booking['date']));
             $booked_dates[$date][$start_time]['date'] =  $date;
-            $booked_dates[$date][$start_time]['resource_id'] =  $booking['resource_id'];
             $booked_dates[$date][$start_time]['week_day'] =  $booking['day'];
-            $booked_dates[$date][$start_time]['times'][] =  [
+            $booked_dates[$date][$start_time]['times'][$resource] =  [
                 'start_time' => $start_time,
                 'duration' => $duration,
             ];

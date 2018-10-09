@@ -42,7 +42,6 @@ class BookingController extends Controller
     {
         try {
             $data = $this->getData($request);
-
             Booking::create($data);
 
             return redirect()->route('home')
@@ -64,8 +63,7 @@ class BookingController extends Controller
      */
     protected function getData(Request $request)
     {
-        //date('D', strtotime($request['date']))
-        
+
         $rules = [
             'service_id' => 'required',
             'is_interpreter' => 'required',
@@ -76,7 +74,6 @@ class BookingController extends Controller
             'comment' => 'string|nullable',
 
         ];
-
         $data = $request->validate($rules);
         $data['day'] = date('D', strtotime($request['date']));
         return $data;
