@@ -19,11 +19,6 @@
                     interpreter: {},
                     availability_url: '/services/getAvailabilitybyService/' + this.sv_id,
                     events: [
-                        {
-                            start: '2018-10-10T10:00:00',
-                            end: '2018-10-10T16:00:00',
-                            rendering: 'background'
-                        }
                     ],
                     config: {
                         header: {
