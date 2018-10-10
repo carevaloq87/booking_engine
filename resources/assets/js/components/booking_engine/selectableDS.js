@@ -49,6 +49,18 @@ export default class SelectableDS {
     }
 
     /**
+     * Return an array of all the selected elements by context due to a bug with the current getSelection method
+     */
+    getSelectedValuesByContext(context) {
+        const arr = document.querySelectorAll(context);
+        let result = [];
+        for (let i = 0; i < arr.length; i++) {
+            result.push(arr[i].id);
+        }
+        return result;
+    }
+
+    /**
      * TODO - Submit Information
      */
     submit() {

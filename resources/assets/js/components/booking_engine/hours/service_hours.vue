@@ -103,11 +103,11 @@
                 let hours = {
                                 regular: {
                                     time_name: document.querySelector("#regular button.active").id,
-                                    days: self.ds_regular.getSelectedValues()
+                                    days: self.ds_regular.getSelectedValuesByContext("#regular .ds-button.ds-selected")
                                 },
                                 interpreter: {
                                     time_name: document.querySelector("#interpreter button.active").id,
-                                    days: self.ds_interpreter.getSelectedValues()
+                                    days: self.ds_interpreter.getSelectedValuesByContext("#interpreter .ds-button.ds-selected")
                                 }
                             };
 

@@ -8089,6 +8089,21 @@ var SelectableDS = function () {
         }
 
         /**
+         * Return an array of all the selected elements by context due to a bug with the current getSelection method
+         */
+
+    }, {
+        key: 'getSelectedValuesByContext',
+        value: function getSelectedValuesByContext(context) {
+            var arr = document.querySelectorAll(context);
+            var result = [];
+            for (var i = 0; i < arr.length; i++) {
+                result.push(arr[i].id);
+            }
+            return result;
+        }
+
+        /**
          * TODO - Submit Information
          */
 
@@ -74350,11 +74365,11 @@ Vue.component('hours-container', __webpack_require__(575));
             var hours = {
                 regular: {
                     time_name: document.querySelector("#regular button.active").id,
-                    days: self.ds_regular.getSelectedValues()
+                    days: self.ds_regular.getSelectedValuesByContext("#regular .ds-button.ds-selected")
                 },
                 interpreter: {
                     time_name: document.querySelector("#interpreter button.active").id,
-                    days: self.ds_interpreter.getSelectedValues()
+                    days: self.ds_interpreter.getSelectedValuesByContext("#interpreter .ds-button.ds-selected")
                 }
             };
 
