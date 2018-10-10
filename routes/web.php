@@ -323,4 +323,5 @@ Route::group(
     Route::post('/', 'BookingController@store')
         ->name('bookings.booking.store');
 
+	Route::get('/service','BookingController@getBookingsByDate');
 });

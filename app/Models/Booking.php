@@ -78,4 +78,38 @@ class Booking extends Model
                     ->get()
                     ->all();
     }
+
+    public function getFutureBookingsByServiceAndDate($service_id, $start, $end)
+    {
+        $start = explode('T', $start)[0]; // The format that the Fullcalendar eg: 2018-08-08T10:10:12
+        $end = explode('T', $end)[0]; // The format that the Fullcalendar eg: 2018-08-08T10:10:12
+        return self::parseBookingsDates( $this->where('service_id', $service_id)
+                    ->where('date', '>=', $start)
+                    ->where('date', '<=', $end)
+                    ->get()
+                    ->all());
+    }
+
+    /**
+     * Transform Booking dates to same data structure as service availability
+     *
+     * @return array
+     */
+    public function parseBookingsDates($bookings)
+    {
+        $booked_dates = [];
+        foreach($bookings as $booking){
+            $start_time = $booking['start_hour'];
+            $duration = $booking['time_length'];
+            $resource = $booking['resource_id'];
+            $date = date('Y-m-d', strtotime($booking['date']));
+            $booked_dates[$date][$start_time]['date'] =  $date;
+            $booked_dates[$date][$start_time]['week_day'] =  $booking['day'];
+            $booked_dates[$date][$start_time]['times'][$resource] =  [
+                'start_time' => $start_time,
+                'duration' => $duration,
+            ];
+        }
+        return $booked_dates;
+    }
 }

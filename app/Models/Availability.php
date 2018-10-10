@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Booking  ;
 
 class Availability extends Model
 {
@@ -29,7 +30,8 @@ class Availability extends Model
     public function get()
     {
         $service_availability = $this->compareServiceAndResources();
-        $bookings = $this->parseBookingsDates();
+        $booking_obj = new Booking();
+        $bookings = $booking_obj->parseBookingsDates($this->service_bookings);
         return $this->compareServiceAvailabilityAndBookings($service_availability, $bookings);
     }
 
@@ -137,30 +139,6 @@ class Availability extends Model
             }
         }
         return $service_availability;
-    }
-
-    /**
-     * Transform Booking dates to same data structure as service availability
-     *
-     * @return array
-     */
-    public function parseBookingsDates()
-    {
-        $bookings = $this->service_bookings;
-        $booked_dates = [];
-        foreach($bookings as $booking){
-            $start_time = $booking['start_hour'];
-            $duration = $booking['time_length'];
-            $resource = $booking['resource_id'];
-            $date = date('Y-m-d', strtotime($booking['date']));
-            $booked_dates[$date][$start_time]['date'] =  $date;
-            $booked_dates[$date][$start_time]['week_day'] =  $booking['day'];
-            $booked_dates[$date][$start_time]['times'][$resource] =  [
-                'start_time' => $start_time,
-                'duration' => $duration,
-            ];
-        }
-        return $booked_dates;
     }
 
     /**

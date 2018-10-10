@@ -78,4 +78,16 @@ class BookingController extends Controller
         $data['day'] = date('D', strtotime($request['date']));
         return $data;
     }
+
+    /**
+     * Get service Bookings by date
+     *
+     * @param Request $request should include as parameters (sv_id = service id, start = start date, end = end date)
+     * @return Json
+     */
+    public function getBookingsByDate(Request $request)
+    {
+        $booking_obj = new Booking();
+        return $booking_obj->getFutureBookingsByServiceAndDate($request->sv_id, $request->start, $request->end);
+    }
 }

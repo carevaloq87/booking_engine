@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\AvailableAdhocs;
 use App\Models\AvailableDays;
 use App\Models\AvailableHours;
-use App\Models\Booking  ;
+use App\Models\Booking ;
 use DB;
 
 class ServiceAvailability extends Model
