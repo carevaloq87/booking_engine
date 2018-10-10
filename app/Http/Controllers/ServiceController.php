@@ -220,8 +220,10 @@ class ServiceController extends Controller
      */
     public function getAvailabilityById($id)
     {
+        $start = request('start');
+        $end = request('end');
         $service = Service::findOrFail($id);
-        $serviceAvailability = new ServiceAvailability($service);
+        $serviceAvailability = new ServiceAvailability($service, $start, $end);
         return $serviceAvailability->get();
     }
 

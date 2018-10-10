@@ -18,13 +18,15 @@ class ServiceAvailability extends Model
     protected $service_days;
     protected $service_hours;
     protected $resources;
+    protected $start;
+    protected $end;
 
     /**
      * Create a new service availability instance.
      *
      * @return void
      */
-	public function __construct($service)
+	public function __construct($service, $start, $end)
 	{
         $this->service_id = $service->id;
         $this->service = $service;
@@ -38,6 +40,9 @@ class ServiceAvailability extends Model
         $this->service_hours = $available_hours->getHoursByServiceId($this->service_id);
         $this->resources = $service->resources;
         $this->bookings = $bookings_obj->getFutureBookingsByService($service->id);
+
+        $this->start = explode('T', $start)[0];// The format that the Fullcalendar
+        $this->end = explode('T', $end)[0];// The format that the Fullcalendar
     }
 
     /**
@@ -125,8 +130,8 @@ class ServiceAvailability extends Model
         $service_bookings_interpreter = (isset($service_bookings['interpreter']) ? $service_bookings['interpreter'] : []);
         //Compare against Resources
         $resources = self::getResourceUnavailability();
-        $availability_regular = new \App\Models\Availability($resources, $regular_merged, $service_bookings_regular);
-        $availability_interpreter = new \App\Models\Availability($resources, $interpreter_merged, $service_bookings_interpreter);
+        $availability_regular = new \App\Models\Availability($resources, $regular_merged, $service_bookings_regular, $this->start, $this->end);
+        $availability_interpreter = new \App\Models\Availability($resources, $interpreter_merged, $service_bookings_interpreter, $this->start, $this->end);
         return ['regular'=> $availability_regular->get(), 'interpreter' => $availability_interpreter->get()];
     }
 

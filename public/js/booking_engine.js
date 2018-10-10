@@ -75956,6 +75956,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                         $("#contentLoading").modal('hide');
                     },
                     success: function success(data) {
+                        self.events = [];
                         self.initCalendar(data);
                         $("#contentLoading").modal('hide');
                     }

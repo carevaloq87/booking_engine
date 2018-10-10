@@ -9,16 +9,20 @@ class Availability extends Model
     protected $resources;
     protected $service_availability;
     protected $service_bookings;
+    protected $start;
+    protected $end;
     /**
      * Create a new service availability instance.
      *
      * @return void
      */
-	public function __construct($resources, $service_availability, $service_bookings)
+	public function __construct($resources, $service_availability, $service_bookings, $start, $end)
 	{
         $this->resources = $resources;
         $this->service_availability = $service_availability;
         $this->service_bookings = $service_bookings;
+        $this->start = $start;
+        $this->end = $end;
     }
 
     //compare them using the algorithm
@@ -29,6 +33,22 @@ class Availability extends Model
         return $this->compareServiceAvailabilityAndBookings($service_availability, $bookings);
     }
 
+    /**
+     * Check if an appt date is in the range of dates
+     *
+     * @param String $date in format YYYY-MM-DD
+     * @return boolean
+     */
+    public function is_date_in_date_range($date)
+    {
+        return (($date >= $this->start) && ($date <= $this->end));
+    }
+
+    /**
+     * Compare a service availability with all resources available for that service
+     *
+     * @return array
+     */
     public function compareServiceAndResources()
     {
         $availability = [];
@@ -39,19 +59,23 @@ class Availability extends Model
             $final_dates = array_diff_key($service_availability, $resource_info); //Dates that are availables in the resource
             $check_dates = array_intersect_key($resource_info, $service_availability); //Dates that the resouce and the service have in common
             foreach($final_dates as $date => $final_date){
-                foreach($final_date->times as $time){
-                    $time['text']=self::valueToHour($time['start_time'], $time['duration']);
-                    $time['resource_id'] = $resource_id;
-                    $availability[$date][$time['start_time']][] = $time;
+                if(self::is_date_in_date_range($date)) {
+                    foreach($final_date->times as $time){
+                        $time['text']=self::valueToHour($time['start_time'], $time['duration']);
+                        $time['resource_id'] = $resource_id;
+                        $availability[$date][$time['start_time']][] = $time;
+                    }
                 }
             }
             foreach($check_dates as $resource_date => $resouce_date_info){ //Loop all the dates that the resouce and the service have in common
+
                 foreach($service_availability as $service_date => $service_info){ //Loop the serice avdates
+
                     foreach($service_info->times as $service_time){ //Loop the times in the service
                         $service_start_time = $service_time['start_time'];
                         $service_duration = $service_time['duration'];
                         $service_time['text'] = self::valueToHour($service_start_time, $service_duration);
-                        if($resource_date === $service_date) { //Check only the dates that match the service and the resource against each other
+                        if($resource_date === $service_date && self::is_date_in_date_range($resource_date)) { //Check only the dates that match the service and the resource against each other
                             $is_available = true;
                             foreach($resouce_date_info->times as $resource_time){//Loop the times in the service
                                 $resource_start_time = $resource_time['start_time'];
@@ -75,28 +99,36 @@ class Availability extends Model
                             }
                         }
                     }
+
                 }
             }
         }
         return $availability;
     }
 
+    /**
+     * Compare a Service availability with existing bookings
+     *
+     * @param array $service_availability
+     * @param array $bookings
+     * @return void
+     */
     public function compareServiceAvailabilityAndBookings($service_availability, $bookings)
     {
-        foreach($bookings as $date => $booking_time){
+        foreach($bookings as $date => $booking_time){ //Loop bookings
             if(isset($service_availability[$date])) {
-                foreach($booking_time as $time => $booking){
+                foreach($booking_time as $time => $booking){ //Loop times in bookings
                     if(isset($service_availability[$date][$time])) {
                         $service_times = $service_availability[$date][$time];
-                        foreach($service_times as $key => $slot){
+                        foreach($service_times as $key => $slot){ // Loop service times
                             $resource_id = $slot['resource_id'];
-                            if (isset($booking['times'][$resource_id] )) {
-                                unset($service_availability[$date][$time][$key]);
+                            if (isset($booking['times'][$resource_id] )) { //Check if the resource and the time were taken (booked)
+                                unset($service_availability[$date][$time][$key]); //Remove available time
                                 if ( empty($service_availability[$date][$time]) ) {
-                                    unset($service_availability[$date][$time]);
+                                    unset($service_availability[$date][$time]); //If there are no more times available remove the time
                                 }
                                 if (empty($service_availability[$date])) {
-                                    unset($service_availability[$date]);
+                                    unset($service_availability[$date]); //If there are no more times available remove the date
                                 }
                             }
                         }
@@ -107,6 +139,11 @@ class Availability extends Model
         return $service_availability;
     }
 
+    /**
+     * Transform Booking dates to same data structure as service availability
+     *
+     * @return array
+     */
     public function parseBookingsDates()
     {
         $bookings = $this->service_bookings;
@@ -126,6 +163,12 @@ class Availability extends Model
         return $booked_dates;
     }
 
+    /**
+     * Algorithm to check if the range of times fits or not in order to say if an appt is available or not
+     *
+     * @param array $args
+     * @return boolean
+     */
     public function compareRanges($args)
     {
         $is_available = true;

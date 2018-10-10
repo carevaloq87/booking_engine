@@ -57,6 +57,7 @@
                                 $("#contentLoading").modal('hide');
                             },
                             success: function (data) {
+                                self.events = [];
                                 self.initCalendar(data);
                                 $("#contentLoading").modal('hide');
                             }
