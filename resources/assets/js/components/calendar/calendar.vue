@@ -14,6 +14,7 @@
             sv_id: Number
         },
         data () {
+            let self = this;
             return {
                     regular: {},
                     interpreter: {},
@@ -30,13 +31,36 @@
                         views: {
                             month: {
                                 eventLimit: 5 // adjust to 6 only for agendaWeek/agendaDay
+                            },
+                            agendaWeek:{
+                                columnHeaderFormat:'ddd D/M'
                             }
                         },
                         weekends: false,
+                        editable: false,
+                        droppable: false, // this allows things to be dropped onto the calendar !!!
                         businessHours: {
                             start: '7:00', // a start time (7 am in this example)
                             end: '19:00', // an end time (7 pm in this example)
-                        }
+                        },
+                        eventSources: [{
+                            url: '/services/getAvailabilitybyService/' + this.sv_id,
+                            type: 'GET',
+                            data: {
+                                //sp_id: currentServiceProvider
+                            },
+                            beforeSend: function () {
+                                $("#contentLoading").modal('show');
+                            },
+                            error: function() {
+                                alert('there was an error while fetching events!');
+                                $("#contentLoading").modal('hide');
+                            },
+                            success: function (data) {
+                                self.initCalendar(data);
+                                $("#contentLoading").modal('hide');
+                            }
+                        }]
                     },
             }
         },
@@ -47,7 +71,7 @@
                     container: '.fc-scroller',
                     title: event.title,*/
                     html: true,
-                    content: 'Start: ' + event.start + '<br />End: ' + event.end,
+                    content: 'Start: ' + moment(event.start).format('HH:mm A') + '<br />End: ' + moment(event.end).format('HH:mm A'),
                     trigger: 'hover',
                     placement: 'auto top',
                     container: 'body'
@@ -70,16 +94,10 @@
                     });
                 });
             },
-            initCalendar() {
-                this.getFutureAvailability()
-                    .then(response => {
-                        this.regular = response.regular;
-                        this.interpreter = response.interpreter;
-                        this.showInCalendar();
-                    })
-                    .catch(error => {
-                        console.log(error);
-                    });
+            initCalendar(response) {
+                this.regular = response.regular;
+                this.interpreter = response.interpreter;
+                this.showInCalendar();
             },
             showInCalendar() {
                 this.addEventsToCalendar(this.regular, 0);
@@ -114,7 +132,6 @@
             }
         },
         mounted() {
-            this.initCalendar();
         },
     }
 
