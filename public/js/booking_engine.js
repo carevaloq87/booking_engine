@@ -74990,12 +74990,12 @@ Vue.component('journey-container', __webpack_require__(581));
             var self = this;
             self.adhoc_object.regular = {
                 time_name: document.querySelector("#regular_journey button.active").id,
-                hours: self.ds_regular.getSelectedValues(),
+                hours: self.ds_regular.getSelectedValuesByContext("#regular_journey .ds-button.ds-selected"),
                 duration: document.querySelector("#regular_duration").value
             };
             self.adhoc_object.interpreter = {
                 time_name: document.querySelector("#interpreter_journey button.active").id,
-                hours: self.ds_interpreter.getSelectedValues(),
+                hours: self.ds_interpreter.getSelectedValuesByContext("#interpreter_journey .ds-button.ds-selected"),
                 duration: document.querySelector("#interpreter_duration").value
             };
         },
