@@ -40,7 +40,6 @@ new Vue({
             // First and last date of the month to calculate availability
             let date = new Date();
             let lastDay = new Date(date.getFullYear() + 1 , 12, 0);
-            console.log(lastDay);
             if(self.service_selected) {
                 $("#contentLoading").modal("show");
                 let url='/services/getAvailabilitybyService/'+self.service_selected.id;

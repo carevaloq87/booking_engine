@@ -35,6 +35,14 @@
                 </label>
         </div>
     </div>
+    <div class="form-group {{ $errors->has('int_language') ? 'has-error' : '' }}" v-if="is_interpreter">
+        <label for="int_language" class="col-md-2 control-label">Language</label>
+        <div class="col-md-6 ">
+            <select class="form-control" id="int_language" name="int_language">
+                @include( 'bookings.language' )
+            </select>
+        </div>
+    </div>
     <booking-date-picker></booking-date-picker>
     <div class="form-group {{ $errors->has('comment') ? 'has-error' : '' }}">
         <label for="comment" class="col-md-2 control-label">Description</label>

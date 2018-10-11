@@ -72,6 +72,7 @@ class BookingController extends Controller
             'resource_id' => 'required',
             'time_length' => 'required',
             'comment' => 'string|nullable',
+            'int_language' => 'nullable'
 
         ];
         $data = $request->validate($rules);
