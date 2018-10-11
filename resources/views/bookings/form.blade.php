@@ -44,6 +44,28 @@
         </div>
     </div>
     <booking-date-picker></booking-date-picker>
+    <hr>
+    <h3>Client Details</h3>
+    <div class="form-group {{ $errors->has('client') ? 'has-error' : '' }}">
+        <label for="first_name" class="col-md-2 control-label">First Name</label>
+        <div class="col-md-3">
+            <input class="form-control" name="first_name" type="text" id="first_name" placeholder="Client first name..." required>
+            {!! $errors->first('first_name', '<p class="help-block">:message</p>') !!}
+        </div>
+        <label for="last_name" class="col-md-2 control-label">Last Name</label>
+        <div class="col-md-3">
+                <input class="form-control" name="last_name" type="text" id="last_name" placeholder="Client last name..." required>
+                {!! $errors->first('last_name', '<p class="help-block">:message</p>') !!}
+        </div>
+    </div>
+    <div class="form-group {{ $errors->has('contact') ? 'has-error' : '' }}">
+            <label for="contact" class="col-md-2 control-label">Contact Detail </label>
+            <div class="col-md-6">
+                <input class="form-control" name="contact" type="text" id="contact" placeholder="Client email or phone number...">
+                {!! $errors->first('contact', '<p class="help-block">:message</p>') !!}
+            </div>
+        </div>
+    <hr>
     <div class="form-group {{ $errors->has('comment') ? 'has-error' : '' }}">
         <label for="comment" class="col-md-2 control-label">Description</label>
         <div class="col-md-6">

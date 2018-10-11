@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Booking;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
+use App\Models\Client;
 use Exception;
 
 class BookingController extends Controller
@@ -42,6 +43,10 @@ class BookingController extends Controller
     {
         try {
             $data = $this->getData($request);
+            $data['client_id'] = $this->findOrCreateClient($data['first_name'],
+                                                        $data['last_name'],
+                                                        $data['contact']);
+
             Booking::create($data);
 
             return redirect()->route('home')
@@ -53,6 +58,19 @@ class BookingController extends Controller
                         ->withErrors(['unexpected_error' => 'Unexpected error occurred while trying to process your request!' . $exception->getMessage()]);
         }
 
+    }
+
+    public function findOrCreateClient($first_name, $last_name, $contact)
+    {
+        $client = Client::getByName(trim($first_name), trim($last_name));
+        if(!isset($client)){
+            $client = Client::create([
+                'first_name' => $first_name,
+                'last_name'  => $last_name,
+                'contact'    => $contact
+            ]);
+        }
+        return $client->id;
     }
 
     /**
@@ -72,9 +90,12 @@ class BookingController extends Controller
             'resource_id' => 'required',
             'time_length' => 'required',
             'comment' => 'string|nullable',
-            'int_language' => 'nullable'
-
+            'int_language' => 'nullable',
+            'first_name' => 'string|required',
+            'last_name' => 'string|required',
+            'contact' => 'string|nullable'
         ];
+
         $data = $request->validate($rules);
         $data['day'] = date('D', strtotime($request['date']));
         return $data;

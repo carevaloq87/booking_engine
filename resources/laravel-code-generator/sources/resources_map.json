@@ -54,5 +54,9 @@
     {
         "model-name": "Booking",
         "resource-file": "bookings.json"
+    },
+    {
+        "model-name": "Client",
+        "resource-file": "clients.json"
     }
 ]
