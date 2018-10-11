@@ -1,7 +1,8 @@
 import Vue from 'vue';
 import Multiselect from 'vue-multiselect';
 import axios from 'axios';
-import * as uiv from 'uiv'
+import * as uiv from 'uiv';
+import moment from 'moment'
 
 Vue.use(uiv);
 Vue.component('multiselect', Multiselect);
@@ -35,10 +36,20 @@ new Vue({
             var self = this;
             // Clean the date to clean the fields
             self.$children[1].date = '';
+
+            // First and last date of the month to calculate availability
+            let date = new Date();
+            let lastDay = new Date(date.getFullYear() + 1 , 12, 0);
+            console.log(lastDay);
             if(self.service_selected) {
                 $("#contentLoading").modal("show");
                 let url='/services/getAvailabilitybyService/'+self.service_selected.id;
-                axios.get(url)
+                axios.get(url,{
+                        params: {
+                            start:  moment(date).format('YYYY-MM-DD'),
+                            end: moment(lastDay).format('YYYY-MM-DD'),
+                        }
+                    })
                     .then(function (response) {
                         self.service_availability = response.data;
                         self.sendAvailabilityToChild();

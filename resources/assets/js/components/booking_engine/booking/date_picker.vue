@@ -40,6 +40,7 @@
 </template>
 
 <script>
+import moment from 'moment';
     export default {
         data() {
             return {
@@ -55,13 +56,7 @@
         methods: {
             getAvailability (date) {
                 var self = this;
-                let month = (date.getMonth() +1)< 10 ? "0" +
-                            (date.getMonth() +1).toString(): (date.getMonth() +1).toString();
-                let day =   date.getDate()< 10 ? "0" +
-                            date.getDate().toString(): date.getDate().toString();
-                let date_formated = date.getFullYear().toString() +"-"+
-                                    month + "-" +
-                                    day;
+                let date_formated = moment(date).format('YYYY-MM-DD');
                 if(!self.is_interpreter && self.dates_regular.length > 0) {
                     return  !self.dates_regular.includes(date_formated) ? 'date_disabled':'date_enabled';
                 }
