@@ -83,11 +83,33 @@ class Booking extends Model
     {
         $start = explode('T', $start)[0]; // The format that the Fullcalendar eg: 2018-08-08T10:10:12
         $end = explode('T', $end)[0]; // The format that the Fullcalendar eg: 2018-08-08T10:10:12
-        return self::parseBookingsDates( $this->where('service_id', $service_id)
+        return self::formatBookingsAsAvailability( $this->where('service_id', $service_id)
                     ->where('date', '>=', $start)
                     ->where('date', '<=', $end)
                     ->get()
                     ->all());
+    }
+
+    public function formatBookingsAsAvailability($bookings)
+    {
+        $bookings = self::parseBookingsDates($bookings);
+        $output = [];
+
+        foreach($bookings as $date => $hours){
+            foreach($hours as $hour => $booking_info){
+                $slots = $booking_info['times'];
+                foreach($slots as $resource_id => $slot){
+                    $output[$date][$hour][] = [
+                        'start_time'=> $slot['start_time'],
+                        'duration'=>  $slot['duration'],
+                        'resource_id'=> $resource_id
+                    ];
+                }
+            }
+        }
+
+        return $output;
+
     }
 
     /**
@@ -102,8 +124,10 @@ class Booking extends Model
             $start_time = $booking['start_hour'];
             $duration = $booking['time_length'];
             $resource = $booking['resource_id'];
+            $is_interpreter = $booking['is_interpreter'];
             $date = date('Y-m-d', strtotime($booking['date']));
             $booked_dates[$date][$start_time]['date'] =  $date;
+            $booked_dates[$date][$start_time]['is_interpreter'] =  $is_interpreter;
             $booked_dates[$date][$start_time]['week_day'] =  $booking['day'];
             $booked_dates[$date][$start_time]['times'][$resource] =  [
                 'start_time' => $start_time,

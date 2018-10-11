@@ -132,7 +132,11 @@ class ServiceAvailability extends Model
         $resources = self::getResourceUnavailability();
         $availability_regular = new \App\Models\Availability($resources, $regular_merged, $service_bookings_regular, $this->start, $this->end);
         $availability_interpreter = new \App\Models\Availability($resources, $interpreter_merged, $service_bookings_interpreter, $this->start, $this->end);
-        return ['regular'=> $availability_regular->get(), 'interpreter' => $availability_interpreter->get()];
+
+        $bookings_obj = new Booking();
+        $unavailable_dates =  $bookings_obj->getFutureBookingsByServiceAndDate($this->service_id,  $this->start, $this->end);
+
+        return ['regular'=> $availability_regular->get(), 'interpreter' => $availability_interpreter->get(), 'unavailable' => $unavailable_dates];
     }
 
     /**

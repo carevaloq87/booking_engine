@@ -75918,6 +75918,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         return {
             regular: {},
             interpreter: {},
+            unavailable: {},
             availability_url: '/services/getAvailabilitybyService/' + this.sv_id,
             events: [],
             config: {
@@ -75998,13 +75999,15 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         initCalendar: function initCalendar(response) {
             this.regular = response.regular;
             this.interpreter = response.interpreter;
+            this.unavailable = response.unavailable;
             this.showInCalendar();
         },
         showInCalendar: function showInCalendar() {
-            this.addEventsToCalendar(this.regular, 0);
-            this.addEventsToCalendar(this.interpreter, 1);
+            this.addEventsToCalendar(this.regular, 0, 0);
+            this.addEventsToCalendar(this.interpreter, 1, 0);
+            this.addEventsToCalendar(this.unavailable, 1, 1);
         },
-        addEventsToCalendar: function addEventsToCalendar(appts, is_interpreter) {
+        addEventsToCalendar: function addEventsToCalendar(appts, is_interpreter, is_booking) {
             var service_events = [];
             var self = this;
             Object.keys(appts).forEach(function (date_appt) {
@@ -76012,12 +76015,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 Object.keys(av_hours).forEach(function (time_available) {
                     var slots = av_hours[time_available];
                     Object.keys(slots).forEach(function (slot) {
-                        var slot_text = 'Slot Available';
+                        var slot_text = is_booking == 1 ? 'Slot Taken' : 'Slot Available';
                         var slot_time = parseInt(slots[slot].start_time);
                         var slot_duration = parseInt(slots[slot].duration);
                         var start_time = __WEBPACK_IMPORTED_MODULE_0_moment___default()(date_appt).add(slot_time, 'm');
                         var end_time = __WEBPACK_IMPORTED_MODULE_0_moment___default()(date_appt).add(slot_time + slot_duration, 'm');
-                        var color = is_interpreter == 1 ? 'blue' : 'green';
+                        var color = is_booking == 1 ? 'red' : is_interpreter == 1 ? 'blue' : 'green';
 
                         self.events.push({
                             title: slot_text,

@@ -18,6 +18,7 @@
             return {
                     regular: {},
                     interpreter: {},
+                    unavailable: {},
                     availability_url: '/services/getAvailabilitybyService/' + this.sv_id,
                     events: [
                     ],
@@ -84,27 +85,29 @@
             },
             getFutureAvailability() {
                 return new Promise((resolve, reject) => {
-                axios['get'](this.availability_url, {})
-                    .then(response => {
-                        console.log(response);
-                        resolve(response.data);
-                    })
-                    .catch(error => {
-                        console.log(error);
-                        reject(error.data);
-                    });
+                    axios['get'](this.availability_url, {})
+                        .then(response => {
+                            console.log(response);
+                            resolve(response.data);
+                        })
+                        .catch(error => {
+                            console.log(error);
+                            reject(error.data);
+                        });
                 });
             },
             initCalendar(response) {
                 this.regular = response.regular;
                 this.interpreter = response.interpreter;
+                this.unavailable = response.unavailable;
                 this.showInCalendar();
             },
             showInCalendar() {
-                this.addEventsToCalendar(this.regular, 0);
-                this.addEventsToCalendar(this.interpreter, 1);
+                this.addEventsToCalendar(this.regular, 0, 0);
+                this.addEventsToCalendar(this.interpreter, 1, 0);
+                this.addEventsToCalendar(this.unavailable, 1, 1);
             },
-            addEventsToCalendar(appts, is_interpreter){
+            addEventsToCalendar(appts, is_interpreter, is_booking){
                 let service_events = [];
                 let self = this;
                 Object.keys(appts).forEach(function (date_appt) {
@@ -112,12 +115,12 @@
                     Object.keys(av_hours).forEach(function (time_available) {
                         let slots = av_hours[time_available];
                         Object.keys(slots).forEach(function (slot) {
-                            let slot_text = 'Slot Available';
+                            let slot_text = (is_booking == 1 ? 'Slot Taken' : 'Slot Available');
                             let slot_time = parseInt(slots[slot].start_time);
                             let slot_duration = parseInt(slots[slot].duration);
                             let start_time = moment(date_appt).add(slot_time, 'm');
                             let end_time = moment(date_appt).add((slot_time + slot_duration), 'm');
-                            let color = ( is_interpreter == 1 ? 'blue' : 'green');
+                            let color = (is_booking == 1 ? 'red' : ( is_interpreter == 1 ? 'blue' : 'green'));
 
                             self.events.push({
                                 title: slot_text,
