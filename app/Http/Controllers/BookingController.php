@@ -6,6 +6,7 @@ use App\Models\Booking;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use App\Models\Client;
+use App\Models\BookingStatus;
 use Exception;
 
 class BookingController extends Controller
@@ -46,7 +47,8 @@ class BookingController extends Controller
             $data['client_id'] = $this->findOrCreateClient($data['first_name'],
                                                         $data['last_name'],
                                                         $data['contact']);
-
+            $bookingStatus = BookingStatus::where('name', 'Pending')->firstOrFail();
+            $data['booking_status_id'] = $bookingStatus->id;
             Booking::create($data);
 
             return redirect()->route('home')
