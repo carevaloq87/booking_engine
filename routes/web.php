@@ -346,7 +346,7 @@ Route::group(
 
     Route::post('/', 'ClientsController@store')
          ->name('clients.client.store');
-               
+
     Route::put('client/{client}', 'ClientsController@update')
          ->name('clients.client.update')
          ->where('id', '[0-9]+');
@@ -354,5 +354,20 @@ Route::group(
     Route::delete('/client/{client}','ClientsController@destroy')
          ->name('clients.client.destroy')
          ->where('id', '[0-9]+');
+
+});
+
+// API
+
+Route::group(
+[
+    'prefix' => 'api',
+], function () {
+
+    Route::get('/service/{service_id}/availability/{start_date}/{end_date}', 'ApiController@getAvailability')
+        ->name('api.service.availability');
+
+    Route::post('/booking', 'ApiController@storeBooking')
+        ->name('api.booking.store');;
 
 });

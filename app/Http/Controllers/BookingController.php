@@ -8,6 +8,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Client;
 use App\Models\BookingStatus;
 use Exception;
+use Illuminate\Validation\ValidationException as ValidationException;
 
 class BookingController extends Controller
 {
@@ -43,21 +44,15 @@ class BookingController extends Controller
     public function store(Request $request)
     {
         try {
-            $data = $this->getData($request);
-            $data['client_id'] = $this->findOrCreateClient($data['first_name'],
-                                                        $data['last_name'],
-                                                        $data['contact']);
-            $bookingStatus = BookingStatus::where('name', 'Pending')->firstOrFail();
-            $data['booking_status_id'] = $bookingStatus->id;
-            Booking::create($data);
-
+            $this->createBooking($request);
             return redirect()->route('home')
                             ->with('success_message', 'Booking Status was successfully added!');
 
         } catch (Exception $exception) {
-
             return back()->withInput()
-                        ->withErrors(['unexpected_error' => 'Unexpected error occurred while trying to process your request!' . $exception->getMessage()]);
+                        ->withErrors(['unexpected_error' =>
+                        $exception instanceof ValidationException? implode(" ",array_flatten($exception->errors())) :
+                        $exception->getMessage()]);
         }
 
     }
@@ -97,8 +92,10 @@ class BookingController extends Controller
             'last_name' => 'string|required',
             'contact' => 'string|nullable'
         ];
-
-        $data = $request->validate($rules);
+        $customMessages = [
+            'required' => 'The :attribute field is required.'
+        ];
+        $data = $request->validate($rules, $customMessages);
         $data['day'] = date('D', strtotime($request['date']));
         return $data;
     }
@@ -114,4 +111,20 @@ class BookingController extends Controller
         $booking_obj = new Booking();
         return $booking_obj->getFutureBookingsByServiceAndDate($request->sv_id, $request->start, $request->end);
     }
+    /**
+     * create a booking
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function createBooking(Request $request){
+        $data = $this->getData($request);
+        $data['client_id'] = $this->findOrCreateClient($data['first_name'],
+                                                    $data['last_name'],
+                                                    $data['contact']);
+        $bookingStatus = BookingStatus::where('name', 'Pending')->firstOrFail();
+        $data['booking_status_id'] = $bookingStatus->id;
+        return Booking::create($data);
+    }
+
 }
