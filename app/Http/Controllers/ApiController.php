@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Service;
 use Illuminate\Http\Request;
+use App\Models\Booking;
 use App\Models\ServiceAvailability;
 use App\Http\Controllers\Controller;
 use App\Http\Controllers\BookingController;
@@ -40,6 +41,25 @@ class ApiController extends Controller
             $booking_obj = new BookingController();
             $booking = $booking_obj->createBooking($request);
             return response()->json($booking->id);
+
+        } catch (Exception $exception) {
+            return response()->json(['error'=>$exception instanceof ValidationException?
+                                            implode(" ",array_flatten($exception->errors())) :
+                                            $exception->getMessage()]);
+        }
+    }
+    /**
+     * Delete a booking
+     *
+     * @param Int $bo_id Booking Id to delete
+     * @return void
+     */
+    public function deleteBooking($bo_id)
+    {
+        try {
+            $booking_obj = new Booking();
+            $booking = $booking_obj->findOrFail($bo_id);
+            return response()->json($booking->delete());
 
         } catch (Exception $exception) {
             return response()->json(['error'=>$exception instanceof ValidationException?
