@@ -28,6 +28,7 @@ Route::group([
         Route::get('logout', 'AuthController@logout');
         Route::get('user', 'AuthController@user');
         Route::post('booking', 'ApiController@storeBooking');
+        Route::patch('booking/{bo_id}', 'ApiController@updateBooking');
         Route::delete('booking/{bo_id}', 'ApiController@deleteBooking');
     });
 });

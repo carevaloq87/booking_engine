@@ -68,4 +68,23 @@ class ApiController extends Controller
         }
     }
 
+    /**
+     * Update a booking
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function updateBooking(Request $request, $bo_id)
+    {
+        try {
+            $booking_obj = new Booking();
+            $booking = $booking_obj->updateBooking($request->all(), $bo_id);
+            return response()->json($booking);
+
+        } catch (Exception $exception) {
+            return response()->json(['error'=>$exception instanceof ValidationException?
+                                            implode(" ",array_flatten($exception->errors())) :
+                                            $exception->getMessage()]);
+        }
+    }
 }

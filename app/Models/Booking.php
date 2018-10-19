@@ -136,4 +136,33 @@ class Booking extends Model
         }
         return $booked_dates;
     }
+
+    /**
+     * Update booking
+     *
+     * @param array $data array with booking information
+     * @param int $bo_id booking ID
+     * @return Booking Booking object updated
+     */
+    public function updateBooking($data, $bo_id)
+    {
+        $booking_obj = new Booking();
+        $booking = $booking_obj->findOrFail($bo_id);
+
+        $booking['date'] = (isset($data['date']) && $data['date'] != '' ? $data['date'] : $booking['date']);
+        $booking['day'] = (isset($data['date']) && $data['date'] != '' ? date('D', strtotime($data['date'])) : $booking['day']);
+        $booking['start_hour'] = (isset($data['start_hour']) && $data['start_hour'] != '' ? $data['start_hour'] : $booking['start_hour']);
+        $booking['time_length'] = (isset($data['time_length']) && $data['time_length'] != '' ? $data['time_length'] : $booking['time_length']);
+        $booking['comment'] = isset($data['comment']) ? $data['comment'] : "";
+        $booking['is_interpreter'] = isset($data['is_interpreter']) ? $data['is_interpreter'] : 0;
+        $booking['int_language'] = isset($data['int_language']) ? $data['int_language'] : "";
+        $booking['resource_id'] = (isset($data['resource_id']) && $data['resource_id'] != '' ? $data['resource_id'] : $booking['resource_id']);
+        $booking['service_id'] = (isset($data['service_id']) && $data['service_id'] != '' ? $data['service_id'] : $booking['service_id']);
+        $booking['booking_status_id'] = (isset($data['booking_status_id']) && $data['booking_status_id'] != '' ? $data['booking_status_id'] : $booking['booking_status_id']);
+
+        //Needs to add client information too
+
+        $booking->save();
+        return $booking;
+    }
 }
