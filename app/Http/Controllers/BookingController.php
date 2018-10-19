@@ -83,9 +83,6 @@ class BookingController extends Controller
             'service_id' => 'required',
             'is_interpreter' => 'required',
             'date' => 'required',
-            'start_hour' => 'required',
-            'resource_id' => 'required',
-            'time_length' => 'required',
             'comment' => 'string|nullable',
             'int_language' => 'nullable',
             'first_name' => 'string|required',
@@ -117,7 +114,8 @@ class BookingController extends Controller
      * @param Request $request
      * @return void
      */
-    public function createBooking(Request $request){
+    public function createBooking(Request $request)
+    {
         $data = $this->getData($request);
         $data['client_id'] = $this->findOrCreateClient($data['first_name'],
                                                     $data['last_name'],

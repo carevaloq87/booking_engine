@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Models\Service;
-use Illuminate\Http\Request;
+use App\Models\Client;
+use App\Models\BookingStatus;
 use App\Models\Booking;
 use App\Models\ServiceAvailability;
+use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\BookingController;
 use Illuminate\Validation\ValidationException as ValidationException;
 
 use Exception;
@@ -38,8 +39,13 @@ class ApiController extends Controller
     public function storeBooking(Request $request)
     {
         try {
-            $booking_obj = new BookingController();
-            $booking = $booking_obj->createBooking($request);
+            $data = $this->getBookingData($request);
+            $data['client_id'] = Client::findOrCreate(  $data['first_name'],
+                                                        $data['last_name'],
+                                                        $data['contact']);
+            $bookingStatus = BookingStatus::where('name', 'Pending')->firstOrFail();
+            $data['booking_status_id'] = $bookingStatus->id;
+            $booking=Booking::create($data);
             return response()->json($booking->id);
 
         } catch (Exception $exception) {
@@ -87,4 +93,35 @@ class ApiController extends Controller
                                             $exception->getMessage()]);
         }
     }
+
+    /**
+     * Get the request's data from the request.
+     *
+     * @param Illuminate\Http\Request\Request $request
+     * @return array
+     */
+    protected function getBookingData(Request $request)
+    {
+
+        $rules = [
+            'service_id' => 'required',
+            'is_interpreter' => 'required',
+            'date' => 'required',
+            'start_hour' => 'required',
+            'resource_id' => 'required',
+            'time_length' => 'required',
+            'comment' => 'string|nullable',
+            'int_language' => 'nullable',
+            'first_name' => 'string|required',
+            'last_name' => 'string|required',
+            'contact' => 'string|nullable'
+        ];
+        $customMessages = [
+            'required' => 'The :attribute field is required.'
+        ];
+        $data = $request->validate($rules, $customMessages);
+        $data['day'] = date('D', strtotime($request['date']));
+        return $data;
+    }
+
 }

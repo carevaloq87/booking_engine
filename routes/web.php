@@ -356,18 +356,3 @@ Route::group(
          ->where('id', '[0-9]+');
 
 });
-
-// API
-
-Route::group(
-[
-    'prefix' => 'api',
-], function () {
-
-    Route::get('/service/{service_id}/availability/{start_date}/{end_date}', 'ApiController@getAvailability')
-        ->name('api.service.availability');
-
-    Route::post('/booking', 'ApiController@storeBooking')
-        ->name('api.booking.store');;
-
-});

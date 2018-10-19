@@ -29,8 +29,8 @@ class ClientsController extends Controller
      */
     public function create()
     {
-        
-        
+
+
         return view('clients.create');
     }
 
@@ -44,9 +44,9 @@ class ClientsController extends Controller
     public function store(Request $request)
     {
         try {
-            
+
             $data = $this->getData($request);
-            
+
             Client::create($data);
 
             return redirect()->route('clients.client.index')
@@ -83,7 +83,7 @@ class ClientsController extends Controller
     public function edit($id)
     {
         $client = Client::findOrFail($id);
-        
+
 
         return view('clients.edit', compact('client'));
     }
@@ -99,9 +99,9 @@ class ClientsController extends Controller
     public function update($id, Request $request)
     {
         try {
-            
+
             $data = $this->getData($request);
-            
+
             $client = Client::findOrFail($id);
             $client->update($data);
 
@@ -112,7 +112,7 @@ class ClientsController extends Controller
 
             return back()->withInput()
                          ->withErrors(['unexpected_error' => 'Unexpected error occurred while trying to process your request!']);
-        }        
+        }
     }
 
     /**
@@ -138,11 +138,11 @@ class ClientsController extends Controller
         }
     }
 
-    
+
     /**
      * Get the request's data from the request.
      *
-     * @param Illuminate\Http\Request\Request $request 
+     * @param Illuminate\Http\Request\Request $request
      * @return array
      */
     protected function getData(Request $request)
@@ -151,9 +151,9 @@ class ClientsController extends Controller
             'first_name' => 'string|min:1|nullable',
             'last_name' => 'string|min:1|nullable',
             'contact' => 'string|min:1|nullable',
-     
+
         ];
-        
+
         $data = $request->validate($rules);
 
 
