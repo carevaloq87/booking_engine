@@ -80,14 +80,17 @@ class BookingController extends Controller
     {
 
         $rules = [
-            'service_id' => 'required',
-            'is_interpreter' => 'required',
-            'date' => 'required',
-            'comment' => 'string|nullable',
-            'int_language' => 'nullable',
-            'first_name' => 'string|required',
-            'last_name' => 'string|required',
-            'contact' => 'string|nullable'
+            'service_id'        => 'required',
+            'is_interpreter'    => 'required',
+            'date'              => 'required',
+            'start_hour'        => 'required',
+            'resource_id'       => 'nullable',
+            'time_length'       => 'nullable',
+            'comment'           => 'string|nullable',
+            'int_language'      => 'nullable',
+            'first_name'        => 'string|required',
+            'last_name'         => 'string|required',
+            'contact'           => 'string|nullable'
         ];
         $customMessages = [
             'required' => 'The :attribute field is required.'
@@ -117,7 +120,7 @@ class BookingController extends Controller
     public function createBooking(Request $request)
     {
         $data = $this->getData($request);
-        $data['client_id'] = $this->findOrCreateClient($data['first_name'],
+        $data['client_id'] = Client::findOrCreate(  $data['first_name'],
                                                     $data['last_name'],
                                                     $data['contact']);
         $bookingStatus = BookingStatus::where('name', 'Pending')->firstOrFail();

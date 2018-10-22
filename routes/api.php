@@ -30,6 +30,7 @@ Route::group([
         Route::post('booking', 'ApiController@storeBooking');
         Route::patch('booking/{bo_id}', 'ApiController@updateBooking');
         Route::delete('booking/{bo_id}', 'ApiController@deleteBooking');
-        Route::get('/service/{service_id}/availability/{start_date}/{end_date}', 'ApiController@getAvailability');
+        Route::get('/service/{service_id}/availability/{start_date}/{end_date}', 'ApiController@getServiceAvailability');
+        Route::get('/service/{services}/booking', 'ApiController@getBookingsByServiceId');
     });
 });

@@ -62,7 +62,13 @@ class Booking extends Model
     {
         return $this->belongsTo('App\Models\Service','service_id');
     }
-
+    /**
+     * Get the client for this model
+     */
+    public function client()
+    {
+        return $this->belongsTo('App\Models\Client','client_id');
+    }
     /**
      * Get the resource for this model.
      */
@@ -70,7 +76,19 @@ class Booking extends Model
     {
         return $this->belongsTo('App\Models\Resource','resource_id');
     }
-
+    /**
+     * Get the Boking status for this model.
+     */
+    public function bookingStatus()
+    {
+        return $this->belongsTo('App\Models\BookingStatus','booking_status_id');
+    }    
+    /**
+     * Get the bookings from today by service id
+     *
+     * @param int $service_id
+     * @return void
+     */
     public function getFutureBookingsByService($service_id)
     {
         return $this->where('service_id', $service_id)

@@ -29,9 +29,10 @@
             <label for="date" class="col-md-2 control-label">Available Times</label>
             <div class="col-md-6">
                 <label class="mt-radio mt-radio-outline" v-for= "time in times" :key="time.start_time" >
-                    <input type="radio" name="start_hour" :value="time.start_time" required>
-                    <input type="hidden" name="resource_id" id="resource_id" :value="time.resource_id">
-                    <input type="hidden" name="time_length" id="time_length" :value="time.duration">
+                    <input type="radio" id='time' :value="time" v-model="hour" required>
+                    <input type="hidden"  v-if="hour" name="resource_id" id="resource_id" :value="hour.resource_id">
+                    <input type="hidden"  v-if="hour" name="time_length" id="time_length" :value="hour.duration">
+                    <input type="hidden"  v-if="hour" name="start_hour" id="start_hour" :value="hour.start_time">
                     {{ time.text }}<span></span><br>
                 </label>
             </div>
@@ -51,6 +52,7 @@ import moment from 'moment';
                 dates_interpreter : [],
                 is_interpreter:false,
                 times:[],
+                hour:null,
             }
         },
         methods: {
@@ -71,6 +73,7 @@ import moment from 'moment';
             date: function() {
                 let date = this.date;
                 let times = [];
+                this.times = [];
                 let days = [];
                 if(!this.is_interpreter && this.dates_regular.length > 0) {
                     days = Object.entries(this.availability.regular);

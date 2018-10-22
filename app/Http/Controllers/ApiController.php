@@ -24,7 +24,7 @@ class ApiController extends Controller
      * @param string $end_date 'YYYY-MM-DD'
      * @return void
      */
-    public function getAvailability($service_id, $start_date, $end_date)
+    public function getServiceAvailability($service_id, $start_date, $end_date)
     {
         $service = Service::findOrFail($service_id);
         $serviceAvailability = new ServiceAvailability($service, $start_date, $end_date);
@@ -104,17 +104,17 @@ class ApiController extends Controller
     {
 
         $rules = [
-            'service_id' => 'required',
-            'is_interpreter' => 'required',
-            'date' => 'required',
-            'start_hour' => 'required',
-            'resource_id' => 'required',
-            'time_length' => 'required',
-            'comment' => 'string|nullable',
-            'int_language' => 'nullable',
-            'first_name' => 'string|required',
-            'last_name' => 'string|required',
-            'contact' => 'string|nullable'
+            'service_id'        => 'required',
+            'is_interpreter'    => 'required',
+            'date'              => 'required',
+            'start_hour'        => 'required',
+            'resource_id'       => 'required',
+            'time_length'       => 'required',
+            'comment'           => 'string|nullable',
+            'int_language'      => 'nullable',
+            'first_name'        => 'string|required',
+            'last_name'         => 'string|required',
+            'contact'           => 'string|nullable'
         ];
         $customMessages = [
             'required' => 'The :attribute field is required.'
@@ -122,6 +122,27 @@ class ApiController extends Controller
         $data = $request->validate($rules, $customMessages);
         $data['day'] = date('D', strtotime($request['date']));
         return $data;
+    }
+
+    /**
+     * Get the booking by services id
+     *
+     * @param [type] $services
+     * @return void
+     */
+    public function getBookingsByServiceId($services)
+    {
+        try {
+            $bookings = Booking::with('client')
+                                ->with('bookingstatus')
+                                ->whereIn('service_id', explode(",",$services))
+                                ->get();
+            return response()->json($bookings);
+        } catch (Exception $exception) {
+            return response()->json(['error'=>$exception instanceof ValidationException?
+                                            implode(" ",array_flatten($exception->errors())) :
+                                            $exception->getMessage()]);
+        }
     }
 
 }
