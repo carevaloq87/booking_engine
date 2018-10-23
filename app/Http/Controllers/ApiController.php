@@ -125,17 +125,19 @@ class ApiController extends Controller
     }
 
     /**
-     * Get the booking by services id
+     * Get the booking by services id and date
      *
-     * @param [type] $services
+     * @param string $services
      * @return void
      */
-    public function getBookingsByServiceId($services)
+    public function getBookingsByServiceId($services, $start_date, $end_date)
     {
         try {
             $bookings = Booking::with('client')
                                 ->with('bookingstatus')
+                                ->with('resource')
                                 ->whereIn('service_id', explode(",",$services))
+                                ->whereBetween ('date', [$start_date, $end_date])
                                 ->get();
             return response()->json($bookings);
         } catch (Exception $exception) {
