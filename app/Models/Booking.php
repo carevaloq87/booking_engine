@@ -38,7 +38,8 @@ class Booking extends Model
                             'resource_id',
                             'service_id',
                             'client_id',
-                            'booking_status_id'
+                            'booking_status_id',
+                            'data'
                         ];
 
     /**
