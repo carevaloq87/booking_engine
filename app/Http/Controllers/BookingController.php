@@ -126,7 +126,25 @@ class BookingController extends Controller
                                                     $data['contact']);
         $bookingStatus = BookingStatus::where('name', 'Pending')->firstOrFail();
         $data['booking_status_id'] = $bookingStatus->id;
+        $this->checkBookingDuplicity($data);
         return Booking::create($data);
+    }
+    /**
+     * Check if exist a booking with similar resource, service date and hour
+     *
+     * @param array $data
+     * @return void
+     */
+    public function checkBookingDuplicity($data)
+    {
+        $booking = Booking::where('date', $data['date'])
+                            ->where('service_id', $data['service_id'])
+                            ->where('resource_id', $data['resource_id'])
+                            ->where('start_hour',$data['start_hour'])
+                            ->first();
+        if (isset($booking)) {
+            throw new Exception('Error. Duplicate booking');
+        }
     }
 
 }

@@ -45,6 +45,7 @@ class ApiController extends Controller
                                                         $data['contact']);
             $bookingStatus = BookingStatus::where('name', 'Pending')->firstOrFail();
             $data['booking_status_id'] = $bookingStatus->id;
+            $this->checkBookingDuplicity($data);
             $booking=Booking::create($data);
             return response()->json($booking->id);
 
@@ -145,6 +146,23 @@ class ApiController extends Controller
             return response()->json(['error'=>$exception instanceof ValidationException?
                                             implode(" ",array_flatten($exception->errors())) :
                                             $exception->getMessage()]);
+        }
+    }
+    /**
+     * Check if exist a booking with similar resource, service date and hour
+     *
+     * @param array $data
+     * @return void
+     */
+    public function checkBookingDuplicity($data)
+    {
+        $booking = Booking::where('date', $data['date'])
+                            ->where('service_id', $data['service_id'])
+                            ->where('resource_id', $data['resource_id'])
+                            ->where('start_hour',$data['start_hour'])
+                            ->first();
+        if (isset($booking)) {
+            throw new Exception('Error. Duplicate booking');
         }
     }
 
