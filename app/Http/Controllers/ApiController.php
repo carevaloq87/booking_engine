@@ -52,7 +52,7 @@ class ApiController extends Controller
         } catch (Exception $exception) {
             return response()->json(['error'=>$exception instanceof ValidationException?
                                             implode(" ",array_flatten($exception->errors())) :
-                                            $exception->getMessage()]);
+                                            $exception->getMessage()],400);
         }
     }
     /**
