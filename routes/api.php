@@ -32,5 +32,6 @@ Route::group([
         Route::delete('booking/{bo_id}', 'ApiController@deleteBooking');
         Route::get('/service/{service_id}/availability/{start_date}/{end_date}', 'ApiController@getServiceAvailability');
         Route::get('/service/{services}/booking/{start_date}/{end_date}', 'ApiController@getBookingsByServiceId');
+        Route::get('/booking_status/{booking_status}','ApiController@getBookingStatusByName');
     });
 });

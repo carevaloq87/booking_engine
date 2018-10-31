@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Models\Client;
+use App\Models\BookingStatus;
 use Illuminate\Database\Eloquent\Model;
 
 class Booking extends Model
@@ -83,7 +85,7 @@ class Booking extends Model
     public function bookingStatus()
     {
         return $this->belongsTo('App\Models\BookingStatus','booking_status_id');
-    }    
+    }
     /**
      * Get the bookings from today by service id
      *
@@ -177,9 +179,14 @@ class Booking extends Model
         $booking['int_language'] = isset($data['int_language']) ? $data['int_language'] : "";
         $booking['resource_id'] = (isset($data['resource_id']) && $data['resource_id'] != '' ? $data['resource_id'] : $booking['resource_id']);
         $booking['service_id'] = (isset($data['service_id']) && $data['service_id'] != '' ? $data['service_id'] : $booking['service_id']);
+        $booking['data'] = (isset($data['data']) && $data['data'] != '' ? $data['data'] : $booking['data']);
         $booking['booking_status_id'] = (isset($data['booking_status_id']) && $data['booking_status_id'] != '' ? $data['booking_status_id'] : $booking['booking_status_id']);
-
-        //Needs to add client information too
+        //Update client information
+        $client = Client::findOrFail($booking['client_id']);
+        $client['first_name'] = isset($data['first_name']) && $data['first_name'] != '' ? $data['first_name'] : $client['first_name'];
+        $client['last_name'] = isset($data['last_name']) && $data['last_name'] != '' ? $data['last_name'] : $client['last_name'];
+        $client['contact'] = isset($data['contact']) && $data['contact'] != '' ? $data['contact'] : $client['contact'];
+        $client->save();
 
         $booking->save();
         return $booking;

@@ -154,7 +154,7 @@ class ApiController extends Controller
      * @param array $data
      * @return void
      */
-    public function checkBookingDuplicity($data)
+    private function checkBookingDuplicity($data)
     {
         $booking = Booking::where('date', $data['date'])
                             ->where('service_id', $data['service_id'])
@@ -163,6 +163,24 @@ class ApiController extends Controller
                             ->first();
         if (isset($booking)) {
             throw new Exception('Error. Duplicate booking');
+        }
+    }
+
+    /**
+     * Get the booking status by name
+     *
+     * @param string $booking_status
+     * @return void
+     */
+    public function getBookingStatusByName($booking_status)
+    {
+        try {
+            $booking_status =  BookingStatus::where('name', $booking_status)->firstOrFail();;
+            return response()->json($booking_status);
+        } catch (Exception $exception) {
+            return response()->json(['error'=>$exception instanceof ValidationException?
+                                            implode(" ",array_flatten($exception->errors())) :
+                                            $exception->getMessage()], 400);
         }
     }
 
