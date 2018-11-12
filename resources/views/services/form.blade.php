@@ -1,7 +1,7 @@
 <input id='id' type='hidden' value="{{ old('id', optional($service)->id) }}">
 <div class="form-group {{ $errors->has('name') ? 'has-error' : '' }}">
     <label for="name" class="col-md-2 control-label">Name</label>
-    <div class="col-md-10">            
+    <div class="col-md-10">
         <input class="form-control" name="name" type="text" id="name" value="{{ old('name', optional($service)->name) }}" minlength="1" maxlength="255" placeholder="Enter name here...">
         {!! $errors->first('name', '<p class="help-block">:message</p>') !!}
     </div>
@@ -28,6 +28,14 @@
     <div class="col-md-10">
         <textarea class="form-control" name="description" cols="50" rows="10" id="description" minlength="1" maxlength="1000">{{ old('description', optional($service)->description) }}</textarea>
         {!! $errors->first('description', '<p class="help-block">:message</p>') !!}
+    </div>
+</div>
+
+<div class="form-group {{ $errors->has('color') ? 'has-error' : '' }}">
+    <label for="color" class="col-md-2 control-label">Color</label>
+    <div class="col-md-1">
+        <input class="form-control" name="color" type="color" id="color" value="{{ old('color', optional($service)->color) }}" minlength="1" maxlength="255" placeholder="Choose a color here...">
+        {!! $errors->first('color', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
 
@@ -87,28 +95,28 @@
     </div>
 </div>
 
-<div class="form-group {{ $errors->has('resources') ? 'has-error' : '' }}" id="resources-select">    
+<div class="form-group {{ $errors->has('resources') ? 'has-error' : '' }}" id="resources-select">
     <label for="resources" class="col-md-2 control-label">Resources</label>
-    <div class="col-md-10">        
-        <multiselect    v-model="selected"                         
+    <div class="col-md-10">
+        <multiselect    v-model="selected"
                         label="name"
-                        key = "id" 
-                        track-by="name" 
-                        placeholder="Type to search" 
-                        open-direction="bottom" 
-                        :options="options" 
-                        :multiple="true" 
-                        :searchable="true"                         
-                        :clear-on-select="true" 
-                        :close-on-select="true" 
+                        key = "id"
+                        track-by="name"
+                        placeholder="Type to search"
+                        open-direction="bottom"
+                        :options="options"
+                        :multiple="true"
+                        :searchable="true"
+                        :clear-on-select="true"
+                        :close-on-select="true"
                         :show-no-results="false"
-                        :hide-selected="true">                        
+                        :hide-selected="true">
         </multiselect>
-        <input type="hidden" name="resources[]" v-for="value in selected" :value= "value.id" id="resources">        
+        <input type="hidden" name="resources[]" v-for="value in selected" :value= "value.id" id="resources">
         {!! $errors->first('resources', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
-@section('scripts')    
+@section('scripts')
     <script src="{{ asset('js/service.js')}}" />
 @endsection
 

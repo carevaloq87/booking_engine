@@ -69,12 +69,12 @@ class ServiceController extends Controller
             }
 
             return redirect()->route('services.service.index')
-                             ->with('success_message', 'Service was successfully added!');
+                            ->with('success_message', 'Service was successfully added!');
 
         } catch (Exception $exception) {
 
             return back()->withInput()
-                         ->withErrors(['unexpected_error' => $exception->getMessage()]);
+                        ->withErrors(['unexpected_error' => $exception->getMessage()]);
         }
     }
 
@@ -128,15 +128,15 @@ class ServiceController extends Controller
                 $service->resources()->sync($data['resources']);
             } else {
                 $service->resources()->sync([]);
-            }  
+            }
 
             return redirect()->route('services.service.index')
-                             ->with('success_message', 'Service was successfully updated!');
+                            ->with('success_message', 'Service was successfully updated!');
 
         } catch (Exception $exception) {
 
             return back()->withInput()
-                         ->withErrors(['unexpected_error' => 'Unexpected error occurred while trying to process your request!']);
+                        ->withErrors(['unexpected_error' => 'Unexpected error occurred while trying to process your request!']);
         }
     }
 
@@ -154,16 +154,16 @@ class ServiceController extends Controller
             $service->delete();
 
             return redirect()->route('services.service.index')
-                             ->with('success_message', 'Service was successfully deleted!');
+                            ->with('success_message', 'Service was successfully deleted!');
 
         } catch (Exception $exception) {
 
             return back()->withInput()
-                         ->withErrors(['unexpected_error' => 'Unexpected error occurred while trying to process your request!']);
+                        ->withErrors(['unexpected_error' => 'Unexpected error occurred while trying to process your request!']);
         }
     }
     /**
-     * Get resource by service id 
+     * Get resource by service id
      * (used in Vue)
      *
      * @param int $id service id
@@ -183,7 +183,7 @@ class ServiceController extends Controller
     public function getServicesByUserServiceProvider()
     {
         return Service::getServicesByUserServiceProvider();
-    }    
+    }
 
     /**
      * Get the request's data from the request.
@@ -205,7 +205,7 @@ class ServiceController extends Controller
             'spaces' => 'string|min:1|nullable',
             'service_provider_id' => 'nullable',
             'resources' => 'nullable',
-
+            'color' => 'nullable',
         ];
 
         $data = $request->validate($rules);

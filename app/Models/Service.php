@@ -37,7 +37,8 @@ class service extends Model
                             'interpreter_duration',
                             'listed_interpreter_duration',
                             'spaces',
-                            'service_provider_id'
+                            'service_provider_id',
+                            'color'
                         ];
 
     /**

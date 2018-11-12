@@ -19,6 +19,7 @@ class CreateServicesTable extends Migration
             $table->string('name', 255)->nullable();
             $table->string('phone')->nullable();
             $table->string('email')->nullable();
+            $table->string('color')->nullable();
             $table->string('description', 1000)->nullable();
             $table->string('duration')->nullable();
             $table->string('listed_duration')->nullable();
