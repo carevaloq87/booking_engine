@@ -183,5 +183,20 @@ class ApiController extends Controller
                                             $exception->getMessage()], 400);
         }
     }
+    /**
+     * Get all booking status
+     *
+     * @return void
+     */
+    public function getAllBookingStatus()
+    {
+        try {
+            return BookingStatus::all();
+        } catch (Exception $exception) {
+            return response()->json(['error'=>$exception instanceof ValidationException?
+            implode(" ",array_flatten($exception->errors())) :
+            $exception->getMessage()], 400);
+        }
+    }
 
 }
