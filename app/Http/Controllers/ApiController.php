@@ -138,6 +138,7 @@ class ApiController extends Controller
             $bookings = Booking::with('client')
                                 ->with('bookingstatus')
                                 ->with('resource')
+                                ->with('service')
                                 ->whereIn('service_id', explode(",",$services))
                                 ->whereBetween ('date', [$start_date, $end_date])
                                 ->get();
