@@ -50,10 +50,6 @@
                         <dd>{{ $service->description }}</dd>
                         <dt>Duration</dt>
                         <dd>{{ $service->duration }}</dd>
-                        <dt>Listed Duration</dt>
-                        <dd>{{ $service->listed_duration }}</dd>
-                        <dt>Spaces</dt>
-                        <dd>{{ $service->spaces }}</dd>
                         <dt>Service Provider</dt>
                         <dd>{{ optional($service->serviceProvider)->name }}</dd>
 

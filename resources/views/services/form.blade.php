@@ -39,10 +39,10 @@
     </div>
 </div>
 
-<div class="form-group {{ $errors->has('listed_duration') ? 'has-error' : '' }}">
+<div class="form-group {{ $errors->has('listed_duration') ? 'has-error' : '' }} hidden">
     <label for="listed_duration" class="col-md-2 control-label">Listed Duration</label>
     <div class="col-md-10">
-        <input class="form-control" name="listed_duration" type="text" id="listed_duration" value="{{ old('listed_duration', optional($service)->listed_duration) }}" minlength="1" placeholder="Enter listed duration here..." required>
+        <input class="form-control" name="listed_duration" type="text" id="listed_duration" value="0" minlength="1" placeholder="Enter listed duration here..." required>
         {!! $errors->first('listed_duration', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
@@ -55,18 +55,18 @@
     </div>
 </div>
 
-<div class="form-group {{ $errors->has('listed_interpreter_duration') ? 'has-error' : '' }}">
+<div class="form-group {{ $errors->has('listed_interpreter_duration') ? 'has-error' : '' }} hidden">
     <label for="listed_interpreter_duration" class="col-md-2 control-label">Interpreter Listed Duration</label>
     <div class="col-md-10">
-        <input class="form-control" name="listed_interpreter_duration" type="text" id="listed_interpreter_duration" value="{{ old('listed_interpreter_duration', optional($service)->listed_interpreter_duration) }}" minlength="1" placeholder="Enter listed duration here..." required>
+        <input class="form-control" name="listed_interpreter_duration" type="text" id="listed_interpreter_duration" value="0" minlength="1" placeholder="Enter listed duration here..." required>
         {!! $errors->first('listed_interpreter_duration', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
 
-<div class="form-group {{ $errors->has('spaces') ? 'has-error' : '' }}">
+<div class="form-group {{ $errors->has('spaces') ? 'has-error' : '' }} hidden">
     <label for="spaces" class="col-md-2 control-label">Spaces</label>
     <div class="col-md-10">
-        <input class="form-control" name="spaces" type="text" id="spaces" value="{{ old('spaces', optional($service)->spaces) }}" minlength="1" placeholder="Enter spaces here...">
+        <input class="form-control" name="spaces" type="text" id="spaces" value="1" minlength="1" placeholder="Enter spaces here...">
         {!! $errors->first('spaces', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
