@@ -199,5 +199,20 @@ class ApiController extends Controller
             $exception->getMessage()], 400);
         }
     }
+    /**
+     * Get all services
+     *
+     * @return void
+     */
+    public function getAllServices()
+    {
+        try {
+            return Service::all();
+        } catch (Exception $exception) {
+            return response()->json(['error'=>$exception instanceof ValidationException?
+            implode(" ",array_flatten($exception->errors())) :
+            $exception->getMessage()], 400);
+        }
+    }
 
 }
