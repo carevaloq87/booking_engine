@@ -63,17 +63,14 @@
                     <h4 class="mt-5 mb-5">Booking Settings</h4>
                 </div>
                 <div class="panel-body">
-                    <div class="col-xs-3">
+                    <div class="col-xs-4">
                         <a v-on:click="openCalendar({{ $service->id }})" href="#"><small><i class="fa fa-calendar"></i> Days</small></a>
                     </div>
-                    <div class="col-xs-3 border-left">
+                    <div class="col-xs-4 border-left">
                         <a v-on:click="openSchedule({{ $service->id }})" href="#"><small><i class="fa fa-clock-o"></i> Hours</small></a>
                     </div>
-                    <div class="col-xs-3 border-left">
+                    <div class="col-xs-4 border-left">
                         <a v-on:click="openAdhoc({{ $service->id }})" href="#"><small><i class="fa fa-cog"></i> Ad hoc</small></a>
-                    </div>
-                    <div class="col-xs-3 border-left">
-                        <a href="javascript:;"><small><i class="fa fa-users"></i> Add Resources</small></a>
                     </div>
                 </div>
             </div>
