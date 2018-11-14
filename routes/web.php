@@ -17,7 +17,7 @@ Route::get('/', function () {
 
 Auth::routes();
 Route::get('/logout', '\App\Http\Controllers\Auth\LoginController@logout')->name('logout');
-Route::get('/home', 'HomeController@index')->name('home');
+//Route::get('/home', 'HomeController@index')->name('home');
 
 // Roles
 Route::group(
@@ -331,28 +331,28 @@ Route::group(
 ], function () {
 
     Route::get('/', 'ClientsController@index')
-         ->name('clients.client.index');
+        ->name('clients.client.index');
 
     Route::get('/create','ClientsController@create')
-         ->name('clients.client.create');
+        ->name('clients.client.create');
 
     Route::get('/show/{client}','ClientsController@show')
-         ->name('clients.client.show')
-         ->where('id', '[0-9]+');
+        ->name('clients.client.show')
+        ->where('id', '[0-9]+');
 
     Route::get('/{client}/edit','ClientsController@edit')
-         ->name('clients.client.edit')
-         ->where('id', '[0-9]+');
+        ->name('clients.client.edit')
+        ->where('id', '[0-9]+');
 
     Route::post('/', 'ClientsController@store')
-         ->name('clients.client.store');
+        ->name('clients.client.store');
 
     Route::put('client/{client}', 'ClientsController@update')
-         ->name('clients.client.update')
-         ->where('id', '[0-9]+');
+        ->name('clients.client.update')
+        ->where('id', '[0-9]+');
 
     Route::delete('/client/{client}','ClientsController@destroy')
-         ->name('clients.client.destroy')
-         ->where('id', '[0-9]+');
+        ->name('clients.client.destroy')
+        ->where('id', '[0-9]+');
 
 });

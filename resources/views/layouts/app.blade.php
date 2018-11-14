@@ -81,7 +81,7 @@
             <span class="icon-bar">B</span>
             <span class="icon-bar">C</span>
         </button>
-        <a href="{!! url('/') !!}" class="navbar-brand">{{ config('app.name', 'booking-engine') }}</a>
+        <a href="#" class="navbar-brand">{{ config('app.name', 'booking-engine') }}</a>
         </div>
         <div id="navbar" class="collapse navbar-collapse">
             <!-- Authentication Links -->

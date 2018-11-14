@@ -69,7 +69,18 @@
             @if (Route::has('login'))
                 <div class="top-right links">
                     @auth
-                        <a href="{{ url('/home') }}">Home</a>
+                        <a href="{{ route('services.service.index') }}">Services</a>
+                        <a href="{{ route('resources.resource.index') }}">Resources</a>
+                        <a href="{{ route('bookings.booking.index') }}">New Booking</a>
+
+                        @if (Auth::user()->isAdmin())
+                            <a href="{{ route('users.index') }}">Users</a>
+                            <a href="{{ route('roles.index') }}">Role</a>
+                            <a href="{{ route('service_providers.service_provider.index') }}">Service Providers</a>
+                        @endif
+                        <a href="{{ route('logout') }}">
+                            {{ __('Logout') }}
+                        </a>
                     @else
                         <a href="{{ route('login') }}">Login</a>
                         <a href="{{ route('register') }}">Register</a>
