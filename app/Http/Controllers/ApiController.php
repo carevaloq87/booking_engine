@@ -214,5 +214,22 @@ class ApiController extends Controller
             $exception->getMessage()], 400);
         }
     }
+    /**
+     * Get All Bookings in a date
+     *
+     * @param date $date
+     * @return void
+     */
+    public function getBookingsByDate($date)
+    {
+        try {
+            $bookings = Booking::where('date', $date)->get();
+            return response()->json($bookings);
+        } catch (Exception $exception) {
+            return response()->json(['error'=>$exception instanceof ValidationException?
+            implode(" ",array_flatten($exception->errors())) :
+            $exception->getMessage()], 400);
+        }
+    }
 
 }

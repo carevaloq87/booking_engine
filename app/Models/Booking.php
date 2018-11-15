@@ -175,8 +175,8 @@ class Booking extends Model
         $booking['start_hour'] = (isset($data['start_hour']) && $data['start_hour'] != '' ? $data['start_hour'] : $booking['start_hour']);
         $booking['time_length'] = (isset($data['time_length']) && $data['time_length'] != '' ? $data['time_length'] : $booking['time_length']);
         $booking['comment'] = isset($data['comment']) ? $data['comment'] : "";
-        $booking['is_interpreter'] = isset($data['is_interpreter']) ? $data['is_interpreter'] : 0;
-        $booking['int_language'] = isset($data['int_language']) ? $data['int_language'] : "";
+        $booking['is_interpreter'] = isset($data['is_interpreter']) ? $data['is_interpreter'] : $booking['is_interpreter'];
+        $booking['int_language'] = isset($data['int_language']) ? $data['int_language'] : $booking['int_language'] ;
         $booking['resource_id'] = (isset($data['resource_id']) && $data['resource_id'] != '' ? $data['resource_id'] : $booking['resource_id']);
         $booking['service_id'] = (isset($data['service_id']) && $data['service_id'] != '' ? $data['service_id'] : $booking['service_id']);
         $booking['data'] = (isset($data['data']) && $data['data'] != '' ? $data['data'] : $booking['data']);
