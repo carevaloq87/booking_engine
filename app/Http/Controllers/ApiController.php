@@ -223,7 +223,8 @@ class ApiController extends Controller
     public function getBookingsByDate($date)
     {
         try {
-            $bookings = Booking::where('date', $date)->get();
+            $bookings = Booking::with('client')
+                                ->where('date', $date)->get();
             return response()->json($bookings);
         } catch (Exception $exception) {
             return response()->json(['error'=>$exception instanceof ValidationException?
