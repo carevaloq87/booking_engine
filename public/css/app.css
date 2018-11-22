@@ -267,3 +267,22 @@
   pointer-events: none;
 }
 
+/*************** Login Page **********/
+#login_button {
+  position: relative;
+  left: 5%;
+  padding-top: 20%;
+}
+.vl {
+  border-left: 1px solid lightgray;
+  height: 500px;
+}
+
+@media (max-width: 991px) {
+  .vl {
+    border-top: 1px solid lightgray;
+    border-left: none;
+    height: 500px;
+  }
+}
+

@@ -3,7 +3,9 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
-use App\User;
+use App\Models\User;
+use SimpleSAML_Auth_Simple;
+use Spatie\Permission\Contracts\Role;
 class AuthController extends Controller
 {
     /**
@@ -68,6 +70,31 @@ class AuthController extends Controller
                 $tokenResult->token->expires_at
             )->toDateTimeString()
         ]);
+    }
+
+    public function loginVLA(Request $request) {
+        if( !Auth::check()) {
+            $simple_SAML = new SimpleSAML_Auth_Simple(env('SIMPLESML_SP'));
+            $simple_SAML->requireAuth();
+            $attributes = $simple_SAML->getAttributes();
+            if (isset($attributes['mail'][0]) && $attributes['mail'][0] != '') {
+                $email = $attributes['mail'][0];
+                $user = User::where('email',$email)->first();
+                if (!$user) { // crete the user if does not exist;
+                    $user = User::create([
+                            'name'     => $attributes['name'][0],
+                            'email'    => $attributes['mail'][0],
+                            'password' => bcrypt(substr(str_shuffle(MD5(microtime())), 0, 16))
+                    ]);
+                    $role = \App\Models\Role::where('name','Authenticated')->first();
+                    $user->assignRole($role->id);
+                    $user->save();
+                }
+                Auth::login($user);
+                return redirect()->route('welcome');
+            }
+        }
+
     }
 
     /**

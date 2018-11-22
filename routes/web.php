@@ -13,10 +13,11 @@
 
 Route::get('/', function () {
     return view('welcome');
-});
+})->name('welcome');
 
 Auth::routes();
 Route::get('/logout', '\App\Http\Controllers\Auth\LoginController@logout')->name('logout');
+Route::post('/login_vla', 'AuthController@loginVLA')->name('login_VLA');
 //Route::get('/home', 'HomeController@index')->name('home');
 
 // Roles

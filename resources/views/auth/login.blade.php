@@ -3,9 +3,9 @@
 @section('content')
 <div class="container">
     <div class="row justify-content-center">
-        <div class="col-md-8">
+        <div class="col-md-6 col-xs-12 login_box" >
             <div class="card">
-                <div class="card-header">{{ __('Login') }}</div>
+                <div class="card-header"><h2>{{ __('Login') }}</h2></div>
 
                 <div class="card-body">
                     <form method="POST" action="{{ route('login') }}" aria-label="{{ __('Login') }}">
@@ -61,6 +61,20 @@
                                     {{ __('Forgot Your Password?') }}
                                 </a>
                             </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 col-xs-12 login_box vl" >
+            <div class="card">
+                <div class="card-body">
+                    <form method="POST" action="{{ route('login_VLA') }}" aria-label="{{ __('Login') }}">
+                        @csrf
+                        <div class="form-group row">
+                            <button id='login_button' class="btn btn-link" type="submit">
+                                <img id="booking-login" class="img-responsive" src="{{ asset('img/VLA_login_button.png') }}" />
+                            </button>
                         </div>
                     </form>
                 </div>
