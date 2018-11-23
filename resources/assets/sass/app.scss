@@ -245,6 +245,26 @@ $white: #fff;
     display: block;
     width: 100%;
     pointer-events: none;
-    
-    
+}
+#booking_description {
+    padding: 0;
+    border: 0;
+}
+/*************** Login Page **********/
+#login_button {
+    position: relative;
+    left: 5%;
+    padding-top: 20%;
+}
+.vl {
+    border-left: 1px solid lightgray;
+    height: 500px;
+}
+
+@media (max-width: 991px) {
+.vl {
+        border-top: 1px solid lightgray;
+        border-left: none;
+        height: 500px;
+    }
 }

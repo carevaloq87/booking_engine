@@ -68,14 +68,21 @@
     <hr>
     <div class="form-group {{ $errors->has('comment') ? 'has-error' : '' }}">
         <label for="comment" class="col-md-2 control-label">Description</label>
-        <div class="col-md-6">
-            <textarea class="form-control" name="comment" cols="50" rows="10" id="comment" minlength="0"></textarea>
+        <div class="col-md-8">
+            <vue-mce
+            id="booking_description"
+            class="form-control col-sm-12"
+            v-model="comment_value"
+            :config="config"
+            name="comment"
+            :value='comment_value'>
             {!! $errors->first('comment', '<p class="help-block">:message</p>') !!}
         </div>
     </div>
 
 </div>
 @section('scripts')
+    <script src="https://cloud.tinymce.com/dev/tinymce.min.js?apiKey=v3tjlgkjdlr8xiq21qsdopbjfkuk5ibmdhgb5yznjfpyb1lj" ></script>
     <script src="{{ asset('js/booking.js')}}" />
 @endsection
 

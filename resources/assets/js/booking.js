@@ -3,15 +3,32 @@ import Multiselect from 'vue-multiselect';
 import axios from 'axios';
 import * as uiv from 'uiv';
 import moment from 'moment'
+import VueMce from 'vue-mce';
 
 Vue.use(uiv);
+Vue.use(VueMce);
 Vue.component('multiselect', Multiselect);
 Vue.component('booking-date-picker', require('./components/booking_engine/booking/date_picker.vue'));
+
+const config = {
+    theme: 'modern',
+    menubar: false,
+    fontsize_formats: "8px 10px 12px 14px 16px 18px 20px",
+    plugins: 'lists paste',
+    paste_as_text: true,
+    toolbar1: 'formatselect fontsizeselect | bold italic strikethrough forecolor backcolor | link | alignleft aligncenter alignright alignjustify  | numlist bullist outdent indent  | removeformat',
+    content_css: [
+        '//fonts.googleapis.com/css?family=Lato:300,300i,400,400i',
+        '//www.tinymce.com/css/codepen.min.css'
+    ],
+};
 
 new Vue({
     el: '#booking-create',
 
     data: {
+        config,
+        comment_value:'',
         service_options : [],
         service_selected: [],
         service_availability : [],

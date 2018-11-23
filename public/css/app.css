@@ -267,12 +267,19 @@
   pointer-events: none;
 }
 
+#booking_description {
+  padding: 0;
+  border: 0;
+}
+
 /*************** Login Page **********/
+
 #login_button {
   position: relative;
   left: 5%;
   padding-top: 20%;
 }
+
 .vl {
   border-left: 1px solid lightgray;
   height: 500px;
