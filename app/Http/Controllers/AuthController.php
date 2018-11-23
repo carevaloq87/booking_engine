@@ -71,7 +71,12 @@ class AuthController extends Controller
             )->toDateTimeString()
         ]);
     }
-
+    /**
+     * Login with VLA credentials
+     *
+     * @param Request $request
+     * @return void
+     */
     public function loginVLA(Request $request) {
         if( !Auth::check()) {
             $simple_SAML = new SimpleSAML_Auth_Simple(env('SIMPLESML_SP'));
@@ -80,7 +85,7 @@ class AuthController extends Controller
             if (isset($attributes['mail'][0]) && $attributes['mail'][0] != '') {
                 $email = $attributes['mail'][0];
                 $user = User::where('email',$email)->first();
-                if (!$user) { // crete the user if does not exist;
+                if (!$user) { // create the user if does not exist;
                     $user = User::create([
                             'name'     => $attributes['name'][0],
                             'email'    => $attributes['mail'][0],

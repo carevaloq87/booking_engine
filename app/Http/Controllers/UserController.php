@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Log;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\ServiceProvider;
@@ -81,6 +82,8 @@ class UserController extends Controller
 	            ->roles()
 	            ->attach(Role::where('id',  $request->role )->first());
             */
+            $log = new Log();
+            $log->record('CREATE', 'user', $user->id,  $user);
             return redirect()->route('users.index')
                              ->with('success_message', 'User was successfully added!');
 
@@ -151,7 +154,8 @@ class UserController extends Controller
 
             DB::table('model_has_roles')->where('model_id',$id)->delete();
             $user->assignRole($request->input('roles'));
-
+            $log = new Log();
+            $log->record('UPDATE', 'user', $user->id,  $user);
             return redirect()->route('users.index')
                              ->with('success_message', 'User was successfully updated!');
 
@@ -188,7 +192,8 @@ class UserController extends Controller
         try {
             $user = User::findOrFail($id);
             $user->delete();
-
+            $log = new Log();
+            $log->record('DELETE', 'user', $user->id,  $user);
             return redirect()->route('users.index')
                              ->with('success_message', 'User was successfully deleted!');
 

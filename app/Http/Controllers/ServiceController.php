@@ -2,12 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Log;
 use App\Models\Service;
 use App\Models\Resource;
-use Illuminate\Http\Request;
 use App\Models\ServiceProvider;
 use App\Models\ServiceAvailability;
 use App\Http\Controllers\Controller;
+use Illuminate\Http\Request;
 
 use Exception;
 
@@ -68,6 +69,8 @@ class ServiceController extends Controller
                 $service->resources()->sync($data['resources']);
             }
 
+            $log = new Log();
+            $log->record('CREATE', 'service', $service->id,  $service);
             return redirect()->route('services.service.index')
                             ->with('success_message', 'Service was successfully added!');
 
@@ -129,7 +132,8 @@ class ServiceController extends Controller
             } else {
                 $service->resources()->sync([]);
             }
-
+            $log = new Log();
+            $log->record('UPDATE', 'service', $service->id,  $service);
             return redirect()->route('services.service.index')
                             ->with('success_message', 'Service was successfully updated!');
 
@@ -152,7 +156,8 @@ class ServiceController extends Controller
         try {
             $service = Service::findOrFail($id);
             $service->delete();
-
+            $log = new Log();
+            $log->record('DELETE', 'service', $service->id,  $service);
             return redirect()->route('services.service.index')
                             ->with('success_message', 'Service was successfully deleted!');
 

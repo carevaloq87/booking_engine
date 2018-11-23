@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Log;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Spatie\Permission\Models\Role;
@@ -64,11 +65,12 @@ class RoleController extends Controller
             $role = Role::create(['name' => $data['name']]);
             $role->syncPermissions($request->input('permission'));
 
+            $log = new Log();
+            $log->record('CREATE', 'role', $role->id,  $role);
             return redirect()->route('roles.index')
                              ->with('success_message', 'Role was successfully added!');
 
         } catch (Exception $exception) {
-            dd($exception->getMessage());
             return back()->withInput()
                          ->withErrors(['unexpected_error' => $exception->getMessage()]);
         }
@@ -130,7 +132,8 @@ class RoleController extends Controller
             $role->save();
 
             $role->syncPermissions($request->input('permission'));
-
+            $log = new Log();
+            $log->record('UPDATE', 'role', $role->id,  $role);
             return redirect()->route('roles.index')
                              ->with('success_message', 'Role was successfully updated!');
 
@@ -153,7 +156,8 @@ class RoleController extends Controller
         try {
             $role = Role::findOrFail($id);
             $role->delete();
-
+            $log = new Log();
+            $log->record('DELETE', 'role', $role->id,  $role);
             return redirect()->route('roles.index')
                              ->with('success_message', 'Role was successfully deleted!');
 

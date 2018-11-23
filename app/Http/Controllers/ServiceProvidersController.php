@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Log;
 use Illuminate\Http\Request;
 use App\Models\ServiceProvider;
 use App\Http\Controllers\Controller;
@@ -60,8 +61,10 @@ class ServiceProvidersController extends Controller
 
             $data = $this->getData($request);
 
-            ServiceProvider::create($data);
+            $service_provider = ServiceProvider::create($data);
 
+            $log = new Log();
+            $log->record('CREATE', 'service provider', $service_provider->id,  $service_provider);
             return redirect()->route('service_providers.service_provider.index')
                              ->with('success_message', 'Service Provider was successfully added!');
 
@@ -115,9 +118,11 @@ class ServiceProvidersController extends Controller
 
             $data = $this->getData($request);
 
-            $serviceProvider = ServiceProvider::findOrFail($id);
-            $serviceProvider->update($data);
+            $service_provider = ServiceProvider::findOrFail($id);
+            $service_provider->update($data);
 
+            $log = new Log();
+            $log->record('UPDATE', 'service provider', $service_provider->id,  $service_provider);
             return redirect()->route('service_providers.service_provider.index')
                              ->with('success_message', 'Service Provider was successfully updated!');
 
@@ -138,9 +143,11 @@ class ServiceProvidersController extends Controller
     public function destroy($id)
     {
         try {
-            $serviceProvider = ServiceProvider::findOrFail($id);
-            $serviceProvider->delete();
+            $service_provider = ServiceProvider::findOrFail($id);
+            $service_provider->delete();
 
+            $log = new Log();
+            $log->record('DELETE', 'service provider', $service_provider->id,  $service_provider);
             return redirect()->route('service_providers.service_provider.index')
                              ->with('success_message', 'Service Provider was successfully deleted!');
 

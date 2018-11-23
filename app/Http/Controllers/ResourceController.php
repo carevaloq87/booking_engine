@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Log;
 use App\Models\Resource;
 use App\Models\Service;
 use Illuminate\Http\Request;
@@ -64,7 +65,8 @@ class ResourceController extends Controller
             if (isset($data['services'])) {
                 $resource->services()->sync($data['services']);
             }
-
+            $log = new Log();
+            $log->record('CREATE', 'resource', $resource->id,  $resource);
             return redirect()->route('resources.resource.index')
                              ->with('success_message', 'Resource was successfully added!');
 
@@ -125,7 +127,8 @@ class ResourceController extends Controller
             } else {
                 $resource->services()->sync([]);
             }
-
+            $log = new Log();
+            $log->record('UPDATE', 'resource', $resource->id,  $resource);
             return redirect()->route('resources.resource.index')
                              ->with('success_message', 'Resource was successfully updated!');
 
@@ -148,7 +151,8 @@ class ResourceController extends Controller
         try {
             $resource = Resource::findOrFail($id);
             $resource->delete();
-
+            $log = new Log();
+            $log->record('DELETE', 'resource', $resource->id,  $resource);
             return redirect()->route('resources.resource.index')
                              ->with('success_message', 'Resource was successfully deleted!');
 

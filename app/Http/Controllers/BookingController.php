@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Log;
 use App\Models\Booking;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -44,9 +45,11 @@ class BookingController extends Controller
     public function store(Request $request)
     {
         try {
-            $this->createBooking($request);
-            return redirect()->route('home')
-                            ->with('success_message', 'Booking Status was successfully added!');
+            $booking = $this->createBooking($request);
+            $log = new Log();
+            $log->record('CREATE', 'booking', $booking->id,  $booking);
+            return redirect()->back()
+                            ->with('success_message', 'Booking was successfully created!');
 
         } catch (Exception $exception) {
             return back()->withInput()
