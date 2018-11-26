@@ -165,17 +165,42 @@ class ServiceAvailability extends Model
     public function selectDays($available_days)
     {
         $output = [];
+        $current_date = date('d-m-Y', time());
         foreach($available_days as $slot){
             $slot->week_day = date('D', strtotime($slot->date));
+            $slot_date = date('d-m-Y', strtotime($slot->date));
+            $current_hour = date('H', time()) * 60 + date('i', time());
             $end_time = PHP_INT_MIN;
             if($slot->type == 'regular'){
                 $subset = [];
-                $times = $this->service->AvailableHours->where('day_week', $slot->week_day)->where('is_interpreter', $slot->is_interpreter);
+                $current_date == $slot_date ?
+                    $times = $this
+                            ->service
+                            ->AvailableHours
+                            ->where('day_week', $slot->week_day)
+                            ->where('start_time', '>=', $current_hour)
+                            ->where('is_interpreter', $slot->is_interpreter) :
+                    $times = $this
+                            ->service
+                            ->AvailableHours
+                            ->where('day_week', $slot->week_day)
+                            ->where('is_interpreter', $slot->is_interpreter);
                 $duration = ( ($slot->is_interpreter) ? $this->service->interpreter_duration : $this->service->duration );
                 $slot->times = self::getHourSlots($times, $duration);
             } else { // Adhoc
                 $subset = [];
-                $times = $this->service->AvailableAdhocs->where('date', $slot->date)->where('is_interpreter', $slot->is_interpreter);
+                $current_date == $slot_date ?
+                    $times = $this
+                            ->service
+                            ->AvailableAdhocs
+                            ->where('date', $slot->date)
+                            ->where('start_time', '>=', $current_hour)
+                            ->where('is_interpreter', $slot->is_interpreter) :
+                    $times = $this
+                            ->service
+                            ->AvailableAdhocs
+                            ->where('date', $slot->date)
+                            ->where('is_interpreter', $slot->is_interpreter);
                 $slot->times = self::getHourSlots($times);
             }
             if($slot->is_interpreter) {
