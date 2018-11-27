@@ -64,7 +64,6 @@ class UserController extends Controller
     {
         try {
             //validate the password.
-
             $this->validate($request, [
                 'name' => 'required',
                 'email' => 'required|email|unique:users,email',
@@ -176,7 +175,8 @@ class UserController extends Controller
         return [
                 'name'  => filter_var($request->name, FILTER_SANITIZE_STRING),
                 'email' => filter_var($request->email, FILTER_VALIDATE_EMAIL),
-                'password' => bcrypt($request->password)
+                'password' => bcrypt($request->password),
+                'service_provider_id' => $request->service_provider_id
             ];
     }
 

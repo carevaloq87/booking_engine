@@ -35216,9 +35216,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         getAvailability: function getAvailability(date) {
             var self = this;
             var date_formated = __WEBPACK_IMPORTED_MODULE_0_moment___default()(date).format('YYYY-MM-DD');
-            if (!self.is_interpreter && self.dates_regular.length > 0) {
+            if (!self.is_interpreter) {
                 return !self.dates_regular.includes(date_formated) ? 'date_disabled' : 'date_enabled';
-            } else if (self.is_interpreter && self.dates_interpreter.length > 0) {
+            } else if (self.is_interpreter) {
                 return !self.dates_interpreter.includes(date_formated) ? 'date_disabled' : 'date_enabled';
             }
         }
