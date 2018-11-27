@@ -118,21 +118,35 @@ class Availability extends Model
     public function compareServiceAvailabilityAndBookings($service_availability, $bookings)
     {
         foreach($bookings as $date => $booking_time){ //Loop bookings
-            if(isset($service_availability[$date])) {
-                foreach($booking_time as $time => $booking){ //Loop times in bookings
-                    if(isset($service_availability[$date][$time])) {
-                        $service_times = $service_availability[$date][$time];
-                        foreach($service_times as $key => $slot){ // Loop service times
-                            $resource_id = $slot['resource_id'];
-                            if (isset($booking['times'][$resource_id] )) { //Check if the resource and the time were taken (booked)
-                                unset($service_availability[$date][$time][$key]); //Remove available time
-                                if ( empty($service_availability[$date][$time]) ) {
-                                    unset($service_availability[$date][$time]); //If there are no more times available remove the time
-                                }
-                                if (empty($service_availability[$date])) {
-                                    unset($service_availability[$date]); //If there are no more times available remove the date
+            if(isset($service_availability[$date])) { // Check if there are taken bookings in the service available dates
+
+                foreach ($service_availability[$date] as $service_start_time => $sv_resources) { // Loop times in service by date
+
+                    foreach ($sv_resources as $sv_resources_key => $sv_resource_availability) { // Loop available resources in service dates
+
+                        foreach($booking_time as $bo_time => $booking){ //Loop times in bookings
+
+                            foreach ($booking['times'] as $bo_resource_id => $bo_re_info) { //Loop not available resources in times
+
+                                if($bo_resource_id == $sv_resource_availability['resource_id']){//if resources not availables are in service times
+                                    $args = [
+                                                'sv_start_time' => $service_start_time,
+                                                'sv_final_time' => $service_start_time + $sv_resource_availability['duration'],
+                                                'rs_start_time' => $bo_time,
+                                                'rs_final_time' => $bo_time + $bo_re_info['duration'],
+                                    ];
+                                    if(!self::compareRanges($args)){ //Check if the time falls in the range of bookings and services
+                                        unset($service_availability[$date][$service_start_time][$sv_resources_key]); //Remove available time
+                                        if ( empty($service_availability[$date][$service_start_time]) ) {
+                                            unset($service_availability[$date][$service_start_time]); //If there are no more times available remove the time
+                                        }
+                                        if (empty($service_availability[$date])) {
+                                            unset($service_availability[$date]); //If there are no more times available remove the date
+                                        }
+                                    }
                                 }
                             }
+
                         }
                     }
                 }
@@ -140,7 +154,6 @@ class Availability extends Model
         }
         return $service_availability;
     }
-
     /**
      * Algorithm to check if the range of times fits or not in order to say if an appt is available or not
      *

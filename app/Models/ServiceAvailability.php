@@ -122,16 +122,10 @@ class ServiceAvailability extends Model
         $regular_merged = self::mergeDays($regular_days['regular'], $adhoc_days['regular']);
         $interpreter_merged = self::mergeDays($regular_days['interpreter'], $adhoc_days['interpreter']);
 
-        //Compare against Bookings
-
-        $service_bookings = self::categorizeIsInterpreterAvailability($this->bookings);
-
-        $service_bookings_regular = (isset($service_bookings['regular']) ? $service_bookings['regular'] : []);
-        $service_bookings_interpreter = (isset($service_bookings['interpreter']) ? $service_bookings['interpreter'] : []);
         //Compare against Resources
         $resources = self::getResourceUnavailability();
-        $availability_regular = new \App\Models\Availability($resources, $regular_merged, $service_bookings_regular, $this->start, $this->end);
-        $availability_interpreter = new \App\Models\Availability($resources, $interpreter_merged, $service_bookings_interpreter, $this->start, $this->end);
+        $availability_regular = new \App\Models\Availability($resources, $regular_merged, $this->bookings, $this->start, $this->end);
+        $availability_interpreter = new \App\Models\Availability($resources, $interpreter_merged, $this->bookings, $this->start, $this->end);
 
         $bookings_obj = new Booking();
         $unavailable_dates =  $bookings_obj->getFutureBookingsByServiceAndDate($this->service_id,  $this->start, $this->end);
