@@ -50,6 +50,8 @@
                         <dd>{{ $service->description }}</dd>
                         <dt>Duration</dt>
                         <dd>{{ $service->duration }}</dd>
+                        <dt>Interpreter Duration</dt>
+                        <dd>{{ $service->interpreter_duration }}</dd>
                         <dt>Service Provider</dt>
                         <dd>{{ optional($service->serviceProvider)->name }}</dd>
 

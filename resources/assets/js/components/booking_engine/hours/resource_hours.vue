@@ -97,6 +97,7 @@
                     })
                     .then(() => {
                         $("#contentLoading").modal("hide");
+                        $("#set_hours").modal("hide");
                     })
                     .catch(error => {
                         $("#contentLoading").modal("hide");

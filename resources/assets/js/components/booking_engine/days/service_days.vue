@@ -142,10 +142,8 @@
                 $("#contentLoading").modal("show");
                 axios['post'](url, { id: self.service, dates: selections })
                     .then(response => {
-                        console.log(response);
-                    })
-                    .then(() => {
-                        $("#contentLoading").modal("hide");
+                        location.reload();
+                        //$("#contentLoading").modal("hide");
                     })
                     .catch(error => {
                         $("#contentLoading").modal("hide");

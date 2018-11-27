@@ -116,10 +116,7 @@
                 $("#contentLoading").modal("show");
                 axios['post'](url, { id: self.service, hours: hours })
                     .then(response => {
-                        console.log(response);
-                    })
-                    .then(() => {
-                        $("#contentLoading").modal("hide");
+                        location.reload();
                     })
                     .catch(error => {
                         $("#contentLoading").modal("hide");

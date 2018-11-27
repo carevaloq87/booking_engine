@@ -105,6 +105,7 @@
                     })
                     .then(() => {
                         $("#contentLoading").modal("hide");
+                        $("#set_days").modal("hide");
                     })
                     .catch(error => {
                         $("#contentLoading").modal("hide");

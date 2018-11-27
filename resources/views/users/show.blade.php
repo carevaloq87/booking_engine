@@ -51,11 +51,8 @@
                 @endforeach
             @endif
             </dd>
-            <dt>Created At</dt>
-            <dd>{{ $user->created_at }}</dd>
-            <dt>Updated At</dt>
-            <dd>{{ $user->updated_at }}</dd>
-
+            <dt>Service Provider</dt>
+            <dd>{{ $user->serviceProvider ? $user->serviceProvider->name : 'N/P'}}</dd>
         </dl>
 
     </div>

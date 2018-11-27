@@ -44,7 +44,7 @@
                             <th>Name</th>
                             <th>Email</th>
                             <th>Role</th>
-
+                            <th>Service Provider</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -60,7 +60,7 @@
                                 @endforeach
                             @endif
                             </td>
-
+                            <td>{{ $user->serviceProvider ? $user->serviceProvider->name : '' }}</td>
                             <td>
 
                                 <form method="POST" action="{!! route('users.destroy', $user->id) !!}" accept-charset="UTF-8">
