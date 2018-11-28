@@ -30,7 +30,7 @@
 
 #set_adhoc_booking .week_days {
   font-size: 12px;
-  height: 17px;
+  height: 19px;
 }
 
 #set_adhoc_booking #regular_journey,
@@ -106,7 +106,7 @@
 
 .week_days {
   font-size: 12px;
-  height: 17px;
+  height: 19px;
 }
 
 #regular button.active,
