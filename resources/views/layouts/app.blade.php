@@ -91,6 +91,7 @@
                 <li class="{{ Request::is('register','register/*') ? 'active' : null }}"><a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a></li>
             @else
 
+                <li><a class="nav-link" href="{{ env('ORBIT_URL') }}">Return to dashboard</a></li>
                 <li class="{{ Request::is('services','services/*') ? 'active' : null }}"><a class="nav-link" href="{{ route('services.service.index') }}">Services</a></li>
                 <li class="{{ Request::is('resources','resources/*') ? 'active' : null }}"><a class="nav-link" href="{{ route('resources.resource.index') }}">Resources</a></li>
                 <li class="{{ Request::is('bookings','bookings/*') ? 'active' : null }}"><a class="nav-link" href="{{ route('bookings.booking.index') }}">New Booking</a></li>
