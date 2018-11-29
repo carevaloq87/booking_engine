@@ -17,7 +17,7 @@ Route::get('/', function () {
 
 Auth::routes();
 Route::get('/logout', '\App\Http\Controllers\Auth\LoginController@logout')->name('logout');
-Route::post('/login_vla', 'AuthController@loginVLA')->name('login_VLA');
+Route::match(['get', 'post'], '/login_vla', 'AuthController@loginVLA')->name('login_VLA');\
 //Route::get('/home', 'HomeController@index')->name('home');
 
 // Roles
