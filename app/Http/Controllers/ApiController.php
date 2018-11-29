@@ -207,7 +207,7 @@ class ApiController extends Controller
     public function getAllServices()
     {
         try {
-            return Service::all();
+            return Service::with('serviceprovider')->get();
         } catch (Exception $exception) {
             return response()->json(['error'=>$exception instanceof ValidationException?
             implode(" ",array_flatten($exception->errors())) :
