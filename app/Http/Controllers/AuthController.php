@@ -96,8 +96,10 @@ class AuthController extends Controller
                     $user->save();
                 }
                 Auth::login($user);
-                return redirect()->route('welcome');
+                return redirect()->route('services');
             }
+        } else {
+            return redirect()->route('services');
         }
 
     }
