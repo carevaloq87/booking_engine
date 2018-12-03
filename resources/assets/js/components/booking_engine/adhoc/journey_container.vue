@@ -4,7 +4,7 @@
         <div class="row adhoc-rows" v-if="is_service">
             <label for="duration" class="col-md-2 control-label">Duration</label>
             <div class="col-sm-4 col-md-5">
-                <input class="form-control" name="duration" type="number" min="0" step="1" :id="tableClass + '_duration'" minlength="1" placeholder="Enter duration here..." required>
+                <input class="form-control" id="adhoc_duration" name="duration" type="number" min="0" step="1" :id="tableClass + '_duration'" minlength="1" placeholder="Enter duration here..." required>
             </div>
         </div>
         <div class="row col-xs-12 adhoc-rows">

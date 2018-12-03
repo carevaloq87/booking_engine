@@ -5,6 +5,8 @@ Vue.component('resource-hours', require('./components/booking_engine/hours/resou
 Vue.component('resource-adhoc', require('./components/booking_engine/adhoc/resource_adhoc.vue'));
 Vue.component('selected-adhoc', require('./components/booking_engine/adhoc/selected_resource_adhoc.vue'));
 
+export const data_bus = new Vue();
+
 new Vue({
     el: '#booking_engine_resource',
 

@@ -25,6 +25,7 @@
 
 <script>
     import SelectableDS from '../selectableDS';
+    import { data_bus } from '../../../booking_engine';
     Vue.component('hours-container', require('./hours_container.vue'));
     export default {
         props:['service'],
@@ -116,7 +117,9 @@
                 $("#contentLoading").modal("show");
                 axios['post'](url, { id: self.service, hours: hours })
                     .then(response => {
-                        location.reload();
+                        data_bus.$emit('calendar', response.data);
+                        $("#set_hours").modal("hide");
+                        $("#contentLoading").modal("hide");
                     })
                     .catch(error => {
                         $("#contentLoading").modal("hide");

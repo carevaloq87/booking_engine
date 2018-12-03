@@ -6,6 +6,8 @@ Vue.component('service-adhoc', require('./components/booking_engine/adhoc/servic
 Vue.component('selected-adhoc', require('./components/booking_engine/adhoc/selected_adhoc.vue'));
 Vue.component('Calendar', require('./components/calendar/calendar.vue'));
 
+export const data_bus = new Vue();
+
 new Vue({
     el: '#booking_engine',
 

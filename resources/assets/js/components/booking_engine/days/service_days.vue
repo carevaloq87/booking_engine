@@ -55,6 +55,7 @@
 
 <script>
     import SelectableDS from '../selectableDS';
+    import { data_bus } from '../../../booking_engine';
     Vue.component('calendar-container', require('./calendar_container.vue'));
     export default {
         props:['service'],
@@ -142,8 +143,10 @@
                 $("#contentLoading").modal("show");
                 axios['post'](url, { id: self.service, dates: selections })
                     .then(response => {
-                        location.reload();
-                        //$("#contentLoading").modal("hide");
+                        data_bus.$emit('calendar', response.data);
+                        $("#set_days").modal("hide");
+                        $("#contentLoading").modal("hide");
+
                     })
                     .catch(error => {
                         $("#contentLoading").modal("hide");

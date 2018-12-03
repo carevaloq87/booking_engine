@@ -14,6 +14,9 @@
     </div>
 </template>
 <script>
+
+import { data_bus } from '../../../booking_engine_resource';
+
     export default {
         props:['resource'],
         data() {
@@ -52,9 +55,16 @@
                         $("#contentLoading").modal("hide");
                     });
             },
+            updateListAdhocs() {
+                var self = this;
+                data_bus.$on('adhoc', (data) => {
+                    self.getAdhocs();
+                });
+            },
         },
         mounted() {
             this.getAdhocs();
+            this.updateListAdhocs();
         }
     }
 </script>

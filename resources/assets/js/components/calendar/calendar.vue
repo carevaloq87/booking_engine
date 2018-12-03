@@ -2,6 +2,7 @@
 	<full-calendar
     :config="config"
     :events="events"
+    ref="calendar"
 	@event-selected="eventSelected"
 	@event-render="eventRendered"
     />
@@ -9,6 +10,7 @@
 
 <script>
 	import moment from 'moment'
+    import { data_bus } from '../../booking_engine';
 	export default {
         props: {
             sv_id: Number
@@ -87,7 +89,6 @@
                 return new Promise((resolve, reject) => {
                     axios['get'](this.availability_url, {})
                         .then(response => {
-                            console.log(response);
                             resolve(response.data);
                         })
                         .catch(error => {
@@ -97,6 +98,7 @@
                 });
             },
             initCalendar(response) {
+                let self = this;
                 this.regular = response.regular;
                 this.interpreter = response.interpreter;
                 this.unavailable = response.unavailable;
@@ -133,9 +135,34 @@
                         });
                     });
                 });
+            },
+            updateCalendar() {
+                let self = this;
+                data_bus.$on('calendar', (data) => {
+                    $("#contentLoading").modal('show');
+                    //let response = self.getFutureAvailability();
+                    let calendar = self.$refs.calendar.fireMethod('getView');
+                    let start_day = moment(calendar.start).format('YYYY-MM-DD');
+                    let end_day = moment(calendar.end).format('YYYY-MM-DD');
+                    axios['get'](self.availability_url, {
+                        params: {
+                            start: start_day,
+                            end:   end_day
+                            }
+                        })
+                        .then(response => {
+                            self.events = [];
+                            self.initCalendar(response.data);
+                            $("#contentLoading").modal("hide");
+                        })
+                        .catch(error => {
+                            $("#contentLoading").modal("hide");
+                        });
+                });
             }
         },
         mounted() {
+            this.updateCalendar();
         },
     }
 

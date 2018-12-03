@@ -42,6 +42,7 @@
 <script>
     import SelectableDS from '../selectableDS';
     import moment from 'moment';
+    import { data_bus } from '../../../booking_engine_resource';
 
     Vue.component('journey-container', require('./journey_container.vue'));
     export default {
@@ -125,10 +126,13 @@
                     $("#contentLoading").modal("show");
                     axios['post'](url, { id: self.resource, hours: self.adhoc_object })
                         .then(response => {
-                            console.log(response);
+                            data_bus.$emit('adhoc', response.data);
+                            $("#set_adhoc_booking").modal("hide");
+                            //console.log(response);
                         })
                         .then(() => {
                             $("#contentLoading").modal("hide");
+                            self.clearDataAdhoc();
                         })
                         .catch(error => {
                             $("#contentLoading").modal("hide");
@@ -138,6 +142,13 @@
                     let message = 'Please set ' + form_validation.message.join(', ');
                     alert(message);
                 }
+            },
+            clearDataAdhoc() {
+                var self = this;
+                self.adhoc_object.date = '';
+                document.querySelector("#details").value = '';
+                self.ds_regular.clear();
+
             }
         },
         watch: {

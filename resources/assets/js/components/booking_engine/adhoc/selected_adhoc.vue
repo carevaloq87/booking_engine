@@ -25,6 +25,9 @@
     </div>
 </template>
 <script>
+
+import { data_bus } from '../../../booking_engine';
+
     export default {
         props:['service'],
         data() {
@@ -43,7 +46,8 @@
 
                 axios['post'](url, {service_id: self.service, adhoc: value})
                     .then(response => {
-                        self.getAdhocs();
+                        //self.getAdhocs();
+                        data_bus.$emit('calendar');
                         $("#contentLoading").modal("hide");
                     })
                     .catch(error => {
@@ -64,9 +68,16 @@
                         $("#contentLoading").modal("hide");
                     });
             },
+            updateListAdhocs() {
+                var self = this;
+                data_bus.$on('calendar', (data) => {
+                    self.getAdhocs();
+                });
+            },
         },
         mounted() {
             this.getAdhocs();
+            this.updateListAdhocs();
         }
     }
 </script>
