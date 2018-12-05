@@ -1,5 +1,9 @@
 <?php
-
+    /**
+     * Get user service provider id
+     *
+     * @return string
+     */
 if (! function_exists('getUserServiceProviderId')) {
     function getUserServiceProviderId()
     {
@@ -10,7 +14,11 @@ if (! function_exists('getUserServiceProviderId')) {
         }
     }
 }
-
+    /**
+     * Get user role name
+     *
+     * @return string
+     */
 if (! function_exists('getUserRoleName')) {
     function getUserRoleName()
     {

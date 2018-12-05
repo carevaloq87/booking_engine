@@ -4,7 +4,7 @@
             <h4>Appointments<small> Remember that the information represents the hours that the resource is unavailable</small></h4>
             <div>
                 <ul class="adhoc-hours" v-for="(hours, day) in adhocs.regular" :key="day">
-                    <p><i class="fa fa-times-circle" @click="deleteAdhoc(day + '||' + 0)"></i> <strong>{{day}}</strong></p>
+                    <p><i class="fa fa-times-circle" @click="deleteAdhoc(day + '||' + 0)"></i> <strong>{{day}}</strong>&nbsp;<i id="adhoc_details" class="fa fa-info-circle" :title="hours.options.details" aria-hidden="true" data-container="body"></i></p>
                     <li v-for="(hour, time) in hours.hours" :key="time">
                         <span>{{ hour }}</span>
                     </li>

@@ -70,6 +70,10 @@
   color: red;
 }
 
+#adhoc_details {
+  color: black;
+}
+
 .day_col {
   float: left;
   width: 45px;
