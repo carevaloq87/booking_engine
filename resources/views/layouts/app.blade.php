@@ -123,6 +123,9 @@
     <div class="container body-content">
         @yield('content')
     </div>
+    @include('layouts.footer')
+
+    @include('service_providers.modal.select')
 
     @include('layouts.loader')
 
@@ -136,6 +139,7 @@
     <!-- Latest compiled and minified JavaScript -->
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
     <script src="/js/modal-hierarchy.js"></script>
+    <script src="/js/new_user.js"></script>
 
     @yield('scripts')
     <script type="text/javascript">
@@ -203,6 +207,12 @@
 
         });
     </script>
+
+    @if( Auth::check() && empty(getUserServiceProviderId()) &&  getUserRoleName() !== 'Super Admin')
+    <script>
+        $('#set_sp').modal('show');
+    </script>
+    @endif
 
 </body>
 </html>

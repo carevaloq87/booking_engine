@@ -48,7 +48,7 @@
 </div>
 
 <div class="form-group {{ $errors->has('service_provider_id') ? 'has-error' : '' }}">
-    <label for="role" class="col-md-2 control-label">Service Provider</label>
+    <label for="service_provider_id" class="col-md-2 control-label">Service Provider</label>
     <div class="col-md-10">
         <select class="form-control" id="service_provider_id" name="service_provider_id" required="true">
             <option value="" style="display: none;" {{ old('service_provider_id', optional($user)->serviceProvider() ?: '') == '' ? 'selected' : '' }} disabled selected>Enter Service Provider here...</option>
@@ -58,7 +58,7 @@
             </option>
 			@endforeach
         </select>
-        {!! $errors->first('roles', '<p class="help-block">:message</p>') !!}
+        {!! $errors->first('service_provider_id', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
 

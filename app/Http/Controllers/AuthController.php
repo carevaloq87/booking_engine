@@ -1,11 +1,15 @@
 <?php
 namespace App\Http\Controllers;
+
+use App\Models\User;
+use App\Models\Service;
+use App\Models\ServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
-use App\Models\User;
 use SimpleSAML_Auth_Simple;
 use Spatie\Permission\Contracts\Role;
+
 class AuthController extends Controller
 {
     /**
@@ -96,7 +100,10 @@ class AuthController extends Controller
                     $user->save();
                 }
                 Auth::login($user);
-                return redirect('/services');
+                $service_providers = ServiceProvider::pluck('name','id')->all();
+                $services = Service::getServicesByUserServiceProvider();
+                return view('services.index', compact('services','service_providers'));
+                //return redirect('/services');
             }
         } else {
             return redirect('/services');
