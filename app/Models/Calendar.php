@@ -197,7 +197,7 @@ class Calendar extends Model
     public function insertHoursInResource($resource_id, $selected_hours)
     {
         $time_name = $selected_hours['time_name'];
-        $time_length = UnavailableHours::converHourToTextOrNumber($selected_hours['time_name']);
+        $time_length = converHourToTextOrNumber($selected_hours['time_name']);
         $user = auth()->user();
         $days = array_map(
                             function($item) use ($resource_id, $time_length,$user)
@@ -228,7 +228,7 @@ class Calendar extends Model
     public function insertHoursInService($service_id, $selected_hours, $is_interpreter)
     {
         $time_name = $selected_hours['time_name'];
-        $time_length = AvailableHours::converHourToTextOrNumber($selected_hours['time_name']);
+        $time_length = converHourToTextOrNumber($selected_hours['time_name']);
         $days = array_map(
                             function($item) use ($service_id, $time_length, $is_interpreter)
                             {
@@ -342,7 +342,7 @@ class Calendar extends Model
     public function insertAdhocInService($service_id, $date, $selected_hours, $is_interpreter)
     {
         $time_name = $selected_hours['time_name'];
-        $time_length = AvailableHours::converHourToTextOrNumber($selected_hours['time_name']);
+        $time_length = converHourToTextOrNumber($selected_hours['time_name']);
         $duration = $selected_hours['duration'];
         $days = array_map(
                             function($item) use ($service_id, $date, $duration, $time_length, $is_interpreter)
@@ -389,7 +389,7 @@ class Calendar extends Model
     public function insertAdhocInResource($resource_id, $date, $selected_hours)
     {
         $time_name = $selected_hours['time_name'];
-        $time_length = UnavailableHours::converHourToTextOrNumber($selected_hours['time_name']);
+        $time_length = converHourToTextOrNumber($selected_hours['time_name']);
         $duration = $selected_hours['duration'];
         $details = $selected_hours['details'];
         $days = array_map(

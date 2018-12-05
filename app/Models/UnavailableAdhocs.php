@@ -104,7 +104,7 @@ class UnavailableAdhocs extends Model
             }
             $hours_available = collect($hours_available)->flatten();
             foreach ($hours_available as $value) {
-                $hours[$value] = self::valueToHour($value, $options['length']);
+                $hours[$value] = valueToHour($value, $options['length']);
             }
         }
         return ['hours' => $hours, 'options' => $options];
@@ -149,26 +149,6 @@ class UnavailableAdhocs extends Model
             $hours[] = $initial_time + ($time_length * $rep);
         }
         return $hours;
-    }
-
-    /**
-     * Transform time in minutes to Hours and minutes on plain text
-     *
-     * @param int $value Minutes
-     * @param int $time_length Duraton of the appt
-     * @return string
-     */
-    public function valueToHour($value, $time_length)
-    {
-        $valute_in_hours = $value/60;
-        $hour = sprintf("%02d", floor($valute_in_hours) );
-        $minute = sprintf("%02d", round(fmod($valute_in_hours, 1) * 60));
-
-        $finish_time = ($value + $time_length) / 60;
-        $finish_hour = sprintf("%02d",  floor($finish_time) );
-        $finish_minute = sprintf("%02d", round(fmod($finish_time, 1) * 60));
-
-        return "$hour:$minute - $finish_hour:$finish_minute";
     }
 
     /**

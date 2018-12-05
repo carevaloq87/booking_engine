@@ -70,28 +70,9 @@ class UnavailableHours extends Model
         foreach($unavailable_hours as $hour) {
             $resource_days['regular']['days'][] = date('D', strtotime($hour->day_week)) . '-' . $hour->start_time;
             $resource_days['regular']['length'] = $hour->length;
-            $resource_days['regular']['time_name'] = self::converHourToTextOrNumber($hour->length);
+            $resource_days['regular']['time_name'] = converHourToTextOrNumber($hour->length);
         }
         return $resource_days;
-    }
-
-    /**
-     * Convert text or numbers to hours in text or numbers
-     *
-     * @param string $hour
-     * @return string int or string with hour
-     */
-    public static function converHourToTextOrNumber($hour)
-    {
-        $hours = [
-            'quarter_hour' => 15,
-            'half_hour' => 30,
-            'hour' => 60,
-            15 => 'quarter_hour',
-            30 => 'half_hour',
-            60 => 'hour',
-        ];
-        return $hours[$hour];
     }
 
 

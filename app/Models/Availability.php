@@ -63,7 +63,7 @@ class Availability extends Model
             foreach($final_dates as $date => $final_date){
                 if(self::is_date_in_date_range($date)) {
                     foreach($final_date->times as $time){
-                        $time['text']=self::valueToHour($time['start_time'], $time['duration']);
+                        $time['text']=valueToHour($time['start_time'], $time['duration']);
                         $time['resource_id'] = $resource_id;
                         $availability[$date][$time['start_time']][] = $time;
                     }
@@ -76,7 +76,7 @@ class Availability extends Model
                     foreach($service_info->times as $service_time){ //Loop the times in the service
                         $service_start_time = $service_time['start_time'];
                         $service_duration = $service_time['duration'];
-                        $service_time['text'] = self::valueToHour($service_start_time, $service_duration);
+                        $service_time['text'] = valueToHour($service_start_time, $service_duration);
                         if($resource_date === $service_date && self::is_date_in_date_range($resource_date)) { //Check only the dates that match the service and the resource against each other
                             $is_available = true;
                             foreach($resouce_date_info->times as $resource_time){//Loop the times in the service
@@ -175,23 +175,4 @@ class Availability extends Model
         return $is_available;
     }
 
-    /**
-     * Transform time in minutes to Hours and minutes on plain text
-     *
-     * @param int $value Minutes
-     * @param int $duration Duraton of the appt
-     * @return string
-     */
-    public function valueToHour($value, $duration)
-    {
-        $valute_in_hours = $value/60;
-        $hour = sprintf("%02d", floor($valute_in_hours) );
-        $minute = sprintf("%02d", round(fmod($valute_in_hours, 1) * 60));
-
-        $finish_time = ($value + $duration) / 60;
-        $finish_hour = sprintf("%02d",  floor($finish_time) );
-        $finish_minute = sprintf("%02d", round(fmod($finish_time, 1) * 60));
-
-        return "$hour:$minute - $finish_hour:$finish_minute";
-    }
 }
