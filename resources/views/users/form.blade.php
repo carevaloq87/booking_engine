@@ -53,7 +53,7 @@
         <select class="form-control" id="service_provider_id" name="service_provider_id" required="true">
             <option value="" style="display: none;" {{ old('service_provider_id', optional($user)->serviceProvider() ?: '') == '' ? 'selected' : '' }} disabled selected>Enter Service Provider here...</option>
             @foreach ($serviceProviders as $sp_id => $service_provider)
-            <option value="{{ $sp_id }}" {{ ( isset($user) && isset($user->serviceProvider) && $user->serviceProvider->pluck('id')[0] == $sp_id ? 'selected' : '' ) }}>
+            <option value="{{ $sp_id }}" {{ ( isset($user) && isset($user->service_provider_id) && $user->service_provider_id == $sp_id ? 'selected' : '' ) }}>
                 {{ $service_provider }}
             </option>
 			@endforeach

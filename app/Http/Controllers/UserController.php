@@ -73,7 +73,7 @@ class UserController extends Controller
             ]);
 
             //create and save the user
-            $user = User::create($this->getUserFields($request));
+            $user = User::create($this->getUserFields($request, false));
 
             $user->assignRole($request->input('roles'));
             /*
@@ -119,7 +119,6 @@ class UserController extends Controller
         $roles = Role::all();
         $userRole = $user->roles->pluck('id','name')->all();
         $serviceProviders = ServiceProvider::pluck('name','id')->all();
-
         return view('users.edit', compact('user','roles','userRole','serviceProviders'));
     }
 
@@ -138,13 +137,13 @@ class UserController extends Controller
             $this->validate($request, [
                 'name' => 'required',
                 'email' => 'required|email|unique:users,email,'.$id,
-                //'password' => 'same:confirm-password',
+                'password' => 'same:confirm-password',
                 'roles' => 'required',
                 'service_provider_id' => 'nullable'
             ]);
 
             $user = User::findOrFail($id);
-            $user->update($this->getUserFields($request));
+            $user->update($this->getUserFields($request,true));
             /*
             $user->roles()
                  ->sync( Role::where('id',  $request->role )
@@ -170,14 +169,17 @@ class UserController extends Controller
      * @param Request $request
      * @return void
      */
-    public function getUserFields(Request $request)
+    public function getUserFields(Request $request, $update)
     {
-        return [
-                'name'  => filter_var($request->name, FILTER_SANITIZE_STRING),
-                'email' => filter_var($request->email, FILTER_VALIDATE_EMAIL),
-                'password' => bcrypt($request->password),
-                'service_provider_id' => $request->service_provider_id
-            ];
+        $user_fields = [ 'name'  => filter_var($request->name, FILTER_SANITIZE_STRING),
+                        'email' => filter_var($request->email, FILTER_VALIDATE_EMAIL),
+                        'service_provider_id' => $request->service_provider_id,
+        ];
+        if(!$update) {
+            $user_fields['password'] =  bcrypt($request->password);
+        }
+        return $user_fields;
+
     }
 
     /**
