@@ -54,7 +54,10 @@
                         <dd>{{ $service->interpreter_duration }}</dd>
                         <dt>Service Provider</dt>
                         <dd>{{ optional($service->serviceProvider)->name }}</dd>
-
+                        <dt>Resources</dt>
+                        @foreach ($service->resources as $resource)
+                        <dd>{{ $resource->name }}</dd>
+                        @endforeach
                     </dl>
 
                 </div>

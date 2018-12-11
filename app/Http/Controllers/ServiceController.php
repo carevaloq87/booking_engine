@@ -91,9 +91,6 @@ class ServiceController extends Controller
     public function show($id)
     {
         $service = Service::with('serviceprovider')->findOrFail($id);
-        //$sa = new \App\Models\ServiceAvailability($service);
-        //return $sa->get();
-        //dd($sa->getServiceAvailability(), $sa->getResourcesAvailability(), $sa->get());
         return view('services.show', compact('service'));
     }
 
