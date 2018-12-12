@@ -99,12 +99,27 @@ class Resource extends Model
         $user = auth()->user();
 
         if($user->isAdmin()){
-            $services = Resource::with('serviceprovider')->paginate(25);
+            $resources = Resource::with('serviceprovider')->paginate(25);
         } else {
-            $services = Resource::with('serviceprovider')->where('service_provider_id', '=', $user->service_provider_id)->paginate(25);
+            $resources = Resource::with('serviceprovider')
+                        ->where('service_provider_id', '=', $user->service_provider_id)
+                        ->paginate(25);
         }
 
-        return $services;
+        return $resources;
+    }
+    /**
+     * Get Resource by Service Provider id.
+     *
+     * @param int $id
+     * @return void
+     */
+    public static function  getResourcesByServiceServiceProvider($service)
+    {
+        $resources =  Resource::with('serviceprovider')
+                            ->where('service_provider_id',$service->service_provider_id)
+                            ->paginate(25);
+        return $resources;
     }
 
 

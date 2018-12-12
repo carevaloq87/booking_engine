@@ -106,8 +106,23 @@ class service extends Model
         if($user->isAdmin()){
             $services = Service::with('serviceprovider')->paginate(25);
         } else {
-            $services = Service::with('serviceprovider')->where('service_provider_id', '=', $user->service_provider_id)->paginate(25);
+            $services = Service::with('serviceprovider')
+                        ->where('service_provider_id', '=', $user->service_provider_id)
+                        ->paginate(25);
         }
+        return $services;
+    }
+    /**
+     * Get Service by Service Provider id.
+     *
+     * @param int $id
+     * @return void
+     */
+    public static function  getServicesByResourceServiceProvider($resource)
+    {
+        $services =  Service::with('serviceprovider')
+                            ->where('service_provider_id',$resource->service_provider_id)
+                            ->paginate(25);
         return $services;
     }
 

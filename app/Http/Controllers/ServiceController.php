@@ -61,7 +61,7 @@ class ServiceController extends Controller
     public function store(Request $request)
     {
         try {
-
+            self::validateServiceProvider($request);
             $data = $this->getData($request);
 
             $service=Service::create($data);
@@ -78,6 +78,23 @@ class ServiceController extends Controller
 
             return back()->withInput()
                         ->withErrors(['unexpected_error' => $exception->getMessage()]);
+        }
+    }
+    /**
+     * Validate if the selected resources belong to the service provider
+     *
+     * @param Request $request
+     * @return void
+     */
+    private function validateServiceProvider($request)
+    {
+        if($request['resources'] && $request['service_provider_id']) {
+            foreach ($request['resources'] as $key => $resource) {
+                $resource_obj = Resource::findOrFail($resource);
+                if($resource_obj->service_provider_id != $request['service_provider_id']) {
+                    throw new Exception("Error. One or more resources do not belong to the selected service provider");
+                }
+            }
         }
     }
 
@@ -119,7 +136,7 @@ class ServiceController extends Controller
     public function update($id, Request $request)
     {
         try {
-
+            self::validateServiceProvider($request);
             $data = $this->getData($request);
 
             $service = Service::findOrFail($id);
@@ -137,7 +154,7 @@ class ServiceController extends Controller
         } catch (Exception $exception) {
 
             return back()->withInput()
-                        ->withErrors(['unexpected_error' => 'Unexpected error occurred while trying to process your request!']);
+                        ->withErrors(['unexpected_error' => $exception->getMessage()]);
         }
     }
 
@@ -188,6 +205,19 @@ class ServiceController extends Controller
     }
 
     /**
+     * Get resource by service provicer id
+     *
+     * @param int $id
+     * @return void
+     */
+    public function getServicesByResourceServiceProvider($id)
+    {
+        $resource = Resource::findOrFail($id);
+        return Resource::getServicesByResourceServiceProvider($resource);
+    }
+
+
+    /**
      * Get the request's data from the request.
      *
      * @param Illuminate\Http\Request\Request $request
@@ -205,7 +235,7 @@ class ServiceController extends Controller
             'interpreter_duration' => 'string|min:1',
             'listed_interpreter_duration' => 'string|min:1',
             'spaces' => 'string|min:1|nullable',
-            'service_provider_id' => 'nullable',
+            'service_provider_id' => 'required',
             'resources' => 'nullable',
             'color' => 'nullable',
         ];

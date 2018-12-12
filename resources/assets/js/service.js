@@ -14,12 +14,13 @@ new Vue({
     methods: {
         intitResources: function () {
             var self = this;
-            let url = '/resources/getByUserServiceProvider';
-            let rs_id = document.getElementById('id');
-            if(rs_id) {
-                rs_id = document.getElementById('id').value;
-                if(rs_id.localeCompare('')!=0) {
-                    this.initOldResources(rs_id);
+            let service_id = document.getElementById('id');
+            let url = '/resources/getByUserServiceProvider/';
+            if(service_id.value) {
+                service_id = document.getElementById('id').value;
+                url = '/resources/getByServiceId/'+service_id;
+                if(service_id.localeCompare('')!=0) {
+                    this.initOldResources(service_id);
                 }
             }
             axios.get(url)
@@ -30,10 +31,10 @@ new Vue({
                     console.log(error);
                 });
         },
-        initOldResources: function (rs_id) {
+        initOldResources: function (service_id) {
             $("#contentLoading").modal("show");
             var self = this;
-            let url = '/services/getResources/'+rs_id;
+            let url = '/services/getResources/'+service_id;
             axios.get(url)
             .then(function (response) {
                 self.selected = response.data;
@@ -43,8 +44,7 @@ new Vue({
                 console.log(error);
                 $("#contentLoading").modal("hide");
             });
-        }
-
+        },
     },
     mounted() {
         this.intitResources();

@@ -159,6 +159,9 @@ Route::group(
     Route::get('/getByUserServiceProvider', 'ServiceController@getServicesByUserServiceProvider')
         ->name('services.service.getByUserServiceProvider');
 
+    Route::get('/getByResourceId/{resource}', 'ServiceController@getServicesByResourceServiceProvider')
+        ->name('services.service.getServicesByResourceServiceProvider');
+
     Route::get('/getAvailabilitybyService/{service}', 'ServiceController@getAvailabilityById')
         ->name('services.service.getAvailability')
         ->where('id','[0-9]');
@@ -201,6 +204,9 @@ Route::group(
 
     Route::get('/getByUserServiceProvider', 'ResourceController@getResourcesByUserServiceProvider')
         ->name('resources.resource.getByUserServiceProvider');
+
+    Route::get('/getByServiceId/{service}', 'ResourceController@getResourcesByServiceServiceProvider')
+        ->name('resources.resource.getResourcesByServiceServiceProvider');
 
 });
 

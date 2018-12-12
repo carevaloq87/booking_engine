@@ -16,11 +16,12 @@ new Vue({
         intitServices: function () {
             var self = this;
             let url = '/services/getByUserServiceProvider';
-            let rs_id = document.getElementById('id');
-            if(rs_id) {
-                rs_id = document.getElementById('id').value;
-                if(rs_id.localeCompare('')!=0) {
-                    this.initOldServices(rs_id);
+            let resource_id = document.getElementById('id');
+            if(resource_id.value) {
+                resource_id = document.getElementById('id').value;
+                url = '/services/getByResourceId/'+resource_id;
+                if(resource_id.localeCompare('')!=0) {
+                    this.initOldServices(resource_id);
                 }
             }
             axios.get(url)
@@ -31,10 +32,10 @@ new Vue({
                     console.log(error);
                 });
         },
-        initOldServices: function (rs_id) {
+        initOldServices: function (resource_id) {
             $("#contentLoading").modal("show");
             var self = this;
-            let url = '/resources/getServices/'+rs_id;
+            let url = '/resources/getServices/'+resource_id;
             axios.get(url)
             .then(function (response) {
                 self.selected = response.data;

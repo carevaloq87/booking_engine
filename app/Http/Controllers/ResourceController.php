@@ -59,7 +59,7 @@ class ResourceController extends Controller
     public function store(Request $request)
     {
         try {
-
+            self::validateServiceProvider($request);
             $data = $this->getData($request);
             $resource = Resource::create($data);
             if (isset($data['services'])) {
@@ -73,7 +73,24 @@ class ResourceController extends Controller
         } catch (Exception $exception) {
 
             return back()->withInput()
-                         ->withErrors(['unexpected_error' => 'Unexpected error occurred while trying to process your request!']);
+                        ->withErrors(['unexpected_error' => $exception->getMessage()]);
+        }
+    }
+    /**
+     * Validate if the selected serives belong to the service provider
+     *
+     * @param Request $request
+     * @return void
+     */
+    private function validateServiceProvider($request)
+    {
+        if($request['services'] && $request['service_provider_id']) {
+            foreach ($request['services'] as $key => $service) {
+                $service_obj = Service::findOrFail($service);
+                if($service_obj->service_provider_id != $request['service_provider_id']) {
+                    throw new Exception("Error. One or more services do not belong to the selected service provider");
+                }
+            }
         }
     }
 
@@ -117,7 +134,7 @@ class ResourceController extends Controller
     public function update($id, Request $request)
     {
         try {
-
+            self::validateServiceProvider($request);
             $data = $this->getData($request);
 
             $resource = Resource::findOrFail($id);
@@ -135,7 +152,7 @@ class ResourceController extends Controller
         } catch (Exception $exception) {
 
             return back()->withInput()
-                         ->withErrors(['unexpected_error' => 'Unexpected error occurred while trying to process your request!']);
+                        ->withErrors(['unexpected_error' => $exception->getMessage()]);
         }
     }
 
@@ -182,6 +199,17 @@ class ResourceController extends Controller
     public function getResourcesByUserServiceProvider()
     {
         return Resource::getResourcesByUserServiceProvider();
+    }
+    /**
+     * Get resource by service provicer id
+     *
+     * @param int $id
+     * @return void
+     */
+    public function getResourcesByServiceServiceProvider($id)
+    {
+        $service = Service::findOrFail($id);
+        return Resource::getResourcesByServiceServiceProvider($service);
     }
 
 
