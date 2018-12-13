@@ -271,3 +271,28 @@ $white: #fff;
         height: 500px;
     }
 }
+
+/********** Buggy calendar in B4 *************/
+.fc-unthemed {
+    .fc-scroller .fc-content-col {
+        padding: 0;
+    }
+
+    .fc-event .fc-content:before,
+    .fc-event-dot .fc-content:before {
+        display: none;
+    }
+
+    .fc-event .fc-content,
+    .fc-event-dot .fc-content {
+        padding: 0.22rem 0.55rem 0.55rem 0.75rem;
+    }
+
+    .fc-event {
+        .fc-title,
+        .fc-time {
+            color: white;
+        }
+    }
+
+}

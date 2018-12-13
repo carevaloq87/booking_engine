@@ -297,3 +297,24 @@
   }
 }
 
+/********** Buggy calendar in B4 *************/
+
+.fc-unthemed .fc-scroller .fc-content-col {
+  padding: 0;
+}
+
+.fc-unthemed .fc-event .fc-content:before,
+.fc-unthemed .fc-event-dot .fc-content:before {
+  display: none;
+}
+
+.fc-unthemed .fc-event .fc-content,
+.fc-unthemed .fc-event-dot .fc-content {
+  padding: 0.22rem 0.55rem 0.55rem 0.75rem;
+}
+
+.fc-unthemed .fc-event .fc-title,
+.fc-unthemed .fc-event .fc-time {
+  color: white;
+}
+

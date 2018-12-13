@@ -1,8 +1,8 @@
 <template>
-    <div>
-        <div class="col-xs-6">
-            <h4>Regular Appointments</h4>
-            <div>
+    <div class="row justify-content-md-center">
+        <div class="col-sm-5">
+            <h6>Regular Appointments</h6>
+            <div class="row">
                 <ul class="adhoc-hours" v-for="(hours, day) in adhocs.regular" :key="day">
                     <p><i class="fa fa-times-circle" @click="deleteAdhoc(day + '||' + 0)"></i> <strong>{{day}}</strong></p>
                     <li v-for="(hour, time) in hours.hours" :key="time">
@@ -11,9 +11,9 @@
                 </ul>
             </div>
         </div>
-        <div class="col-xs-6">
-            <h4>Interpreter Appointments</h4>
-            <div>
+        <div class="col-sm-5">
+            <h6>Interpreter Appointments</h6>
+            <div class="row">
                 <ul class="adhoc-hours" v-for="(hours, day) in adhocs.interpreter" :key="day">
                     <p><i class="fa fa-times-circle" @click="deleteAdhoc(day + '||' + 1)"></i> <strong>{{day}}</strong></p>
                     <li v-for="(hour, time) in hours.hours" :key="time">

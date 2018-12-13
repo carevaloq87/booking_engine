@@ -1,6 +1,6 @@
 import 'fullcalendar/dist/fullcalendar.css';
 
-import 'bootstrap/dist/css/bootstrap.min.css';
+//import 'bootstrap/dist/css/bootstrap.min.css';
 
 import Vue from 'vue';
 

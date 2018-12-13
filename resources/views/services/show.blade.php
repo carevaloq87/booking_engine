@@ -1,109 +1,83 @@
-@extends('layouts.app')
+@extends('layouts.booking_engine.master')
+
+@section('sub_title')
+    {{ isset($service->name) ? $service->name : 'Service' }}
+@endsection
+
+@section('buttons')
+    <form method="POST" action="{!! route('services.service.destroy', $service->id) !!}" accept-charset="UTF-8">
+        <input name="_method" value="DELETE" type="hidden">
+        {{ csrf_field() }}
+        <div class="btn-group btn-group-sm" role="group">
+            <a href="{{ route('services.service.index') }}" class="btn btn-primary" title="Show All Service">
+                <i class="fa fa-list-ul"></i>
+            </a>
+
+            <a href="{{ route('services.service.create') }}" class="btn btn-success" title="Create New Service">
+                <i class="fa fa-plus"></i>
+            </a>
+
+            <a href="{{ route('services.service.edit', $service->id ) }}" class="btn btn-primary" title="Edit Service">
+                <i class="fa fa-pencil-alt"></i>
+            </a>
+
+            <button type="submit" class="btn btn-danger" title="Delete Service" onclick="return confirm(&quot;Delete Service??&quot;)">
+                <i class="fa fa-trash-alt"></i>
+            </button>
+        </div>
+    </form>
+@endsection
 
 @section('content')
-    <div id="booking_engine">
-        <div class="panel-group">
-            <div class="panel panel-default">
-                <div class="panel-heading clearfix">
+    <div class="container" id="booking_engine">
 
-                    <span class="pull-left">
-                        <h4 class="mt-5 mb-5">{{ isset($service->name) ? $service->name : 'Service' }}</h4>
-                    </span>
-
-                    <div class="pull-right">
-
-                        <form method="POST" action="{!! route('services.service.destroy', $service->id) !!}" accept-charset="UTF-8">
-                        <input name="_method" value="DELETE" type="hidden">
-                        {{ csrf_field() }}
-                            <div class="btn-group btn-group-sm" role="group">
-                                <a href="{{ route('services.service.index') }}" class="btn btn-primary" title="Show All Service">
-                                    <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
-                                </a>
-
-                                <a href="{{ route('services.service.create') }}" class="btn btn-success" title="Create New Service">
-                                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                                </a>
-
-                                <a href="{{ route('services.service.edit', $service->id ) }}" class="btn btn-primary" title="Edit Service">
-                                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
-                                </a>
-
-                                <button type="submit" class="btn btn-danger" title="Delete Service" onclick="return confirm(&quot;Delete Service??&quot;)">
-                                    <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
-                                </button>
-                            </div>
-                        </form>
-
-                    </div>
-
+        <div class="row border-bottom border-top pt-4 mb-4 pb-4">
+            <div class="col-sm-3">
+                <h5>Booking Setting</h5>
+            </div>
+            <div class="col-sm-2">
+                <div class="col-sm-12 text-center">
+                    <a v-on:click="openCalendar({{ $service->id }})" href="#"><i class="fa fa-calendar-alt"></i></a>
                 </div>
-
-                <div class="panel-body">
-                    <dl class="dl-horizontal">
-                        <dt>Name</dt>
-                        <dd>{{ $service->name }}</dd>
-                        <dt>Phone</dt>
-                        <dd>{{ $service->phone }}</dd>
-                        <dt>Email</dt>
-                        <dd>{{ $service->email }}</dd>
-                        <dt>Description</dt>
-                        <dd>{{ $service->description }}</dd>
-                        <dt>Duration</dt>
-                        <dd>{{ $service->duration }}</dd>
-                        <dt>Interpreter Duration</dt>
-                        <dd>{{ $service->interpreter_duration }}</dd>
-                        <dt>Service Provider</dt>
-                        <dd>{{ optional($service->serviceProvider)->name }}</dd>
-                        <dt>Resources</dt>
-                        @foreach ($service->resources as $resource)
-                        <dd>{{ $resource->name }}</dd>
-                        @endforeach
-                    </dl>
-
+                <div class="col-sm-12 text-center">
+                    <a v-on:click="openCalendar({{ $service->id }})" href="#">Days</a>
                 </div>
             </div>
 
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h4 class="mt-5 mb-5">Booking Settings</h4>
+            <div class="col-sm-2">
+                <div class="col-sm-12 text-center">
+                    <a v-on:click="openSchedule({{ $service->id }})" href="#"><i class="fa fa-clock"></i></a>
                 </div>
-                <div class="panel-body">
-                    <div class="col-xs-4">
-                        <a v-on:click="openCalendar({{ $service->id }})" href="#"><small><i class="fa fa-calendar"></i> Days</small></a>
-                    </div>
-                    <div class="col-xs-4 border-left">
-                        <a v-on:click="openSchedule({{ $service->id }})" href="#"><small><i class="fa fa-clock-o"></i> Hours</small></a>
-                    </div>
-                    <div class="col-xs-4 border-left">
-                        <a v-on:click="openAdhoc({{ $service->id }})" href="#"><small><i class="fa fa-cog"></i> Ad hoc</small></a>
-                    </div>
+                <div class="col-sm-12 text-center">
+                    <a v-on:click="openSchedule({{ $service->id }})" href="#">Hours</a>
                 </div>
             </div>
 
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h4 class="mt-5 mb-5">Future Adhocs</h4>
+            <div class="col-sm-2">
+                <div class="col-sm-12 text-center">
+                    <a v-on:click="openAdhoc({{ $service->id }})" href="#"><i class="fa fa-cogs"></i> </a>
                 </div>
-                <div class="panel-body">
-                    <div class="col-xs-12">
-                        <selected-adhoc :service="{{ $service->id }}"></selected-adhoc>
-                    </div>
+                <div class="col-sm-12 text-center">
+                    <a v-on:click="openAdhoc({{ $service->id }})" href="#">Ad hoc</a>
                 </div>
             </div>
+        </div>
 
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <h4 class="mt-5 mb-5">Available Slots</h4>
-                </div>
-                <div class="panel-body">
-                    <div class="col-xs-12">
-                        <div id="calendar">
-                            <Calendar :sv_id="{{ $service->id }}"></Calendar>
-                        </div>
-                    </div>
-                </div>
+        <div class="row border-bottom mb-4 pb-4">
+            <div class="col-sm-12 adhoc-appointments">
+                <h5>Future Adhocs</h5>
             </div>
 
+            <div class="col-sm">
+                <selected-adhoc :service="{{ $service->id }}"></selected-adhoc>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm">
+                <div id="calendar">
+                    <Calendar :sv_id="{{ $service->id }}"></Calendar>
+                </div>
+            </div>
         </div>
 
         @include("services.modal.days")
@@ -114,4 +88,5 @@
 
 @section('scripts')
     <script src="/js/booking_engine.js?id={{ str_random(6) }}"></script>
+    <script>$('#contentLoading').modal('hide');</script>
 @endsection

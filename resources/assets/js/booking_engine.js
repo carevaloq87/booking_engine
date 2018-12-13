@@ -28,8 +28,10 @@ new Vue({
         openAdhoc(id) {
             var self = this;
             self.sv_id = id;
-            $('#set_adhoc_booking').modal('show');
+            $('#set_adhoc_booking').modal('show');$('#contentLoading').modal('hide');
         }
     },
-    mounted() {},
+    mounted() {
+        $('#contentLoading').modal('hide');
+    },
 });
