@@ -4,16 +4,16 @@
         <div class="row adhoc-rows" v-if="is_service">
             <label for="duration" class="col-md-2 control-label">Duration</label>
             <div class="col-sm-4 col-md-5">
-                <input class="form-control" id="adhoc_duration" name="duration" type="number" min="0" step="1" :id="tableClass + '_duration'" minlength="1" placeholder="Enter duration here..." required>
+                <input class="form-control" name="duration" type="number" min="0" step="1" :id="tableClass + '_duration'" minlength="1" placeholder="Enter duration here..." required>
             </div>
         </div>
-        <div class="row col-xs-12 adhoc-rows">
-            <label>Change time display: <small>(in minutes)</small></label>
-            <button type="button" :class="'btn btn-xs default ' + isActiveTime('quarter_hour')" id="quarter_hour" class="btn btn-xs default" v-on:click="setJourneyStructure('quarter_hour')">15</button>
-            <button type="button" :class="'btn btn-xs default ' + isActiveTime('half_hour')" id="half_hour" v-on:click="setJourneyStructure('half_hour')">30</button>
-            <button type="button" :class="'btn btn-xs default ' + isActiveTime('hour')" id="hour" v-on:click="setJourneyStructure('hour')">60</button>
+        <div class="btn-group btn-group-sm adhoc-rows">
+            <span class="mr-2">Display time: (in minutes)</span>
+            <button type="button" :class="'btn btn-sm h-25 default ' + isActiveTime('quarter_hour')" id="quarter_hour" class="btn btn-sm h-25 default" v-on:click="setJourneyStructure('quarter_hour')">15</button>
+            <button type="button" :class="'btn btn-sm h-25 default ' + isActiveTime('half_hour')" id="half_hour" v-on:click="setJourneyStructure('half_hour')">30</button>
+            <button type="button" :class="'btn btn-sm h-25 default ' + isActiveTime('hour')" id="hour" v-on:click="setJourneyStructure('hour')">60</button>
         </div>
-        <div class="row col-xs-12 adhoc-rows">
+        <div class="row col- adhoc-rows">
             <div class="row top_dates noSelect">
                 <div class="day_col">&nbsp;</div>
                 <div class="hours_col">00</div>

@@ -47,10 +47,10 @@
             <tr class="month" v-for="(calendar, month) in currentCalendar" :key="month">
                 <td class="month_label" v-text="month"></td>
 
-                <td class="week_day"  v-for="(day_number, day) in calendar" :key="day">
+                <td class="week_day p-0"  v-for="(day_number, day) in calendar" :key="day">
 
-                    <span :class="tableClass + '_option_day option_day'" :id="month + '-' + day_number" v-html="day_number" v-if="day_number !== ''"></span>
-                    <span v-if="day_number === ''">&nbsp;</span>
+                    <div :class="tableClass + '_option_day option_day'" :id="month + '-' + day_number" v-html="day_number" v-if="day_number !== ''"></div>
+                    <div v-if="day_number === ''">&nbsp;</div>
 
                 </td>
 

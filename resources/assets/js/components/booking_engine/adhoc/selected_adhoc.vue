@@ -78,6 +78,7 @@ import { data_bus } from '../../../booking_engine';
         mounted() {
             this.getAdhocs();
             this.updateListAdhocs();
+            $('#contentLoading').modal('hide');
         }
     }
 </script>

@@ -2,14 +2,14 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
 
-            <div class="modal-header">
-                <span class="modal-title">Set Days</span>
-            </div>
+            <div class="modal-body p-3" style="display: grid;">
 
-            <div class="modal-body" style="display: grid;">
+                <div class="row mx-4 mt-4 mb-2 pb-2 border-bottom">
+                    <h5>Set Days</h5>
+                </div>
 
-                <div class="form-group margin-top-10 calendars noSelect">
-                    <div class="col-sm-12">
+                <div class="form-group calendars noSelect">
+                    <div class="col-sm">
 
                         <service-days :service="sv_id"></service-days>
 

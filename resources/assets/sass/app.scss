@@ -32,10 +32,6 @@ $white: #fff;
         font-size: 12px;
         height: 19px;
     }
-    #regular_journey,
-    #interpreter_journey {
-        padding: 15px;
-    }
     .adhoc_hours_selection{
         width: 800px;
         height: 160px;
@@ -142,7 +138,7 @@ $white: #fff;
     th,
     td {
         border: solid 1px $light-grey;
-        font-size: 13px;
+        font-size: 12px;
         text-align: center;
     }
 }
@@ -156,7 +152,7 @@ $white: #fff;
 }
 
 .modal-body {
-    max-height: calc(100vh - 210px);
+    max-height: calc(100vh - 145px);
     overflow-y: auto;
     &::-webkit-scrollbar-track {
         background-color: $light-grey;
@@ -172,6 +168,9 @@ $white: #fff;
 
 .ds-selected {
     background-color: $orbit-blue;
+    width: 22px;
+    height: 22px;
+    border: 0;
 }
 
 .noSelect {

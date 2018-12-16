@@ -63,6 +63,9 @@
                                 self.events = [];
                                 self.initCalendar(data);
                                 $("#contentLoading").modal('hide');
+                            },
+                            complete:function () {
+                                $("#contentLoading").modal('hide');
                             }
                         }]
                     },
@@ -77,7 +80,7 @@
                     html: true,
                     content: 'Start: ' + moment(event.start).format('HH:mm A') + '<br />End: ' + moment(event.end).format('HH:mm A'),
                     trigger: 'hover',
-                    placement: 'auto top',
+                    placement: 'top',
                     container: 'body'
                 });
             },
@@ -163,6 +166,7 @@
         },
         mounted() {
             this.updateCalendar();
+            $("#contentLoading").modal("hide");
         },
     }
 

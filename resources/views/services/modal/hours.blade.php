@@ -2,11 +2,12 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
 
-            <div class="modal-header">
-                <span class="modal-title">Set Hours</span>
-            </div>
+            <div class="modal-body p-3" style="display: grid;">
 
-            <div class="modal-body" style="display: grid;">
+                <div class="row mx-4 mt-4 mb-2 pb-2 border-bottom">
+                    <h5>Set Hours</h5>
+                </div>
+
                 <service-hours :service="sv_id"></service-hours>
             </div>
 

@@ -2,24 +2,24 @@
 
     <div class="service_days">
 
-        <div class="btn-group btn-group-xs" data-toggle="buttons">
-            <button type="button" class="btn btn-primary" v-on:click="makeActive('currentActive')"> Current Year </button>
-            <button type="button" class="btn btn-primary"  v-on:click="makeActive('nextActive')"> Next Year </button>
+        <div class="btn-group btn-group-sm" role="group" aria-label="Year selection group">
+            <button type="button" class="btn btn-primary btn-sm" v-on:click="makeActive('currentActive')"> Current Year </button>
+            <button type="button" class="btn btn-primary btn-sm"  v-on:click="makeActive('nextActive')"> Next Year </button>
         </div>
 
         <div id="current" v-show="isActiveTab('currentActive')">
 
-            <ul class="nav nav-tabs">
-                <li class="active"><a data-toggle="tab" href="#current_regular">Regular</a></li>
-                <li><a data-toggle="tab" href="#current_interpreter">Interpreter</a></li>
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item"><a class="nav-link active" data-toggle="tab" role="tab" aria-controls="current regular" aria-selected="true" href="#current_regular">Regular</a></li>
+                <li class="nav-item"><a class="nav-link" data-toggle="tab" role="tab" aria-controls="current interpreter" aria-selected="false" href="#current_interpreter">Interpreter</a></li>
             </ul>
 
             <div class="tab-content">
-                <div id="current_regular" class="tab-pane fade in active">
+                <div id="current_regular" class="tab-pane fade show active" role="tabpanel" aria-labelledby="current-regular-tab">
                     <calendar-container v-bind:currentCalendar="calendars.current_year" tableClass="current"> </calendar-container>
                 </div>
 
-                <div id="current_interpreter" class="tab-pane fade">
+                <div id="current_interpreter" class="tab-pane fade" role="tabpanel" aria-labelledby="current-interpreter-tab">
                     <calendar-container v-bind:currentCalendar="calendars.current_year" tableClass="current_interpreter"> </calendar-container>
                 </div>
             </div>
@@ -28,25 +28,25 @@
 
         <div id="next" v-show="isActiveTab('nextActive')">
 
-            <ul class="nav nav-tabs">
-                <li class="active"><a data-toggle="tab" href="#next_regular">Regular</a></li>
-                <li><a data-toggle="tab" href="#next_interpreter">Interpreter</a></li>
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item"><a class="nav-link active" data-toggle="tab" role="tab" aria-controls="next year regular" aria-selected="true" href="#next_regular">Regular</a></li>
+                <li class="nav-item"><a class="nav-link" data-toggle="tab" role="tab" aria-controls="next year interpreter" aria-selected="false" href="#next_interpreter">Interpreter</a></li>
             </ul>
 
             <div class="tab-content">
-                <div id="next_regular" class="tab-pane fade in active">
+                <div id="next_regular" class="tab-pane fade show active" role="tabpanel" aria-labelledby="next-year-regular-tab">
                     <calendar-container v-bind:currentCalendar="calendars.next_year" tableClass="next"> </calendar-container>
                 </div>
 
-                <div id="next_interpreter" class="tab-pane fade">
+                <div id="next_interpreter" class="tab-pane fade" role="tabpanel" aria-labelledby="next-year-interpreter-tab">
                     <calendar-container v-bind:currentCalendar="calendars.next_year" tableClass="next_interpreter"> </calendar-container>
                 </div>
             </div>
 
         </div>
 
-        <div class="col-sm-12 margin-top-10">
-            <button class="btn green pull-right" id="" v-on:click="submitInfo">Submit</button>
+        <div class="col-sm mt-2">
+            <button class="btn" id="" v-on:click="submitInfo">Submit</button>
         </div>
 
     </div>

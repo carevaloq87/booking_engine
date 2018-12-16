@@ -1,22 +1,22 @@
 <template>
-    <div>
-        <ul class="nav nav-tabs">
-            <li class="active"><a data-toggle="tab" href="#regular">Regular</a></li>
-            <li><a data-toggle="tab" href="#interpreter">Interpreter</a></li>
+    <div class="col-sm p-2">
+        <ul class="nav nav-tabs" role="tablist">
+            <li class="nav-item"><a class="nav-link active" data-toggle="tab" role="tab" aria-controls="regular" aria-selected="true" href="#regular">Regular</a></li>
+            <li class="nav-item"><a class="nav-link" data-toggle="tab" role="tab" aria-controls="interpreter" aria-selected="false" href="#interpreter">Interpreter</a></li>
         </ul>
 
-        <div class="tab-content col-xs-12">
-            <div id="regular" class="tab-pane fade in active">
+        <div class="tab-content col-sm">
+            <div id="regular" class="tab-pane fade show active" role="tabpanel" aria-labelledby="regular-tab">
                 <hours-container v-bind:currentSchedule="schedule.regular" tableClass="current" v-on:reload-ds="updateDragSelect"> </hours-container>
             </div>
 
-            <div id="interpreter" class="tab-pane fade">
+            <div id="interpreter" class="tab-pane fade" role="tabpanel" aria-labelledby="interpreter-tab">
                 <hours-container v-bind:currentSchedule="schedule.interpreter" tableClass="current_interpreter" v-on:reload-ds="updateDragSelect"> </hours-container>
             </div>
         </div>
 
-        <div class="form-group margin-top-10">
-            <div class="col-sm-12 margin-top-10">
+        <div class="form-group mt-1">
+            <div class="col-sm mt-1">
                 <button class="btn green pull-left" v-on:click="submitInfo">Submit</button>
             </div>
         </div>

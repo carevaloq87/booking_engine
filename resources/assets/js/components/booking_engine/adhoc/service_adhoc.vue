@@ -1,12 +1,14 @@
 <template>
     <div>
-        <div class="well">
-            <span>This will set an adhoc day only, you should provide a range of hours and duration for those appointments. Please include interpreter and regular information when relevant.</span>
+        <div class="card mx-2">
+            <div class="card-body">
+                <span>This will set an adhoc day only, you should provide a range of hours and duration for those appointments. Please include interpreter and regular information when relevant.</span>
+            </div>
         </div>
-        <div class="form-group col-xs-12">
-            <label for="duration" class="col-md-2 control-label">Choose Day</label>
-            <div class="col-sm-6 col-md-4">
-                <dropdown class="form-group">
+        <div class="col-">
+            <div class="col-12 mt-4 mb-2"><h6>Choose Day</h6></div>
+            <div class="col-sm-6 col-md-4 mb-4">
+                <!-- dropdown class="form-group">
                     <div class="input-group">
                         <input class="form-control" type="text" v-model="adhoc_object.date" name="adhoc_date">
                         <div class="input-group-btn">
@@ -18,29 +20,39 @@
                         <date-picker v-model="adhoc_object.date" :width="200" :today-btn="false" :clear-btn="false" :limit-from="limit_from"/>
                         </li>
                     </template>
-                </dropdown>
+                </dropdown -->
+                <datepicker
+                v-model="adhoc_object.date"
+                name="adhoc_date"
+                :format="'dd/MM/yyyy'"
+                :clear-button-icon="'fa fa-calendar-alt'"
+                :calendar-button="true"
+                :calendar-button-icon="'fa fa-calendar-alt'"
+                :bootstrap-styling="true">
+                </datepicker>
+
             </div>
         </div>
 
-        <div class="form-group col-sm-12">
-            <ul class="nav nav-tabs">
-                <li class="active"><a data-toggle="tab" href="#regular_journey">Regular</a></li>
-                <li><a data-toggle="tab" href="#interpreter_journey">Interpreter</a></li>
+        <div class="col-12">
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item"><a class="nav-link active" data-toggle="tab" role="tab" aria-controls="regular journey" aria-selected="true" href="#regular_journey">Regular</a></li>
+                <li class="nav-item"><a class="nav-link" data-toggle="tab" role="tab" aria-controls="interpreter journey" aria-selected="false" href="#interpreter_journey">Interpreter</a></li>
             </ul>
 
-            <div class="tab-content adhoc_hours_selection col-xs-12">
-                <div id="regular_journey" class="tab-pane fade in active">
+            <div class="tab-content col-sm adhoc_hours_selection">
+                <div id="regular_journey"  class="tab-pane fade show active" role="tabpanel" aria-labelledby="regular-journey-tab">
                     <journey-container v-bind:currentJourney="journey.regular" tableClass="regular" v-on:reload-ds="updateDragSelect" is_service> </journey-container>
                 </div>
 
-                <div id="interpreter_journey" class="tab-pane fade">
+                <div id="interpreter_journey" class="tab-pane fade" role="tabpanel" aria-labelledby="interpreter-journey-tab">
                     <journey-container v-bind:currentJourney="journey.interpreter" tableClass="interpreter" v-on:reload-ds="updateDragSelect" is_service> </journey-container>
                 </div>
             </div>
         </div>
 
-        <div class="form-group col-sm-12">
-                <button class="btn green pull-left" v-on:click="submitInfo">Submit</button>
+        <div class="col-sm">
+                <button class="btn h-25 btn-sm" v-on:click="submitInfo">Submit</button>
         </div>
     </div>
 </template>
@@ -48,11 +60,17 @@
 <script>
     import SelectableDS from '../selectableDS';
     import moment from 'moment';
+    import Datepicker from 'vuejs-datepicker';
     import { data_bus } from '../../../booking_engine';
 
+    Vue.use(Datepicker);
     Vue.component('journey-container', require('./journey_container.vue'));
+
     export default {
         props:['service'],
+        components: {
+            Datepicker
+        },
         data() {
             return {
                 adhoc_object: {
@@ -190,6 +208,7 @@
         },
         mounted() {
             this.initDragSelect();
+            $('#contentLoading').modal('hide');
         }
     }
 </script>
