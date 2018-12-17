@@ -213,7 +213,7 @@ class ServiceController extends Controller
     public function getServicesByResourceServiceProvider($id)
     {
         $resource = Resource::findOrFail($id);
-        return Resource::getServicesByResourceServiceProvider($resource);
+        return Service::getServicesByResourceServiceProvider($resource);
     }
 
 
