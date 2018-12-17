@@ -51,16 +51,16 @@
                                 <input name="_method" value="DELETE" type="hidden">
                                 {{ csrf_field() }}
 
-                                    <div class="btn-group btn-group-xs pull-right" role="group">
-                                        <a href="{{ route('services.service.show', $service->id ) }}" class="btn btn-info" title="Show Service">
-                                            <span class="glyphicon glyphicon-open" aria-hidden="true"></span>
+                                    <div class="btn-group btn-group-sm pull-right list-table" role="group">
+                                        <a href="{{ route('services.service.show', $service->id ) }}" class="btn btn-sm btn-info" title="Show Service">
+                                            <i class="fa fa-calendar-alt"></i>
                                         </a>
-                                        <a href="{{ route('services.service.edit', $service->id ) }}" class="btn btn-primary" title="Edit Service">
-                                            <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                                        <a href="{{ route('services.service.edit', $service->id ) }}" class="btn btn-sm btn-primary" title="Edit Service">
+                                            <i class="fa fa-pencil-alt"></i>
                                         </a>
 
-                                        <button type="submit" class="btn btn-danger" title="Delete Service" onclick="return confirm(&quot;Delete Service?&quot;)">
-                                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                        <button type="submit" class="btn btn-sm btn-danger" title="Delete Service" onclick="return confirm(&quot;Delete Service?&quot;)">
+                                            <i class="fa fa-trash-alt"></i>
                                         </button>
                                     </div>
 

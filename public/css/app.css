@@ -331,3 +331,13 @@
   line-height: 30px;
 }
 
+/***** table Styles ***/
+
+.list-table .btn-sm,
+.list-table .btn-group-sm > .btn {
+  padding: 0.35rem 0.5rem;
+  font-size: 0.475rem;
+  line-height: 1.5;
+  border-radius: 0.2rem;
+}
+
