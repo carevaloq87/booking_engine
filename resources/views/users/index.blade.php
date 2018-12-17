@@ -1,34 +1,19 @@
-@extends('layouts.app')
+@extends('layouts.booking_engine.master')
+
+@section('sub_title')
+    Users
+@endsection
+
+@section('buttons')
+    <a href="{{ route('users.create') }}" class="btn btn-success btn-sm" title="Create New User" role="button">
+        Add User
+    </a>
+@endsection
+
 
 @section('content')
 
-    @if(Session::has('success_message'))
-        <div class="alert alert-success">
-            <span class="glyphicon glyphicon-ok"></span>
-            {!! session('success_message') !!}
-
-            <button type="button" class="close" data-dismiss="alert" aria-label="close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-
-        </div>
-    @endif
-
     <div class="panel panel-default">
-
-        <div class="panel-heading clearfix">
-
-            <div class="pull-left">
-                <h4 class="mt-5 mb-5">Users</h4>
-            </div>
-
-            <div class="btn-group btn-group-sm pull-right" role="group">
-                <a href="{{ route('users.create') }}" class="btn btn-success" title="Create New User">
-                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                </a>
-            </div>
-
-        </div>
 
         @if(count($users) == 0)
             <div class="panel-body text-center">
@@ -68,15 +53,15 @@
                                 {{ csrf_field() }}
 
                                     <div class="btn-group btn-group-xs pull-right" role="group">
-                                        <a href="{{ route('users.show', $user->id ) }}" class="btn btn-info" title="Show User">
-                                            <span class="glyphicon glyphicon-open" aria-hidden="true"></span>
+                                        <a href="{{ route('users.show', $user->id ) }}" class="btn btn-sm btn-info" title="Show User">
+                                            <i class="fa fa-user"></i>
                                         </a>
-                                        <a href="{{ route('users.edit', $user->id ) }}" class="btn btn-primary" title="Edit User">
-                                            <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                                        <a href="{{ route('users.edit', $user->id ) }}" class="btn btn-sm btn-primary" title="Edit User">
+                                            <i class="fa fa-pencil-alt"></i>
                                         </a>
 
-                                        <button type="submit" class="btn btn-danger" title="Delete User" onclick="return confirm(&quot;Delete User?&quot;)">
-                                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                        <button type="submit" class="btn btn-sm btn-danger" title="Delete User" onclick="return confirm(&quot;Delete User?&quot;)">
+                                            <i class="fa fa-trash-alt"></i>
                                         </button>
                                     </div>
 
