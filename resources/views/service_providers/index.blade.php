@@ -1,35 +1,19 @@
-@extends('layouts.app')
+@extends('layouts.booking_engine.master')
+
+@section('sub_title')
+    Service Providers
+@endsection
+
+@section('buttons')
+    <a href="{{ route('service_providers.service_provider.create') }}" class="btn btn-success btn-sm" title="Create New Service Provider" role="button">
+        Add Service Providers
+    </a>
+@endsection
 
 @section('content')
 
-    @if(Session::has('success_message'))
-        <div class="alert alert-success">
-            <span class="glyphicon glyphicon-ok"></span>
-            {!! session('success_message') !!}
-
-            <button type="button" class="close" data-dismiss="alert" aria-label="close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-
-        </div>
-    @endif
-
     <div class="panel panel-default">
 
-        <div class="panel-heading clearfix">
-
-            <div class="pull-left">
-                <h4 class="mt-5 mb-5">Service Providers</h4>
-            </div>
-
-            <div class="btn-group btn-group-sm pull-right" role="group">
-                <a href="{{ route('service_providers.service_provider.create') }}" class="btn btn-success" title="Create New Service Provider">
-                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                </a>
-            </div>
-
-        </div>
-        
         @if(count($serviceProviders) == 0)
             <div class="panel-body text-center">
                 <h4>No Service Providers Available!</h4>
@@ -63,21 +47,21 @@
                                 <input name="_method" value="DELETE" type="hidden">
                                 {{ csrf_field() }}
 
-                                    <div class="btn-group btn-group-xs pull-right" role="group">
-                                        <a href="{{ route('service_providers.service_provider.show', $serviceProvider->id ) }}" class="btn btn-info" title="Show Service Provider">
-                                            <span class="glyphicon glyphicon-open" aria-hidden="true"></span>
+                                    <div class="btn-group btn-group-xs pull-right list-table" role="group">
+                                        <a href="{{ route('service_providers.service_provider.show', $serviceProvider->id ) }}" class="btn btn-sm btn-info" title="Show Service Provider">
+                                            <i class="fa fa-list"></i>
                                         </a>
-                                        <a href="{{ route('service_providers.service_provider.edit', $serviceProvider->id ) }}" class="btn btn-primary" title="Edit Service Provider">
-                                            <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                                        <a href="{{ route('service_providers.service_provider.edit', $serviceProvider->id ) }}" class="btn btn-sm btn-primary" title="Edit Service Provider">
+                                            <i class="fa fa-pencil-alt"></i>
                                         </a>
 
-                                        <button type="submit" class="btn btn-danger" title="Delete Service Provider" onclick="return confirm(&quot;Delete Service Provider?&quot;)">
-                                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                        <button type="submit" class="btn btn-sm btn-danger" title="Delete Service Provider" onclick="return confirm(&quot;Delete Service Provider?&quot;)">
+                                            <i class="fa fa-trash-alt"></i>
                                         </button>
                                     </div>
 
                                 </form>
-                                
+
                             </td>
                         </tr>
                     @endforeach
@@ -90,8 +74,8 @@
         <div class="panel-footer">
             {!! $serviceProviders->render() !!}
         </div>
-        
+
         @endif
-    
+
     </div>
 @endsection
