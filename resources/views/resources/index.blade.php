@@ -1,35 +1,20 @@
-@extends('layouts.app')
+@extends('layouts.booking_engine.master')
+
+@section('sub_title')
+    Resources
+@endsection
+
+@section('buttons')
+    <a href="{{ route('resources.resource.create') }}" class="btn btn-success btn-sm" title="Create New Resource">
+        Add Resource
+    </a>
+@endsection
+
 
 @section('content')
 
-    @if(Session::has('success_message'))
-        <div class="alert alert-success">
-            <span class="glyphicon glyphicon-ok"></span>
-            {!! session('success_message') !!}
-
-            <button type="button" class="close" data-dismiss="alert" aria-label="close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-
-        </div>
-    @endif
-
     <div class="panel panel-default">
 
-        <div class="panel-heading clearfix">
-
-            <div class="pull-left">
-                <h4 class="mt-5 mb-5">Resources</h4>
-            </div>
-
-            <div class="btn-group btn-group-sm pull-right" role="group">
-                <a href="{{ route('resources.resource.create') }}" class="btn btn-success" title="Create New Resource">
-                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                </a>
-            </div>
-
-        </div>
-        
         @if(count($resources) == 0)
             <div class="panel-body text-center">
                 <h4>No Resources Available!</h4>
@@ -63,21 +48,21 @@
                                 <input name="_method" value="DELETE" type="hidden">
                                 {{ csrf_field() }}
 
-                                    <div class="btn-group btn-group-xs pull-right" role="group">
-                                        <a href="{{ route('resources.resource.show', $resource->id ) }}" class="btn btn-info" title="Show Resource">
-                                            <span class="glyphicon glyphicon-open" aria-hidden="true"></span>
+                                    <div class="btn-group btn-group-sm pull-right list-table" role="group">
+                                        <a href="{{ route('resources.resource.show', $resource->id ) }}" class="btn btn-sm btn-info" title="Show Resource">
+                                            <i class="fa fa-user-clock"></i>
                                         </a>
-                                        <a href="{{ route('resources.resource.edit', $resource->id ) }}" class="btn btn-primary" title="Edit Resource">
-                                            <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                                        <a href="{{ route('resources.resource.edit', $resource->id ) }}" class="btn btn-sm btn-primary" title="Edit Resource">
+                                            <i class="fa fa-pencil-alt"></i>
                                         </a>
 
-                                        <button type="submit" class="btn btn-danger" title="Delete Resource" onclick="return confirm(&quot;Delete Resource?&quot;)">
-                                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                        <button type="submit" class="btn btn-sm btn-danger" title="Delete Resource" onclick="return confirm(&quot;Delete Resource?&quot;)">
+                                            <i class="fa fa-trash-alt"></i>
                                         </button>
                                     </div>
 
                                 </form>
-                                
+
                             </td>
                         </tr>
                     @endforeach
