@@ -8,23 +8,11 @@
         <div class="col-">
             <div class="col-12 mt-4 mb-2"><h6>Choose Day</h6></div>
             <div class="col-sm-6 col-md-4 mb-4">
-                <!-- dropdown class="form-group">
-                    <div class="input-group">
-                        <input class="form-control" type="text" v-model="adhoc_object.date" name="adhoc_date">
-                        <div class="input-group-btn">
-                        <btn class="dropdown-toggle"><i class="glyphicon glyphicon-calendar"></i></btn>
-                        </div>
-                    </div>
-                    <template slot="dropdown">
-                        <li>
-                        <date-picker v-model="adhoc_object.date" :width="200" :today-btn="false" :clear-btn="false" :limit-from="limit_from"/>
-                        </li>
-                    </template>
-                </dropdown -->
                 <datepicker
                 v-model="adhoc_object.date"
                 name="adhoc_date"
                 :format="'dd/MM/yyyy'"
+                :disabledDates="datepicker_state.disabledDates"
                 :clear-button-icon="'fa fa-calendar-alt'"
                 :calendar-button="true"
                 :calendar-button-icon="'fa fa-calendar-alt'"
@@ -63,7 +51,6 @@
     import Datepicker from 'vuejs-datepicker';
     import { data_bus } from '../../../booking_engine';
 
-    Vue.use(Datepicker);
     Vue.component('journey-container', require('./journey_container.vue'));
 
     export default {
@@ -84,7 +71,12 @@
                 ds_interpreter: {},
                 ds_regular: {},
                 journey: {},
-                limit_from: new Date().toISOString().split('T')[0],
+                datepicker_state: {
+                    disabledDates: {
+                        to: new Date(),
+                        days: [6, 0], // Disable Saturday's and Sunday's
+                    }
+                },
                 sv_id: this.$root.sv_id,
                 regular_selector: '#regular_journey .ds-button',
                 interpreter_selector: '#interpreter_journey .ds-button',

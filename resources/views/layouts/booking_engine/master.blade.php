@@ -32,7 +32,6 @@
 		<!--begin::Base Styles -->
 		<link href="{{ asset('assets/vendors/base/vendors.bundle.css') }}" rel="stylesheet" type="text/css" />
 		<link href="{{ asset('assets/demo/demo5/base/style.bundle.css') }}" rel="stylesheet" type="text/css" />
-	    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
 		<!--end::Base Styles -->
 		<link rel="shortcut icon" href="/assets/demo/demo5/media/img/logo/favicon.ico" />
@@ -105,6 +104,7 @@
 		<script src="/js/new_user.js"></script>
 
 		@yield('scripts')
+	    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
 	</body>
 

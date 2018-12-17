@@ -316,3 +316,18 @@
   color: white;
 }
 
+/****** Date picker ****/
+
+.vdp-datepicker__calendar {
+  width: 224px;
+}
+
+.vdp-datepicker__calendar header {
+  line-height: 30px;
+}
+
+.vdp-datepicker__calendar .cell {
+  height: 30px;
+  line-height: 30px;
+}
+

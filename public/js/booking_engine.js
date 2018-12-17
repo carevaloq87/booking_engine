@@ -74956,25 +74956,12 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
 
 
 
-Vue.use(__WEBPACK_IMPORTED_MODULE_2_vuejs_datepicker__["a" /* default */]);
 Vue.component('journey-container', __webpack_require__(574));
 
 /* harmony default export */ __webpack_exports__["default"] = ({
@@ -74995,7 +74982,12 @@ Vue.component('journey-container', __webpack_require__(574));
             ds_interpreter: {},
             ds_regular: {},
             journey: {},
-            limit_from: new Date().toISOString().split('T')[0],
+            datepicker_state: {
+                disabledDates: {
+                    to: new Date(),
+                    days: [6, 0] // Disable Saturday's and Sunday's
+                }
+            },
             sv_id: this.$root.sv_id,
             regular_selector: '#regular_journey .ds-button',
             interpreter_selector: '#interpreter_journey .ds-button'
@@ -77000,6 +76992,7 @@ var render = function() {
             attrs: {
               name: "adhoc_date",
               format: "dd/MM/yyyy",
+              disabledDates: _vm.datepicker_state.disabledDates,
               "clear-button-icon": "fa fa-calendar-alt",
               "calendar-button": true,
               "calendar-button-icon": "fa fa-calendar-alt",

@@ -295,3 +295,15 @@ $white: #fff;
     }
 
 }
+
+/****** Date picker ****/
+.vdp-datepicker__calendar {
+    width: 224px;
+    header{
+        line-height: 30px;
+    }
+    .cell{
+        height: 30px;
+        line-height: 30px;
+    }
+}
