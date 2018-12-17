@@ -43,7 +43,7 @@
 
                                     <div class="btn-group btn-group-xs pull-right list-table" role="group">
                                         <a href="{{ route('roles.show', $role->id ) }}" class="btn btn-sm btn-info" title="Show Role">
-                                            <i class="fa fa-calendar-alt"></i>
+                                            <i class="fa fa-list"></i>
                                         </a>
                                         <a href="{{ route('roles.edit', $role->id ) }}" class="btn btn-sm btn-primary" title="Edit Role">
                                             <i class="fa fa-pencil-alt"></i>
