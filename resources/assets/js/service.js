@@ -38,7 +38,9 @@ new Vue({
             axios.get(url)
             .then(function (response) {
                 self.selected = response.data;
-                $("#contentLoading").modal("hide");
+                $('#contentLoading').on('shown.bs.modal', function (e) {
+                    $("#contentLoading").modal('hide');
+                })
             })
             .catch(function (error) {
                 console.log(error);
