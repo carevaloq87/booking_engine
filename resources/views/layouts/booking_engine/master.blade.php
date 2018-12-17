@@ -108,5 +108,10 @@
 
 	</body>
 
+    @if( Auth::check() && empty(getUserServiceProviderId()) &&  getUserRoleName() !== 'Super Admin')
+    <script>
+        $('#set_sp').modal('show');
+    </script>
+    @endif
 	<!-- end::Body -->
 </html>
