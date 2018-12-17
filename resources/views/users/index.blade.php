@@ -52,7 +52,7 @@
                                 <input name="_method" value="DELETE" type="hidden">
                                 {{ csrf_field() }}
 
-                                    <div class="btn-group btn-group-xs pull-right" role="group">
+                                    <div class="btn-group btn-group-xs pull-right list-table" role="group">
                                         <a href="{{ route('users.show', $user->id ) }}" class="btn btn-sm btn-info" title="Show User">
                                             <i class="fa fa-user"></i>
                                         </a>
