@@ -1,34 +1,18 @@
-@extends('layouts.app')
+@extends('layouts.booking_engine.master')
+
+@section('sub_title')
+    Roles
+@endsection
+
+@section('buttons')
+    <a href="{{ route('roles.create') }}" class="btn btn-success btn-sm" title="Create New Role" role="button">
+        Add Role
+    </a>
+@endsection
 
 @section('content')
 
-    @if(Session::has('success_message'))
-        <div class="alert alert-success">
-            <span class="glyphicon glyphicon-ok"></span>
-            {!! session('success_message') !!}
-
-            <button type="button" class="close" data-dismiss="alert" aria-label="close">
-                <span aria-hidden="true">&times;</span>
-            </button>
-
-        </div>
-    @endif
-
     <div class="panel panel-default">
-
-        <div class="panel-heading clearfix">
-
-            <div class="pull-left">
-                <h4 class="mt-5 mb-5">Roles</h4>
-            </div>
-
-            <div class="btn-group btn-group-sm pull-right" role="group">
-                <a href="{{ route('roles.create') }}" class="btn btn-success" title="Create New Role">
-                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                </a>
-            </div>
-
-        </div>
 
         @if(count($roles) == 0)
             <div class="panel-body text-center">
@@ -57,16 +41,16 @@
                                 <input name="_method" value="DELETE" type="hidden">
                                 {{ csrf_field() }}
 
-                                    <div class="btn-group btn-group-xs pull-right" role="group">
-                                        <a href="{{ route('roles.show', $role->id ) }}" class="btn btn-info" title="Show Role">
-                                            <span class="glyphicon glyphicon-open" aria-hidden="true"></span>
+                                    <div class="btn-group btn-group-xs pull-right list-table" role="group">
+                                        <a href="{{ route('roles.show', $role->id ) }}" class="btn btn-sm btn-info" title="Show Role">
+                                            <i class="fa fa-calendar-alt"></i>
                                         </a>
-                                        <a href="{{ route('roles.edit', $role->id ) }}" class="btn btn-primary" title="Edit Role">
-                                            <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                                        <a href="{{ route('roles.edit', $role->id ) }}" class="btn btn-sm btn-primary" title="Edit Role">
+                                            <i class="fa fa-pencil-alt"></i>
                                         </a>
 
-                                        <button type="submit" class="btn btn-danger" title="Delete Role" onclick="return confirm(&quot;Delete Role?&quot;)">
-                                            <span class="glyphicon glyphicon-trash" aria-hidden="true"></span>
+                                        <button type="submit" class="btn btn-sm btn-danger" title="Delete Role" onclick="return confirm(&quot;Delete Role?&quot;)">
+                                            <i class="fa fa-trash-alt"></i>
                                         </button>
                                     </div>
 

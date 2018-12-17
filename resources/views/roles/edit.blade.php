@@ -1,63 +1,43 @@
-@extends('layouts.app')
+@extends('layouts.booking_engine.master')
+
+@section('sub_title')
+    {{ !empty($role->name) ? $role->name : 'Role' }}
+@endsection
+
+@section('buttons')
+    <a href="{{ route('roles.index') }}" class="btn btn-primary btn-sm" title="Show all roles" role="button">
+        <i class="fa fa-list-ul"></i>
+    </a>
+    <a href="{{ route('roles.create') }}" class="btn btn-success btn-sm" title="Create New Role" role="button">
+        <i class="fa fa-plus"></i>
+    </a>
+@endsection
 
 @section('content')
 
-    <div class="panel panel-default">
-  
-        <div class="panel-heading clearfix">
-
-            <div class="pull-left">
-                <h4 class="mt-5 mb-5">{{ !empty($role->name) ? $role->name : 'Role' }}</h4>
-            </div>
-            <div class="btn-group btn-group-sm pull-right" role="group">
-
-                <a href="{{ route('roles.index') }}" class="btn btn-primary" title="Show All Role">
-                    <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
-                </a>
-
-                <a href="{{ route('roles.create') }}" class="btn btn-success" title="Create New Role">
-                    <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                </a>
-
+    {!! Form::model($role, ['method' => 'PUT','route' => ['roles.update', $role->id]]) !!}
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="form-group">
+                <strong>Name:</strong>
+                {!! Form::text('name', null, array('placeholder' => 'Name','class' => 'form-control')) !!}
             </div>
         </div>
-
-        <div class="panel-body">
-
-            @if ($errors->any())
-                <ul class="alert alert-danger">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            @endif
-
-            {!! Form::model($role, ['method' => 'PUT','route' => ['roles.update', $role->id]]) !!}
-            <div class="row">
-                <div class="col-xs-12 col-sm-12 col-md-12">
-                    <div class="form-group">
-                        <strong>Name:</strong>
-                        {!! Form::text('name', null, array('placeholder' => 'Name','class' => 'form-control')) !!}
-                    </div>
-                </div>
-                <div class="col-xs-12 col-sm-12 col-md-12">
-                    <div class="form-group">
-                        <strong>Permission:</strong>
-                        <br/>
-                        @foreach($permission as $value)
-                            <label>{{ Form::checkbox('permission[]', $value->id, in_array($value->id, $rolePermissions) ? true : false, array('class' => 'name')) }}
-                            {{ $value->name }}</label>
-                        <br/>
-                        @endforeach
-                    </div>
-                </div>
-                <div class="col-xs-12 col-sm-12 col-md-12 text-center">
-                    <button type="submit" class="btn btn-primary">Submit</button>
-                </div>
+        <div class="col-sm-12">
+            <div class="form-group">
+                <strong>Permission:</strong>
+                <br/>
+                @foreach($permission as $value)
+                    <label>{{ Form::checkbox('permission[]', $value->id, in_array($value->id, $rolePermissions) ? true : false, array('class' => 'name')) }}
+                    {{ $value->name }}</label>
+                <br/>
+                @endforeach
             </div>
-            {!! Form::close() !!}
-
+        </div>
+        <div class="col-sm-12">
+            <button type="submit" class="btn btn-primary">Submit</button>
         </div>
     </div>
+    {!! Form::close() !!}
 
 @endsection
