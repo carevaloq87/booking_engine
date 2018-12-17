@@ -44,7 +44,8 @@ class HomeController extends Controller
                             filter_var($request->name, FILTER_SANITIZE_STRING),
                 'service_provider_id' => $request->service_provider_id
             ];
-
+            $role = \App\Models\Role::where('name','Standard')->first();
+            $user->assignRole($role->id);
             $user->update($data);
 
             return redirect()->route('services.service.index')

@@ -32,12 +32,6 @@
                         {!! $errors->first('full_name', '<p class="help-block">:message</p>') !!}
                     </div>
                     <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
-                    <br>
                     <div class="col-md-12">
                         <button type="button" @click="setServiceProvider" class="btn btn-primary" id="sp_send">Update profile</button><br>
                     </div>
