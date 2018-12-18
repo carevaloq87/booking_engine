@@ -30,5 +30,9 @@ new Vue({
             $('#set_adhoc_booking').modal('show');
         }
     },
-    mounted() {},
+    mounted() {
+        setTimeout(() => {
+            $('#contentLoading').modal('hide');
+        }, 4000);
+    },
 });

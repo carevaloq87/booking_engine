@@ -1,14 +1,14 @@
 <template>
-    <div>
-        <div class="tab-content col-xs-12">
-            <div id="regular" class="tab-pane fade in active">
+    <div class="col-sm p-2">
+        <div class="tab-content col-sm">
+            <div id="regular" class="tab-pane fade show active" role="tabpanel" aria-labelledby="regular-tab">
                 <hours-container v-bind:currentSchedule="schedule.regular" tableClass="current" v-on:reload-ds="updateDragSelect"> </hours-container>
             </div>
         </div>
 
-        <div class="form-group margin-top-10">
-            <div class="col-sm-12 margin-top-10">
-                <button class="btn green pull-left" v-on:click="submitInfo">Submit</button>
+        <div class="form-group mt-1">
+            <div class="col-sm mt-1">
+                <button class="btn" v-on:click="submitInfo">Submit</button>
             </div>
         </div>
     </div>

@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="row justify-content-md-center">
         <div class="col-xs-12">
             <h4>Appointments<small> Remember that the information represents the hours that the resource is unavailable</small></h4>
             <div>

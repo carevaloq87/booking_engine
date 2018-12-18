@@ -1,40 +1,40 @@
 <template>
     <div>
-        <div class="well">
-            <span>This will set an adhoc day only, you should provide a range of hours and duration for those appointments. Please include regular information when relevant.</span>
-        </div>
-        <div class="form-group col-xs-12">
-            <label for="duration" class="col-md-2 control-label">Choose Day</label>
-            <div class="col-sm-6 col-md-4">
-                <dropdown class="form-group">
-                    <div class="input-group">
-                        <input class="form-control" type="text" v-model="adhoc_object.date" name="adhoc_date">
-                        <div class="input-group-btn">
-                        <btn class="dropdown-toggle"><i class="glyphicon glyphicon-calendar"></i></btn>
-                        </div>
-                    </div>
-                    <template slot="dropdown">
-                        <li>
-                        <date-picker v-model="adhoc_object.date" :width="200" :today-btn="false" :clear-btn="false" :limit-from="limit_from"/>
-                        </li>
-                    </template>
-                </dropdown>
+        <div class="card mx-2">
+            <div class="card-body">
+                <span>This will set an adhoc day only, you should provide a range of hours and duration for those appointments. Please include regular information when relevant.</span>
             </div>
         </div>
-        <div class="form-group col-xs-12">
-            <label for="details" class="col-md-2 control-label">Details</label>
-            <div class="col-sm-6 col-md-4">
+        <div class="col-">
+            <div class="col-12 mt-4 mb-2"><h6>Choose Day</h6></div>
+            <div class="col-sm-6 mb-4">
+                <datepicker
+                v-model="adhoc_object.date"
+                name="adhoc_date"
+                :format="'dd/MM/yyyy'"
+                :disabledDates="datepicker_state.disabledDates"
+                :clear-button-icon="'fa fa-calendar-alt'"
+                :calendar-button="true"
+                :calendar-button-icon="'fa fa-calendar-alt'"
+                :bootstrap-styling="true">
+                </datepicker>
+
+            </div>
+        </div>
+        <div class="col-">
+            <div class="col-12 mt-4 mb-2"><h6>Details</h6></div>
+            <div class="col-sm-6">
                 <textarea class="form-control" name="details" id="details" rows="4" cols="50"  placeholder="Enter details here..."></textarea>
             </div>
         </div>
-        <div class="form-group col-sm-12" >
-            <div id="regular_journey" class="tab-pane fade in active">
+        <div class="col-12 mb-4" >
+            <div id="regular_journey" >
                 <journey-container v-bind:currentJourney="journey.regular"  tableClass="regular" v-on:reload-ds="updateDragSelect"> </journey-container>
             </div>
         </div>
 
-        <div class="form-group col-sm-12">
-                <button class="btn green pull-left" v-on:click="submitInfo">Submit</button>
+        <div class="col-12">
+                <button class="btn h-25 btn-sm" v-on:click="submitInfo">Submit</button>
         </div>
     </div>
 </template>
@@ -42,11 +42,15 @@
 <script>
     import SelectableDS from '../selectableDS';
     import moment from 'moment';
+    import Datepicker from 'vuejs-datepicker';
     import { data_bus } from '../../../booking_engine_resource';
 
     Vue.component('journey-container', require('./journey_container.vue'));
     export default {
         props:['resource'],
+        components: {
+            Datepicker
+        },
         data() {
             return {
                 adhoc_object: {
@@ -58,7 +62,12 @@
                 duration: 0,
                 ds_regular: {},
                 journey: {},
-                limit_from: new Date().toISOString().split('T')[0],
+                datepicker_state: {
+                    disabledDates: {
+                        to: new Date(),
+                        days: [6, 0], // Disable Saturday's and Sunday's
+                    }
+                },
                 rs_id: this.$root.rs_id,
                 regular_selector: '#regular_journey .ds-button'
             }
@@ -162,6 +171,7 @@
         },
         mounted() {
             this.initDragSelect();
+            $('#contentLoading').modal('hide');
         }
     }
 </script>

@@ -2,15 +2,15 @@
 
     <div class="resource_days">
 
-        <div class="btn-group btn-group-xs" data-toggle="buttons">
-            <button type="button" class="btn btn-primary" v-on:click="makeActive('currentActive')"> Current Year </button>
-            <button type="button" class="btn btn-primary"  v-on:click="makeActive('nextActive')"> Next Year </button>
+        <div class="btn-group btn-group-sm" role="group" aria-label="Year selection group">
+            <button type="button" class="btn btn-primary btn-sm" v-on:click="makeActive('currentActive')"> Current Year </button>
+            <button type="button" class="btn btn-primary btn-sm"  v-on:click="makeActive('nextActive')"> Next Year </button>
         </div>
 
         <div id="current" v-show="isActiveTab('currentActive')">
 
             <div class="tab-content">
-                <div id="current_regular" class="tab-pane fade in active">
+                <div id="current_regular" class="tab-pane fade show active">
                     <calendar-container v-bind:currentCalendar="calendars.current_year" tableClass="current"> </calendar-container>
                 </div>
             </div>
@@ -20,15 +20,15 @@
         <div id="next" v-show="isActiveTab('nextActive')">
 
             <div class="tab-content">
-                <div id="next_regular" class="tab-pane fade in active">
+                <div id="next_regular" class="tab-pane fade show active">
                     <calendar-container v-bind:currentCalendar="calendars.next_year" tableClass="next"> </calendar-container>
                 </div>
             </div>
 
         </div>
 
-        <div class="col-sm-12 margin-top-10">
-            <button class="btn green pull-right" id="" v-on:click="submitInfo">Submit</button>
+        <div class="col-sm mt-2">
+            <button class="btn" id="" v-on:click="submitInfo">Submit</button>
         </div>
 
     </div>

@@ -1,16 +1,18 @@
-<div id="set_days" class="modal fade modal-scroll" tabindex="-1" data-replace="true">
+<div id="set_days" class="modal fade in modal-scroll" tabindex="-1" data-replace="true">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
 
-            <div class="modal-header">
-                <span class="modal-title">Set Unavailable Days</span>
-            </div>
+            <div class="modal-body p-3" style="display: grid;">
 
-            <div class="modal-body" style="display: grid;">
+                <div class="row mx-4 mt-4 mb-2 pb-2 border-bottom">
+                    <h5>Set Unavailable Days</h5>
+                </div>
 
-                <div class="form-group margin-top-10 calendars noSelect">
-                    <div class="col-sm-12">                        
+                <div class="form-group calendars noSelect">
+                    <div class="col-sm">
+
                         <resource-days :resource="rs_id"></resource-days>
+
                     </div>
                 </div>
 
