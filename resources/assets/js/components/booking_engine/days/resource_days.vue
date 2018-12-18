@@ -71,7 +71,9 @@
                     })
                     .then(() => {
                         self.initDragSelect();
-                        $("#contentLoading").modal("hide");
+                        setTimeout(() => {
+                            $('#contentLoading').modal('hide');
+                        }, 2000);
                     })
                     .catch(error => {
                         $("#contentLoading").modal("hide");
@@ -104,8 +106,10 @@
                         console.log(response);
                     })
                     .then(() => {
-                        $("#contentLoading").modal("hide");
-                        $("#set_days").modal("hide");
+                        setTimeout(() => {
+                            $("#set_days").modal("hide");
+                            $('#contentLoading').modal('hide');
+                        }, 2000);
                     })
                     .catch(error => {
                         $("#contentLoading").modal("hide");

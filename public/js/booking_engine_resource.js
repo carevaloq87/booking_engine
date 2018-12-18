@@ -76016,7 +76016,9 @@ Vue.component('calendar-container', __webpack_require__(558));
                 self.calendars = response.data;
             }).then(function () {
                 self.initDragSelect();
-                $("#contentLoading").modal("hide");
+                setTimeout(function () {
+                    $('#contentLoading').modal('hide');
+                }, 2000);
             }).catch(function (error) {
                 $("#contentLoading").modal("hide");
                 console.log('Error', error.message);
@@ -76048,8 +76050,10 @@ Vue.component('calendar-container', __webpack_require__(558));
             axios['post'](url, { id: self.resource, dates: selections }).then(function (response) {
                 console.log(response);
             }).then(function () {
-                $("#contentLoading").modal("hide");
-                $("#set_days").modal("hide");
+                setTimeout(function () {
+                    $("#set_days").modal("hide");
+                    $('#contentLoading').modal('hide');
+                }, 2000);
             }).catch(function (error) {
                 $("#contentLoading").modal("hide");
                 console.log(error);
