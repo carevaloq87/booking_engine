@@ -2,7 +2,7 @@
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
 
-            <div class="modal-body p-3" style="display: grid;">
+            <div class="modal-body p-3">
 
                 <div class="row mx-4 mt-4 mb-2 pb-2 border-bottom">
                     <h5>Set Hours</h5>

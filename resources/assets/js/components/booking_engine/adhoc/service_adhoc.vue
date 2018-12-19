@@ -1,13 +1,13 @@
 <template>
     <div>
-        <div class="card mx-2">
+        <div class="card mx-2 col-sm-11 mx-auto">
             <div class="card-body">
                 <span>This will set an adhoc day only, you should provide a range of hours and duration for those appointments. Please include interpreter and regular information when relevant.</span>
             </div>
         </div>
-        <div class="col-">
-            <div class="col-12 mt-4 mb-2"><h6>Choose Day</h6></div>
-            <div class="col-sm-6 col-md-4 mb-4">
+        <div class="col-11 mx-auto p-0">
+            <div class="col-12 mt-4 mb-2 p-0"><h6>Choose Day</h6></div>
+            <div class="col-sm-6 mb-4 p-0">
                 <datepicker
                 v-model="adhoc_object.date"
                 name="adhoc_date"
@@ -22,7 +22,7 @@
             </div>
         </div>
 
-        <div class="col-12">
+        <div class="col-11 mx-auto p-0">
             <ul class="nav nav-tabs" role="tablist">
                 <li class="nav-item"><a class="nav-link active" data-toggle="tab" role="tab" aria-controls="regular journey" aria-selected="true" href="#regular_journey">Regular</a></li>
                 <li class="nav-item"><a class="nav-link" data-toggle="tab" role="tab" aria-controls="interpreter journey" aria-selected="false" href="#interpreter_journey">Interpreter</a></li>
@@ -39,7 +39,7 @@
             </div>
         </div>
 
-        <div class="col-sm">
+        <div class="col-12 mx-auto mt-4 mt-md-0">
                 <button class="btn h-25 btn-sm" v-on:click="submitInfo">Submit</button>
         </div>
     </div>

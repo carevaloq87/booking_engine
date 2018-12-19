@@ -73794,6 +73794,11 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                 standard_container += btn;
             }
             return standard_container;
+        },
+
+        hideNonWorkingHours: function hideNonWorkingHours() {
+            $(".week_days .hours_col:nth-of-type(-n+8), .top_dates .hours_col:nth-of-type(-n+8)").hide();
+            $(".week_days .hours_col:nth-last-child(-n+6), .top_dates .hours_col:nth-last-child(-n+6)").hide();
         }
     },
     watch: {
@@ -73801,6 +73806,9 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
             this.time_structure_active = this.currentSchedule.time_name;
             this.choice = this.currentSchedule.time_name;
         }
+    },
+    mounted: function mounted() {
+        this.hideNonWorkingHours();
     }
 });
 
@@ -73819,7 +73827,7 @@ var render = function() {
       _c(
         "button",
         {
-          class: "btn btn-xs default " + _vm.isActiveTime("quarter_hour"),
+          class: "btn btn-sm default " + _vm.isActiveTime("quarter_hour"),
           attrs: { type: "button", id: "quarter_hour" },
           on: {
             click: function($event) {
@@ -73833,7 +73841,7 @@ var render = function() {
       _c(
         "button",
         {
-          class: "btn btn-xs default " + _vm.isActiveTime("half_hour"),
+          class: "btn btn-sm default " + _vm.isActiveTime("half_hour"),
           attrs: { type: "button", id: "half_hour" },
           on: {
             click: function($event) {
@@ -73847,7 +73855,7 @@ var render = function() {
       _c(
         "button",
         {
-          class: "btn btn-xs default " + _vm.isActiveTime("hour"),
+          class: "btn btn-sm default " + _vm.isActiveTime("hour"),
           attrs: { type: "button", id: "hour" },
           on: {
             click: function($event) {
@@ -75666,7 +75674,7 @@ var render = function() {
             [_vm._v("Duration")]
           ),
           _vm._v(" "),
-          _c("div", { staticClass: "col-sm-4 col-md-5" }, [
+          _c("div", { staticClass: "col-sm-8" }, [
             _c("input", {
               staticClass: "form-control",
               attrs: {
@@ -75738,7 +75746,7 @@ var render = function() {
       _vm._v(" "),
       _c(
         "div",
-        { staticClass: "row week_days" },
+        { staticClass: "col-sm-12 week_days" },
         [
           _c("div", { staticClass: "day_col noSelect" }, [_vm._v(" ")]),
           _vm._v(" "),
@@ -75758,7 +75766,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "row top_dates noSelect" }, [
+    return _c("div", { staticClass: "col-sm-12 top_dates noSelect" }, [
       _c("div", { staticClass: "day_col" }, [_vm._v(" ")]),
       _vm._v(" "),
       _c("div", { staticClass: "hours_col" }, [_vm._v("00")]),
@@ -76534,6 +76542,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 
@@ -76684,12 +76693,12 @@ var render = function() {
   return _c("div", [
     _vm._m(0),
     _vm._v(" "),
-    _c("div", { staticClass: "col-" }, [
+    _c("div", { staticClass: "col-11 mx-auto p-0" }, [
       _vm._m(1),
       _vm._v(" "),
       _c(
         "div",
-        { staticClass: "col-sm-6 mb-4" },
+        { staticClass: "col-sm-6 mb-4 p-0" },
         [
           _c("datepicker", {
             attrs: {
@@ -76714,12 +76723,10 @@ var render = function() {
       )
     ]),
     _vm._v(" "),
-    _vm._m(2),
-    _vm._v(" "),
-    _c("div", { staticClass: "col-12 mb-4" }, [
+    _c("div", { staticClass: "col-11 mb-3 mx-auto p-0" }, [
       _c(
         "div",
-        { attrs: { id: "regular_journey" } },
+        { staticClass: "adhoc_hours", attrs: { id: "regular_journey" } },
         [
           _c("journey-container", {
             attrs: {
@@ -76733,7 +76740,9 @@ var render = function() {
       )
     ]),
     _vm._v(" "),
-    _c("div", { staticClass: "col-12" }, [
+    _vm._m(2),
+    _vm._v(" "),
+    _c("div", { staticClass: "col-12 mx-auto" }, [
       _c(
         "button",
         { staticClass: "btn h-25 btn-sm", on: { click: _vm.submitInfo } },
@@ -76747,7 +76756,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "card mx-2" }, [
+    return _c("div", { staticClass: "card mx-2 col-sm-11 mx-auto" }, [
       _c("div", { staticClass: "card-body" }, [
         _c("span", [
           _vm._v(
@@ -76761,7 +76770,7 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-12 mt-4 mb-2" }, [
+    return _c("div", { staticClass: "col-12 mt-4 mb-2 p-0" }, [
       _c("h6", [_vm._v("Choose Day")])
     ])
   },
@@ -76769,12 +76778,12 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "col-" }, [
-      _c("div", { staticClass: "col-12 mt-4 mb-2" }, [
+    return _c("div", { staticClass: "col- mb-2 p-0" }, [
+      _c("div", { staticClass: "col-12 mt-3 mb-2" }, [
         _c("h6", [_vm._v("Details")])
       ]),
       _vm._v(" "),
-      _c("div", { staticClass: "col-sm-6" }, [
+      _c("div", { staticClass: "col-sm-12" }, [
         _c("textarea", {
           staticClass: "form-control",
           attrs: {

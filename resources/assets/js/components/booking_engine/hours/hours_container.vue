@@ -3,9 +3,9 @@
     <div :class="tableClass">
         <div class="form-group">
             <span>Change time display: <small>(in minutes)</small></span>
-            <button type="button" :class="'btn btn-xs default ' + isActiveTime('quarter_hour')" id="quarter_hour" v-on:click="setTimeStructure('quarter_hour')">15</button>
-            <button type="button" :class="'btn btn-xs default ' + isActiveTime('half_hour')" id="half_hour" v-on:click="setTimeStructure('half_hour')">30</button>
-            <button type="button" :class="'btn btn-xs default ' + isActiveTime('hour')" id="hour" v-on:click="setTimeStructure('hour')">60</button>
+            <button type="button" :class="'btn btn-sm default ' + isActiveTime('quarter_hour')" id="quarter_hour" v-on:click="setTimeStructure('quarter_hour')">15</button>
+            <button type="button" :class="'btn btn-sm default ' + isActiveTime('half_hour')" id="half_hour" v-on:click="setTimeStructure('half_hour')">30</button>
+            <button type="button" :class="'btn btn-sm default ' + isActiveTime('hour')" id="hour" v-on:click="setTimeStructure('hour')">60</button>
         </div>
         <div class="form-group margin-top-10 hours_selection">
             <div class="col-sm-12">
@@ -117,6 +117,10 @@
                     standard_container += btn;
                 }
                 return standard_container;
+            },
+            hideNonWorkingHours: function() {
+                $(".week_days .hours_col:nth-of-type(-n+8), .top_dates .hours_col:nth-of-type(-n+8)").hide();
+                $(".week_days .hours_col:nth-last-child(-n+6), .top_dates .hours_col:nth-last-child(-n+6)").hide();
             }
         },
         watch: {
@@ -124,6 +128,9 @@
                 this.time_structure_active = this.currentSchedule.time_name;
                 this.choice = this.currentSchedule.time_name;
             }
-        }
+        },
+        mounted() {
+            this.hideNonWorkingHours();
+        },
     }
 </script>

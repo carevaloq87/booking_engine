@@ -1,13 +1,13 @@
 <template>
     <div>
-        <div class="card mx-2">
+        <div class="card mx-2 col-sm-11 mx-auto">
             <div class="card-body">
                 <span>This will set an adhoc day only, you should provide a range of hours and duration for those appointments. Please include regular information when relevant.</span>
             </div>
         </div>
-        <div class="col-">
-            <div class="col-12 mt-4 mb-2"><h6>Choose Day</h6></div>
-            <div class="col-sm-6 mb-4">
+        <div class="col-11 mx-auto p-0">
+            <div class="col-12 mt-4 mb-2 p-0"><h6>Choose Day</h6></div>
+            <div class="col-sm-6 mb-4 p-0">
                 <datepicker
                 v-model="adhoc_object.date"
                 name="adhoc_date"
@@ -21,19 +21,20 @@
 
             </div>
         </div>
-        <div class="col-">
-            <div class="col-12 mt-4 mb-2"><h6>Details</h6></div>
-            <div class="col-sm-6">
-                <textarea class="form-control" name="details" id="details" rows="4" cols="50"  placeholder="Enter details here..."></textarea>
-            </div>
-        </div>
-        <div class="col-12 mb-4" >
-            <div id="regular_journey" >
+
+        <div class="col-11 mb-3 mx-auto p-0" >
+            <div id="regular_journey" class="adhoc_hours">
                 <journey-container v-bind:currentJourney="journey.regular"  tableClass="regular" v-on:reload-ds="updateDragSelect"> </journey-container>
             </div>
         </div>
 
-        <div class="col-12">
+        <div class="col- mb-2 p-0">
+            <div class="col-12 mt-3 mb-2"><h6>Details</h6></div>
+            <div class="col-sm-12">
+                <textarea class="form-control" name="details" id="details" rows="4" cols="50"  placeholder="Enter details here..."></textarea>
+            </div>
+        </div>
+        <div class="col-12 mx-auto">
                 <button class="btn h-25 btn-sm" v-on:click="submitInfo">Submit</button>
         </div>
     </div>

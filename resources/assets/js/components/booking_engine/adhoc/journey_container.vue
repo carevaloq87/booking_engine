@@ -3,7 +3,7 @@
     <div :class="tableClass">
         <div class="row adhoc-rows" v-if="is_service">
             <label for="duration" class="col-md-2 control-label">Duration</label>
-            <div class="col-sm-4 col-md-5">
+            <div class="col-sm-8">
                 <input class="form-control" name="duration" type="number" min="0" step="1" :id="tableClass + '_duration'" minlength="1" placeholder="Enter duration here..." required>
             </div>
         </div>
@@ -14,7 +14,7 @@
             <button type="button" :class="'btn btn-sm h-25 default ' + isActiveTime('hour')" id="hour" v-on:click="setJourneyStructure('hour')">60</button>
         </div>
         <div class="row col- adhoc-rows">
-            <div class="row top_dates noSelect">
+            <div class="col-sm-12 top_dates noSelect">
                 <div class="day_col">&nbsp;</div>
                 <div class="hours_col">00</div>
                 <div class="hours_col">01</div>
@@ -42,7 +42,7 @@
                 <div class="hours_col">23</div>
             </div>
 
-            <div class="row week_days">
+            <div class="col-sm-12 week_days">
                 <div class="day_col noSelect">&nbsp;</div>
                 <div class="hours_col" v-for="(n,i) in 24" :key="i">
                     <div v-html="drawHours(n)"></div>

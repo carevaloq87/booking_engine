@@ -156,11 +156,6 @@
   font-weight: bold;
 }
 
-.modal-body {
-  max-height: calc(100vh - 145px);
-  overflow-y: auto;
-}
-
 .modal-body::-webkit-scrollbar-track {
   background-color: #EFEFEF;
 }
@@ -172,6 +167,12 @@
 .modal-body::-webkit-scrollbar {
   background-color: #EFEFEF;
   height: 12px;
+}
+
+@media (min-width: 576px) {
+  .modal-body {
+    overflow-y: auto;
+  }
 }
 
 .ds-selected {
@@ -187,6 +188,10 @@
   -moz-user-select: none;
   -ms-user-select: none;
   user-select: none;
+}
+
+.modal-lg {
+  max-width: 850px;
 }
 
 @media (min-width: 768px) {
