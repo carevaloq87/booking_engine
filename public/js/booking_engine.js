@@ -77072,7 +77072,7 @@ var render = function() {
       ])
     ]),
     _vm._v(" "),
-    _c("div", { staticClass: "col-12 mx-auto mt-xs-4 mt-sm-1 mt-md-0" }, [
+    _c("div", { staticClass: "col-12 mx-auto mt-4 mt-md-0" }, [
       _c(
         "button",
         { staticClass: "btn h-25 btn-sm", on: { click: _vm.submitInfo } },
