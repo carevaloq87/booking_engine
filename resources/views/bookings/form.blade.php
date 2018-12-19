@@ -1,6 +1,6 @@
-<div id='booking-create'>
+<div id='booking-create' class="d-flex flex-column" >
 
-    <div class="form-group {{ $errors->has('service') ? 'has-error' : '' }}">
+    <div class="d-inline-flex align-items-center p-2 {{ $errors->has('service') ? 'has-error' : '' }}">
         <label for="service-select" class="col-md-2 control-label">Service</label>
         <div class="col-md-6">
             <multiselect
@@ -24,7 +24,7 @@
             {!! $errors->first('service', '<p class="help-block">:message</p>') !!}
         </div>
     </div>
-    <div class="form-group {{ $errors->has('interpreter') ? 'has-error' : '' }}">
+    <div class="d-inline-flex align-items-center p-2 {{ $errors->has('interpreter') ? 'has-error' : '' }}">
         <label for="interpreter" class="col-md-2 control-label">Interpreter required?</label>
         <div class="col-md-6 mt-radio-inline" v-on:change="onChangeInterpreter">
                 <label class="mt-radio mt-radio-outline">
@@ -35,7 +35,7 @@
                 </label>
         </div>
     </div>
-    <div class="form-group {{ $errors->has('int_language') ? 'has-error' : '' }}" v-if="is_interpreter">
+    <div class="d-inline-flex align-items-center p-2 {{ $errors->has('int_language') ? 'has-error' : '' }}" v-if="is_interpreter">
         <label for="int_language" class="col-md-2 control-label">Language</label>
         <div class="col-md-6 ">
             <select class="form-control" id="int_language" name="int_language">
@@ -45,8 +45,8 @@
     </div>
     <booking-date-picker></booking-date-picker>
     <hr>
-    <h3>Client Details</h3>
-    <div class="form-group {{ $errors->has('client') ? 'has-error' : '' }}">
+    <h3 id="detailsh3">Client Details</h3>
+    <div class="d-inline-flex align-items-center p-2 {{ $errors->has('client') ? 'has-error' : '' }}">
         <label for="first_name" class="col-md-2 control-label">First Name</label>
         <div class="col-md-3">
             <input class="form-control" name="first_name" type="text" id="first_name" placeholder="Client first name..." required>
@@ -58,15 +58,15 @@
                 {!! $errors->first('last_name', '<p class="help-block">:message</p>') !!}
         </div>
     </div>
-    <div class="form-group {{ $errors->has('contact') ? 'has-error' : '' }}">
-            <label for="contact" class="col-md-2 control-label">Contact Detail </label>
-            <div class="col-md-6">
-                <input class="form-control" name="contact" type="text" id="contact" placeholder="Client email or phone number...">
-                {!! $errors->first('contact', '<p class="help-block">:message</p>') !!}
-            </div>
+    <div class="d-inline-flex align-items-center p-2 {{ $errors->has('contact') ? 'has-error' : '' }}">
+        <label for="contact" class="col-md-2 control-label">Contact Detail </label>
+        <div class="col-md-6">
+            <input class="form-control" name="contact" type="text" id="contact" placeholder="Client email or phone number...">
+            {!! $errors->first('contact', '<p class="help-block">:message</p>') !!}
         </div>
+    </div>
     <hr>
-    <div class="form-group {{ $errors->has('comment') ? 'has-error' : '' }}">
+    <div class="d-inline-flex align-items-center p-2 {{ $errors->has('comment') ? 'has-error' : '' }}">
         <label for="comment" class="col-md-2 control-label">Description</label>
         <div class="col-md-8">
             <vue-mce
@@ -83,7 +83,7 @@
 </div>
 @section('scripts')
     <script src="https://cloud.tinymce.com/dev/tinymce.min.js?apiKey=v3tjlgkjdlr8xiq21qsdopbjfkuk5ibmdhgb5yznjfpyb1lj" ></script>
-    <script src="{{ asset('js/booking.js')}}" />
+    <script src="{{ asset('js/booking.js')}}" ></script>
 @endsection
 
 

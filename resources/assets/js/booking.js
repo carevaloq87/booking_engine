@@ -42,11 +42,15 @@ new Vue({
             axios.get(url)
                 .then(function (response) {
                     self.service_options = response.data.data;
-                    $("#contentLoading").modal("hide");
+                    $('#contentLoading').on('shown.bs.modal', function (e) {
+                        $("#contentLoading").modal('hide');
+                    })
                 })
                 .catch(function (error) {
                     console.log(error);
-                    $("#contentLoading").modal("hide");
+                    $('#contentLoading').on('shown.bs.modal', function (e) {
+                        $("#contentLoading").modal('hide');
+                    })
                 });
         },
         getAvailability: function () {
@@ -69,11 +73,15 @@ new Vue({
                     .then(function (response) {
                         self.service_availability = response.data;
                         self.sendAvailabilityToChild();
-                        $("#contentLoading").modal("hide");
+                        $('#contentLoading').on('shown.bs.modal', function (e) {
+                            $("#contentLoading").modal('hide');
+                        })
                     })
                     .catch(function (error) {
                         console.log(error);
-                        $("#contentLoading").modal("hide");
+                        $('#contentLoading').on('shown.bs.modal', function (e) {
+                            $("#contentLoading").modal('hide');
+                        })
                     });
             }
         },
