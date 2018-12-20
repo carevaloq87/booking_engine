@@ -7,8 +7,8 @@
 @section('buttons')
     <div class="btn-group btn-group-sm" role="group">
         <form method="POST" action="{!! route('service_providers.service_provider.destroy', $serviceProvider->id) !!}" accept-charset="UTF-8">
-        <input name="_method" value="DELETE" type="hidden">
-        {{ csrf_field() }}
+            <input name="_method" value="DELETE" type="hidden">
+            {{ csrf_field() }}
             <div class="btn-group btn-group-sm" role="group">
                 <a href="{{ route('service_providers.service_provider.index') }}" class="btn btn-primary" title="Show All Service Provider">
                     <i class="fa fa-list-ul"></i>
@@ -32,16 +32,21 @@
 
 @section('content')
 
-<dl class="dl-horizontal">
-    <dt>Name</dt>
-    <dd>{{ $serviceProvider->name }}</dd>
-    <dt>Contact Name</dt>
-    <dd>{{ $serviceProvider->contact_name }}</dd>
-    <dt>Phone</dt>
-    <dd>{{ $serviceProvider->phone }}</dd>
-    <dt>Email</dt>
-    <dd>{{ $serviceProvider->email }}</dd>
-
-</dl>
+    <div class="col-12 pb-4">
+        <h5>Name</h5>
+        <span class="col-12">{{ $serviceProvider->name }}</span>
+    </div>
+    <div class="col-12 pb-4">
+        <h5>Contact Name</h5>
+        <span class="col-12">{{ $serviceProvider->contact_name }}</span>
+    </div>
+    <div class="col-12 pb-4">
+        <h5>Phone</h5>
+        <span class="col-12">{{ $serviceProvider->phone }}</span>
+    </div>
+    <div class="col-12 pb-4">
+        <h5>Email</h5>
+        <span class="col-12">{{ $serviceProvider->email }}</span>
+    </div>
 
 @endsection
