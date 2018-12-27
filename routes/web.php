@@ -363,3 +363,39 @@ Route::group(
         ->where('id', '[0-9]+');
 
 });
+
+Route::group(
+[
+    'prefix' => 'holidays',
+], function () {
+
+    Route::get('/', 'HolidaysController@index')
+        ->name('holidays.holiday.index');
+
+    Route::get('/create','HolidaysController@create')
+        ->name('holidays.holiday.create');
+
+    Route::get('/show/{holiday}','HolidaysController@show')
+        ->name('holidays.holiday.show')
+        ->where('id', '[0-9]+');
+
+    Route::get('/{holiday}/edit','HolidaysController@edit')
+        ->name('holidays.holiday.edit')
+        ->where('id', '[0-9]+');
+
+    Route::get('getDateById/{holiday}','HolidaysController@getDateById')
+    ->name('holidays.holiday.getDateById')
+    ->where('id', '[0-9]+');
+
+    Route::post('/', 'HolidaysController@store')
+        ->name('holidays.holiday.store');
+
+    Route::put('holiday/{holiday}', 'HolidaysController@update')
+        ->name('holidays.holiday.update')
+        ->where('id', '[0-9]+');
+
+    Route::delete('/holiday/{holiday}','HolidaysController@destroy')
+        ->name('holidays.holiday.destroy')
+        ->where('id', '[0-9]+');
+
+});

@@ -73,6 +73,12 @@
                                             <span class="m-menu__link-text">Service Providers</span>
                                         </a>
                                     </li>
+                                    <li class="m-menu__item {{ Request::is('holidays','holidays/*') ? 'm-menu__item--active' : null }}">
+                                        <a class="m-menu__link " href="{{ route('holidays.holiday.index') }}">
+                                            <span class="m-menu__item-here"></span>
+                                            <span class="m-menu__link-text">Holidays</span>
+                                        </a>
+                                    </li>
                                 @endif
                                 <li class="m-menu__item">
                                     <a href="#" class="m-menu__link ">

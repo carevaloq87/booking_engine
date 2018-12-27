@@ -58,5 +58,9 @@
     {
         "model-name": "Client",
         "resource-file": "clients.json"
+    },
+    {
+        "model-name": "Holiday",
+        "resource-file": "holidays.json"
     }
 ]
