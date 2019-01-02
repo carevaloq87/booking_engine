@@ -73479,6 +73479,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony default export */ __webpack_exports__["default"] = ({
     props: {
         currentCalendar: Object,
+        holidays: Array,
         tableClass: String
     }
 });
@@ -73506,17 +73507,25 @@ var render = function() {
               domProps: { textContent: _vm._s(month) }
             }),
             _vm._v(" "),
-            _vm._l(calendar, function(day_number, day) {
+            _vm._l(calendar, function(day_obj, day) {
               return _c("td", { key: day, staticClass: "week_day p-0" }, [
-                day_number !== ""
+                day_obj !== "" && !day_obj.holiday
                   ? _c("div", {
                       class: _vm.tableClass + "_option_day option_day",
-                      attrs: { id: month + "-" + day_number },
-                      domProps: { innerHTML: _vm._s(day_number) }
+                      attrs: { id: month + "-" + day_obj.day },
+                      domProps: { innerHTML: _vm._s(day_obj.day) }
                     })
                   : _vm._e(),
                 _vm._v(" "),
-                day_number === "" ? _c("div", [_vm._v(" ")]) : _vm._e()
+                day_obj !== "" && day_obj.holiday
+                  ? _c("div", {
+                      class: _vm.tableClass + "_option_day option_day holiday",
+                      attrs: { id: month + "-" + day_obj.day },
+                      domProps: { innerHTML: _vm._s(day_obj.day) }
+                    })
+                  : _vm._e(),
+                _vm._v(" "),
+                day_obj === "" ? _c("div", [_vm._v(" ")]) : _vm._e()
               ])
             })
           ],
@@ -75989,6 +75998,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
+//
+//
+//
 
 
 Vue.component('calendar-container', __webpack_require__(558));
@@ -76199,7 +76212,7 @@ var render = function() {
       ]
     ),
     _vm._v(" "),
-    _c("div", { staticClass: "col-sm mt-2" }, [
+    _c("div", { staticClass: "form-group col-sm mt-2" }, [
       _c(
         "button",
         {
@@ -76208,7 +76221,23 @@ var render = function() {
           on: { click: _vm.submitInfo }
         },
         [_vm._v("Submit")]
-      )
+      ),
+      _vm._v(" "),
+      _c(
+        "label",
+        { staticClass: "control-label", attrs: { id: "holiday_label" } },
+        [_vm._v("Holiday")]
+      ),
+      _vm._v(" "),
+      _c("span", { staticClass: "option_day holiday_conv" }),
+      _vm._v(" "),
+      _c(
+        "label",
+        { staticClass: "control-label", attrs: { id: "selected_label" } },
+        [_vm._v("Date Selected  ")]
+      ),
+      _vm._v(" "),
+      _c("span", { staticClass: "option_day selected_conv" })
     ])
   ])
 }

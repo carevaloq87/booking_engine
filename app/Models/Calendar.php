@@ -51,7 +51,7 @@ class Calendar extends Model
                     $list[$month_name][$j] = ""; //Add empty values while it find the week day to set the 1st day of the month
                 }
             }
-            $list[$month_name][$day_pos] = $dt->format('d');
+            $list[$month_name][$day_pos] = ['day'=>$dt->format('d'), 'holiday'=>self::isHoliday($year,$dt->format('m'),$dt->format('d'))];
             $day_pos++;
         }
         return $list;
@@ -423,5 +423,28 @@ class Calendar extends Model
         $unavailable_adhocs = new UnavailableAdhocs();
         $adhocs = $unavailable_adhocs->getUnavailableAdhocHoursByResourceId($resource_id); // Selected resource
         return $adhocs;
+    }
+
+    /**
+     * Determine if the date is holiday
+     *
+     * @param int $year
+     * @param int $month
+     * @param int $day
+     * @return boolean
+     */
+    private function isHoliday($year, $month, $day)
+    {
+
+        $date = $year.'-'.$month.'-'.$day;
+        $holiday_obj = new Holiday();
+        $holidays = $holiday_obj->getTwoYearDates();
+        $holiday_dates = [];
+        foreach ($holidays as $key => $holiday) {
+            if($date == date('Y-m-d', strtotime($holiday->date))) {
+                return true;
+            }
+        }
+        return false;
     }
 }

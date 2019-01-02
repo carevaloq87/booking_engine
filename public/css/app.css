@@ -182,6 +182,38 @@
   border: 0;
 }
 
+.holiday {
+  width: 22px;
+  height: 22px;
+  border-style: solid;
+  border-width: inherit;
+  border-color: #c49617;
+}
+
+.holiday_conv {
+  width: 22px;
+  height: 22px;
+  border-style: solid;
+  border-color: #c49617;
+  float: right;
+  border-width: thin;
+}
+
+#holiday_label {
+  float: right;
+}
+
+.selected_conv {
+  width: 22px;
+  height: 22px;
+  background-color: #17c4bb;
+  float: right;
+}
+
+#selected_label {
+  float: right;
+}
+
 .noSelect {
   -webkit-touch-callout: none;
   -webkit-user-select: none;
