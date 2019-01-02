@@ -81,16 +81,17 @@ class AvailableDays extends Model
         $service_dates = [];
         foreach($available_days as $date) {
             $is_current_year = date('Y', strtotime($date->available_date)) == $this->current_year;
+            $is_next_year    = date('Y', strtotime($date->available_date)) == $this->next_year;
             if(!$date->is_interpreter && $is_current_year) {
                 $service_dates['selected_current'][] = date('M-d', strtotime($date->available_date));
             }
             if($date->is_interpreter && $is_current_year) {
                 $service_dates['selected_current_interpreter'][] = date('M-d', strtotime($date->available_date));
             }
-            if(!$date->is_interpreter && !$is_current_year) {
+            if(!$date->is_interpreter && $is_next_year) {
                 $service_dates['selected_next'][] = date('M-d', strtotime($date->available_date));
             }
-            if($date->is_interpreter && !$is_current_year) {
+            if($date->is_interpreter && $is_next_year) {
                 $service_dates['selected_next_interpreter'][] = date('M-d', strtotime($date->available_date));
             }
         }

@@ -77,10 +77,11 @@ class UnavailableDays extends Model
         $resource_dates = [];
         foreach($unavailable_days as $date) {
             $is_current_year = date('Y', strtotime($date->date)) == $this->current_year;
+            $is_next_year    = date('Y', strtotime($date->date)) == $this->next_year;
             if( $is_current_year ) {
                 $resource_dates['selected_current'][] = date('M-d', strtotime($date->date));
             }
-            else {
+            elseif($is_next_year) {
                 $resource_dates['selected_next'][] = date('M-d', strtotime($date->date));
             }
         }

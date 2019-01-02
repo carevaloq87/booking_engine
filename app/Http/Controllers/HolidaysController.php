@@ -32,7 +32,8 @@ class HolidaysController extends Controller
      */
     public function index()
     {
-        $holidays = Holiday::paginate(25);
+        $holiday_obj = new Holiday();
+        $holidays = $holiday_obj->getTwoYearDates();
         return view('holidays.index', compact('holidays'));
     }
 

@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Holiday extends Model
 {
-    
+
 
     /**
      * The database table used by the model.
@@ -38,15 +38,25 @@ class Holiday extends Model
      * @var array
      */
     protected $dates = [];
-    
+
     /**
      * The attributes that should be cast to native types.
      *
      * @var array
      */
     protected $casts = [];
-    
 
+    /**
+     * Get the holidays for the current and next year.
+     *
+     * @return void
+     */
+    public function getTwoYearDates(){
+        $current_year =  date('Y-m-d',strtotime(date('Y-01-01')));
+        $next_year = date('Y-m-d', strtotime('last day of december next year'));
 
+        return Holiday::where('date', '>=', $current_year)
+                    ->where('date', '<=', $next_year)->paginate(25);
+    }
 
 }
