@@ -16,7 +16,7 @@
 
             <div class="tab-content">
                 <div id="current_regular" class="tab-pane fade show active" role="tabpanel" aria-labelledby="current-regular-tab">
-                    <calendar-container v-bind:currentCalendar="calendars.current_year" v-bind:holidays="calendars.holidays" tableClass="current"> </calendar-container>
+                    <calendar-container v-bind:currentCalendar="calendars.current_year" tableClass="current"> </calendar-container>
                 </div>
 
                 <div id="current_interpreter" class="tab-pane fade" role="tabpanel" aria-labelledby="current-interpreter-tab">
@@ -47,9 +47,9 @@
 
         <div class="form-group col-sm mt-2">
             <button class="btn" id="" v-on:click="submitInfo">Submit</button>
-            <label id="holiday_label" class="control-label">Holiday</label>
+            <label id="holiday_label" class="control-label ml-1">Holiday</label>
             <span class="option_day holiday_conv"></span>
-            <label id="selected_label" class="control-label">Date Selected &nbsp;</label>
+            <label id="selected_label" class="control-label ml-1 mr-3">Date Selected</label>
             <span class="option_day selected_conv"></span>
         </div>
 
