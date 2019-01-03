@@ -145,6 +145,7 @@ $white: #fff;
 
 .option_day {
     padding: 2px 3px;
+    background: white;
 }
 
 .month_label {
@@ -179,9 +180,17 @@ $white: #fff;
     height: 22px;
     border-style: solid;
     border-width: inherit;
-    border-color: #c49617;
+    border-top-right-radius: 9px;
+    border: solid #c49617 1px;
 }
 
+.week_day :not(.ds-selectable){
+    background-color: white;
+    line-height: 22px;
+}
+.week_day{
+    background-color: #c49617;
+}
 .holiday_conv {
     width: 22px;
     height: 22px;

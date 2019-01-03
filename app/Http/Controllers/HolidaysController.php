@@ -171,7 +171,12 @@ class HolidaysController extends Controller
 
         return $data;
     }
-
+    /**
+     * Get holiday by id
+     *
+     * @param int $id
+     * @return void
+     */
     public function getDateById($id)
     {
         try {
@@ -182,7 +187,25 @@ class HolidaysController extends Controller
         } catch (Exception $exception) {
 
             return back()->withInput()
-                         ->withErrors(['unexpected_error' => 'Unexpected error occurred while trying to process your request!']);
+                        ->withErrors(['unexpected_error' => 'Unexpected error occurred while trying to process your request!']);
+        }
+    }
+    /**
+     * Get the holidays for the current and next year.
+     *
+     * @return void
+     */
+    public function getTwoYearDates() 
+    {
+        try {
+            $holiday_obj = new Holiday();
+            $holiday =  $holiday_obj->getTwoYearDates();
+            return $holiday;
+
+        } catch (Exception $exception) {
+
+            return back()->withInput()
+                        ->withErrors(['unexpected_error' => 'Unexpected error occurred while trying to process your request!']);
         }
     }
 

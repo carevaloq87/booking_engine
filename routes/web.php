@@ -384,8 +384,11 @@ Route::group(
         ->where('id', '[0-9]+');
 
     Route::get('getDateById/{holiday}','HolidaysController@getDateById')
-    ->name('holidays.holiday.getDateById')
-    ->where('id', '[0-9]+');
+        ->name('holidays.holiday.getDateById')
+        ->where('id', '[0-9]+');
+
+    Route::get('getTwoYearDates','HolidaysController@getTwoYearDates')
+        ->name('holidays.holiday.getTwoYearDates');
 
     Route::post('/', 'HolidaysController@store')
         ->name('holidays.holiday.store');

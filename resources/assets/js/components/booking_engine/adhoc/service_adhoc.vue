@@ -13,6 +13,7 @@
                 name="adhoc_date"
                 :format="'dd/MM/yyyy'"
                 :disabledDates="datepicker_state.disabledDates"
+                :highlighted="datepicker_state.highlighted"
                 :clear-button-icon="'fa fa-calendar-alt'"
                 :calendar-button="true"
                 :calendar-button-icon="'fa fa-calendar-alt'"
@@ -59,6 +60,7 @@
             Datepicker
         },
         data() {
+            let self =this;
             return {
                 adhoc_object: {
                     date: null,
@@ -71,10 +73,20 @@
                 ds_interpreter: {},
                 ds_regular: {},
                 journey: {},
+                holidays_date: [],
                 datepicker_state: {
                     disabledDates: {
                         to: new Date(),
                         days: [6, 0], // Disable Saturday's and Sunday's
+                    },
+                    highlighted: {
+                        dates: [
+                            new Date(2019, 0, 1)
+                        ],
+                        customPredictor: function (date) {
+                            return self.getHolidays(date);
+                        },
+                        includeDisabled: true
                     }
                 },
                 sv_id: this.$root.sv_id,
@@ -186,7 +198,35 @@
                     document.querySelector("#regular_duration").value = '';
                 }
 
-            }
+            },
+            initHolidays () {
+                var self = this;
+                let url = '/holidays/getTwoYearDates';
+                $("#contentLoading").modal("show");
+                axios.get(url)
+                    .then(function (response) {
+                        let holidays = response.data.data;
+                        holidays.forEach(function(holiday) {
+                            self.holidays_date.push(moment(holiday.date).format('YYYY-MM-DD'));
+                        });
+                        $('#contentLoading').on('shown.bs.modal', function (e) {
+                            $("#contentLoading").modal('hide');
+                        })
+                    })
+                    .catch(function (error) {
+                        console.log(error);
+                        $('#contentLoading').on('shown.bs.modal', function (e) {
+                            $("#contentLoading").modal('hide');
+                        })
+                    });
+            },
+            getHolidays (date) {
+                var self = this;
+                let date_formated = moment(date).format('YYYY-MM-DD');
+                if( self.holidays_date ) {
+                    return  self.holidays_date.includes(date_formated) ? true:false;
+                }
+            },
         },
         watch: {
             //Watch change of service
@@ -200,6 +240,7 @@
         },
         mounted() {
             this.initDragSelect();
+            this.initHolidays();
             $('#contentLoading').modal('hide');
         }
     }

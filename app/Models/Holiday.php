@@ -51,7 +51,8 @@ class Holiday extends Model
      *
      * @return void
      */
-    public function getTwoYearDates(){
+    public function getTwoYearDates()
+    {
         $current_year =  date('Y-m-d',strtotime(date('Y-01-01')));
         $next_year = date('Y-m-d', strtotime('last day of december next year'));
 
