@@ -366,6 +366,7 @@ Route::group(
 
 Route::group(
 [
+    'middleware' => ['auth'],
     'prefix' => 'holidays',
 ], function () {
 
