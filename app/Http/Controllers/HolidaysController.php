@@ -21,7 +21,6 @@ class HolidaysController extends Controller
         $this->middleware('permission:holiday-create', ['only' => ['create','store']]);
         $this->middleware('permission:holiday-edit', ['only' => ['edit','update']]);
         $this->middleware('permission:holiday-delete', ['only' => ['destroy']]);
-        $this->middleware('permission:holiday-get',['only'=>['getTwoYearDates']]);
 	    $this->middleware('auth');
 	}
 
