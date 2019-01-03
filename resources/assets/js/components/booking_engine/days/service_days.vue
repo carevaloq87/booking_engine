@@ -16,11 +16,11 @@
 
             <div class="tab-content">
                 <div id="current_regular" class="tab-pane fade show active" role="tabpanel" aria-labelledby="current-regular-tab">
-                    <calendar-container v-bind:currentCalendar="calendars.current_year" tableClass="current"> </calendar-container>
+                    <calendar-container v-bind:currentCalendar="calendars.current_year" tableClass="current" v-bind:copyField="true"> </calendar-container>
                 </div>
 
                 <div id="current_interpreter" class="tab-pane fade" role="tabpanel" aria-labelledby="current-interpreter-tab">
-                    <calendar-container v-bind:currentCalendar="calendars.current_year" tableClass="current_interpreter"> </calendar-container>
+                    <calendar-container v-bind:currentCalendar="calendars.current_year" tableClass="current_interpreter" v-bind:copyField="false"> </calendar-container>
                 </div>
             </div>
 
@@ -35,11 +35,11 @@
 
             <div class="tab-content">
                 <div id="next_regular" class="tab-pane fade show active" role="tabpanel" aria-labelledby="next-year-regular-tab">
-                    <calendar-container v-bind:currentCalendar="calendars.next_year" tableClass="next"> </calendar-container>
+                    <calendar-container v-bind:currentCalendar="calendars.next_year" tableClass="next" v-bind:copyField="true"> </calendar-container>
                 </div>
 
                 <div id="next_interpreter" class="tab-pane fade" role="tabpanel" aria-labelledby="next-year-interpreter-tab">
-                    <calendar-container v-bind:currentCalendar="calendars.next_year" tableClass="next_interpreter"> </calendar-container>
+                    <calendar-container v-bind:currentCalendar="calendars.next_year" tableClass="next_interpreter" v-bind:copyField="false"> </calendar-container>
                 </div>
             </div>
 

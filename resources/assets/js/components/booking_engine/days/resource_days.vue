@@ -11,7 +11,7 @@
 
             <div class="tab-content">
                 <div id="current_regular" class="tab-pane fade show active">
-                    <calendar-container v-bind:currentCalendar="calendars.current_year" tableClass="current"> </calendar-container>
+                    <calendar-container v-bind:currentCalendar="calendars.current_year" tableClass="current" v-bind:copyField="false"> </calendar-container>
                 </div>
             </div>
 
@@ -21,7 +21,7 @@
 
             <div class="tab-content">
                 <div id="next_regular" class="tab-pane fade show active">
-                    <calendar-container v-bind:currentCalendar="calendars.next_year" tableClass="next"> </calendar-container>
+                    <calendar-container v-bind:currentCalendar="calendars.next_year" tableClass="next" v-bind:copyField="false"> </calendar-container>
                 </div>
             </div>
 

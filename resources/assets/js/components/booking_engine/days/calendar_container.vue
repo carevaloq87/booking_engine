@@ -58,7 +58,7 @@
             </tbody>
         </table>
 
-        <div class="row mt-3 pl-3" v-if="tableClass == 'current' || tableClass == 'next'">
+        <div class="row mt-3 pl-3" v-if="copyField">
             <label class="m-checkbox m-checkbox--solid m-checkbox--single m-checkbox--brand mr-3">
                     <input type="checkbox" v-model="copy_days" v-on:click="copyDates"><span></span>
             </label>
@@ -72,7 +72,8 @@
     export default {
         props: {
             currentCalendar: Object,
-            tableClass: String
+            tableClass: String,
+            copyField: Boolean
         },
         data: function () {
             return {
@@ -85,7 +86,6 @@
                 if(!self.copy_days) {
                     if(self.tableClass == 'current'){
                         let preselection_current = self.$parent.ds_current.getSelectedValues();
-                        console.log(self.$parent, preselection_current);
                         self.$parent.ds_current_interpreter.clear();
                         self.$parent.ds_current_interpreter.setInitialSelections('.current_interpreter ', preselection_current);
                     }
