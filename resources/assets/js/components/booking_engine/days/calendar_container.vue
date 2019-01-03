@@ -62,7 +62,7 @@
             <label class="m-checkbox m-checkbox--solid m-checkbox--single m-checkbox--brand mr-3">
                     <input type="checkbox" v-model="copy_days" v-on:click="copyDates"><span></span>
             </label>
-            <span>Use regular dates for interpreter appointments <i class="fa fa-info-circle" data-skin="dark" data-container="body" data-toggle="m-tooltip" data-placement="right" title="" data-original-title="This will override current interpreter selections"></i></span>
+            <span>Copy regular dates for interpreter appointments <i class="fa fa-info-circle" data-skin="dark" data-container="body" data-toggle="m-tooltip" data-placement="right" title="" data-original-title="This will override current interpreter selections"></i></span>
         </div>
     </div>
 

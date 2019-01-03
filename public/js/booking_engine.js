@@ -73998,7 +73998,7 @@ var staticRenderFns = [
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
     return _c("span", [
-      _vm._v("Use regular dates for interpreter appointments "),
+      _vm._v("Copy regular dates for interpreter appointments "),
       _c("i", {
         staticClass: "fa fa-info-circle",
         attrs: {
