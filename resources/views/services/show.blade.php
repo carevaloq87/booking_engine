@@ -89,5 +89,4 @@
 
 @section('scripts')
     <script src="/js/booking_engine.js?id={{ str_random(6) }}"></script>
-    <script>$('#contentLoading').modal('hide');</script>
 @endsection
