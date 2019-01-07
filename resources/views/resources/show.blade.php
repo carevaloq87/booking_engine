@@ -74,6 +74,7 @@
         @include("resources.modal.days")
         @include("resources.modal.hours")
         @include("resources.modal.adhoc")
+        <loading-modal></loading-modal>
     </div>
 @endsection
 

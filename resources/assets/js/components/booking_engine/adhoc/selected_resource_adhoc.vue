@@ -15,7 +15,7 @@
 </template>
 <script>
 
-import { data_bus } from '../../../booking_engine_resource';
+    import EventBus from '../../../utils/event-bus';
 
     export default {
         props:['resource'],
@@ -28,39 +28,45 @@ import { data_bus } from '../../../booking_engine_resource';
         },
         methods: {
             deleteAdhoc(value) {
-                $("#contentLoading").modal("show");
                 var self = this;
                 let url = '/calendar/resource/adhoc/delete';
 
+                self.showLoader();
                 axios['post'](url, {resource_id: self.resource, adhoc: value})
                     .then(response => {
                         self.getAdhocs();
-                        $("#contentLoading").modal("hide");
+                        self.hideLoader();
                     })
                     .catch(error => {
-                        $("#contentLoading").modal("hide");
+                        self.hideLoader();
                     });
             },
             getAdhocs() {
-                $("#contentLoading").modal("show");
                 var self = this;
                 let url = '/calendar/resource/adhoc/' + self.resource;
 
+                self.showLoader();
                 axios['get'](url, {})
                     .then(response => {
                         self.adhocs = response.data;
-                        $("#contentLoading").modal("hide");
+                        self.hideLoader();
                     })
                     .catch(error => {
-                        $("#contentLoading").modal("hide");
+                        self.hideLoader();
                     });
             },
             updateListAdhocs() {
                 var self = this;
-                data_bus.$on('adhoc', (data) => {
+                EventBus.$on('adhoc', (data) => {
                     self.getAdhocs();
                 });
             },
+            showLoader() {
+                EventBus.$emit('SHOW_LOADER', 'selected_resource_adhoc');
+            },
+            hideLoader() {
+                EventBus.$emit('HIDE_LOADER', 'selected_resource_adhoc');
+            }
         },
         mounted() {
             this.getAdhocs();

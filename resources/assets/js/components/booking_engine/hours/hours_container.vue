@@ -52,6 +52,7 @@
 
 
 <script>
+    import EventBus from '../../../utils/event-bus';
     export default {
         props: {
             currentSchedule: Object,
@@ -97,10 +98,10 @@
                 let self = this;
                 self.time_structure_active = time_structure_name; //i.e Hour, Half hour or quarter hour
 
-                $("#contentLoading").modal("show");
+                self.showLoader();
                 setTimeout(function(){
                     self.$emit('reload-ds',true); //This emits a message to the parent component in order to re-initialize drag all drag and select buttons
-                    $("#contentLoading").modal("hide");
+                    self.hideLoader();
                 }, 1000);
                 self.makeActive(time_structure_name);
             },
@@ -121,6 +122,12 @@
             hideNonWorkingHours: function() {
                 $(".week_days .hours_col:nth-of-type(-n+8), .top_dates .hours_col:nth-of-type(-n+8)").hide();
                 $(".week_days .hours_col:nth-last-child(-n+6), .top_dates .hours_col:nth-last-child(-n+6)").hide();
+            },
+            showLoader() {
+                EventBus.$emit('SHOW_LOADER', 'hours_container');
+            },
+            hideLoader() {
+                EventBus.$emit('HIDE_LOADER', 'hours_container');
             }
         },
         watch: {

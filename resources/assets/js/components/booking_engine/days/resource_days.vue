@@ -41,6 +41,7 @@
 
 <script>
     import SelectableDS from '../selectableDS';
+    import EventBus from '../../../utils/event-bus';
     Vue.component('calendar-container', require('./calendar_container.vue'));
     export default {
         props:['resource'],
@@ -64,11 +65,11 @@
             },
             //Get Calendar by resource ID
             getCalendar(rs_id) {
-                $("#contentLoading").modal("show");
 
                 var self = this;
                 let url = '/calendar/resource/days/' + rs_id;
 
+                self.showLoader();
                 axios['get'](url, {})
                     .then(response => {
                         self.calendars = response.data;
@@ -76,11 +77,11 @@
                     .then(() => {
                         self.initDragSelect();
                         setTimeout(() => {
-                            $('#contentLoading').modal('hide');
+                            self.hideLoader();
                         }, 2000);
                     })
                     .catch(error => {
-                        $("#contentLoading").modal("hide");
+                        self.hideLoader();
                         console.log('Error', error.message);
                     });
             },
@@ -104,7 +105,7 @@
 
                 let url = '/calendar/resource/days';
 
-                $("#contentLoading").modal("show");
+                self.showLoader();
                 axios['post'](url, { id: self.resource, dates: selections })
                     .then(response => {
                         console.log(response);
@@ -116,9 +117,15 @@
                         }, 2000);
                     })
                     .catch(error => {
-                        $("#contentLoading").modal("hide");
+                        self.hideLoader();
                         console.log(error);
                     });
+            },
+            showLoader() {
+                EventBus.$emit('SHOW_LOADER', 'resource_days');
+            },
+            hideLoader() {
+                EventBus.$emit('HIDE_LOADER', 'resource_days');
             }
         },
         watch: {

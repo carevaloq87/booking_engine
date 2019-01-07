@@ -55,6 +55,8 @@
 
 
 <script>
+    import EventBus from '../../../utils/event-bus';
+
     export default {
         props: {
             currentJourney: Object,
@@ -100,10 +102,10 @@
                 let self = this;
                 self.time_structure_active = time_structure_name; //i.e Hour, Half hour or quarter hour
 
-                $("#contentLoading").modal("show");
+                self.showLoader();
                 setTimeout(function(){
                     self.$emit('reload-ds',true); //This emits a message to the parent component in order to re-initialize drag all drag and select buttons
-                    $("#contentLoading").modal("hide");
+                    self.hideLoader();
                 }, 1000);
                 self.makeActive(time_structure_name);
             },
@@ -119,6 +121,12 @@
                     standard_container += btn;
                 }
                 return standard_container;
+            },
+            showLoader() {
+                EventBus.$emit('SHOW_LOADER', 'journey_container');
+            },
+            hideLoader() {
+                EventBus.$emit('HIDE_LOADER', 'journey_container');
             }
         },
         watch: {

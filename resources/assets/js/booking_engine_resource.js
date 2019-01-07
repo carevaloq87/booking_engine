@@ -4,8 +4,7 @@ Vue.component('resource-days', require('./components/booking_engine/days/resourc
 Vue.component('resource-hours', require('./components/booking_engine/hours/resource_hours.vue'));
 Vue.component('resource-adhoc', require('./components/booking_engine/adhoc/resource_adhoc.vue'));
 Vue.component('selected-adhoc', require('./components/booking_engine/adhoc/selected_resource_adhoc.vue'));
-
-export const data_bus = new Vue();
+Vue.component('loading-modal', require('./components/loading/loading-modal.vue'));
 
 new Vue({
     el: '#booking_engine_resource',
@@ -31,8 +30,5 @@ new Vue({
         }
     },
     mounted() {
-        setTimeout(() => {
-            $('#contentLoading').modal('hide');
-        }, 4000);
     },
 });

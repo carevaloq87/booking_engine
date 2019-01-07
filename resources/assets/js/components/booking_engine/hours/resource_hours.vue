@@ -16,6 +16,7 @@
 
 <script>
     import SelectableDS from '../selectableDS';
+    import EventBus from '../../../utils/event-bus';
     Vue.component('hours-container', require('./hours_container.vue'));
     export default {
         props:['resource'],
@@ -30,10 +31,10 @@
         methods: {
             //Get schedules by resource ID
             getSchedule(rs_id) {
-                $("#contentLoading").modal("show");
                 var self = this;
                 let url = '/calendar/resource/hours/' + rs_id;
 
+                self.showLoader();
                 axios['get'](url, {})
                     .then(response => {
                         self.schedule = response.data;
@@ -43,11 +44,11 @@
                     })
                     .then(() => {
                         self.loadInitialSelections();
-                        $("#contentLoading").modal("hide");
+                        self.hideLoader();
                     })
                     .catch(error => {
                         console.log(error);
-                        $("#contentLoading").modal("hide");
+                        self.hideLoader();
                         self.getSchedule(self.resource);
                     });
             },
@@ -90,18 +91,24 @@
 
                 let url = '/calendar/resource/hours';
 
-                $("#contentLoading").modal("show");
+                self.showLoader();
                 axios['post'](url, { id: self.resource, hours: hours })
                     .then(response => {
                         console.log(response);
                     })
                     .then(() => {
-                        $("#contentLoading").modal("hide");
+                        self.hideLoader();
                         $("#set_hours").modal("hide");
                     })
                     .catch(error => {
-                        $("#contentLoading").modal("hide");
+                        self.hideLoader();
                     });
+            },
+            showLoader() {
+                EventBus.$emit('SHOW_LOADER', 'resource_hours');
+            },
+            hideLoader() {
+                EventBus.$emit('HIDE_LOADER', 'resource_hours');
             }
         },
         watch: {
