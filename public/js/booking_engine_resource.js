@@ -76307,9 +76307,7 @@ Vue.component('calendar-container', __webpack_require__(558));
                 self.calendars = response.data;
             }).then(function () {
                 self.initDragSelect();
-                setTimeout(function () {
-                    self.hideLoader();
-                }, 2000);
+                self.hideLoader();
             }).catch(function (error) {
                 self.hideLoader();
                 console.log('Error', error.message);
@@ -76343,7 +76341,7 @@ Vue.component('calendar-container', __webpack_require__(558));
             }).then(function () {
                 setTimeout(function () {
                     $("#set_days").modal("hide");
-                    $('#contentLoading').modal('hide');
+                    self.hideLoader();
                 }, 2000);
             }).catch(function (error) {
                 self.hideLoader();
@@ -76975,10 +76973,10 @@ Vue.component('journey-container', __webpack_require__(565));
                     $("#set_adhoc_booking").modal("hide");
                     //console.log(response);
                 }).then(function () {
-                    self.self.hideLoader();
+                    self.hideLoader();
                     self.clearDataAdhoc();
                 }).catch(function (error) {
-                    self.self.hideLoader();
+                    self.hideLoader();
                 });
             } else {
                 console.log(form_validation.message);
@@ -77001,14 +76999,10 @@ Vue.component('journey-container', __webpack_require__(565));
                 holidays.forEach(function (holiday) {
                     self.holidays_date.push(__WEBPACK_IMPORTED_MODULE_1_moment___default()(holiday.date).format('YYYY-MM-DD'));
                 });
-                $('#contentLoading').on('shown.bs.modal', function (e) {
-                    self.hideLoader();
-                });
+                self.hideLoader();
             }).catch(function (error) {
                 console.log(error);
-                $('#contentLoading').on('shown.bs.modal', function (e) {
-                    self.hideLoader();
-                });
+                self.hideLoader();
             });
         },
         getHolidays: function getHolidays(date) {
@@ -77037,7 +77031,6 @@ Vue.component('journey-container', __webpack_require__(565));
     mounted: function mounted() {
         this.initDragSelect();
         this.initHolidays();
-        $('#contentLoading').modal('hide');
     }
 });
 

@@ -77298,14 +77298,10 @@ Vue.component('journey-container', __webpack_require__(565));
                 holidays.forEach(function (holiday) {
                     self.holidays_date.push(__WEBPACK_IMPORTED_MODULE_1_moment___default()(holiday.date).format('YYYY-MM-DD'));
                 });
-                $('#contentLoading').on('shown.bs.modal', function (e) {
-                    self.hideLoader();
-                });
+                self.hideLoader();
             }).catch(function (error) {
                 console.log(error);
-                $('#contentLoading').on('shown.bs.modal', function (e) {
-                    self.hideLoader();
-                });
+                self.hideLoader();
             });
         },
         getHolidays: function getHolidays(date) {

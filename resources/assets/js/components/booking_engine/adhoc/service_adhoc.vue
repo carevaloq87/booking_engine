@@ -209,15 +209,11 @@
                         holidays.forEach(function(holiday) {
                             self.holidays_date.push(moment(holiday.date).format('YYYY-MM-DD'));
                         });
-                        $('#contentLoading').on('shown.bs.modal', function (e) {
-                            self.hideLoader();
-                        })
+                        self.hideLoader();
                     })
                     .catch(function (error) {
                         console.log(error);
-                        $('#contentLoading').on('shown.bs.modal', function (e) {
-                            self.hideLoader();
-                        })
+                        self.hideLoader();
                     });
             },
             getHolidays (date) {

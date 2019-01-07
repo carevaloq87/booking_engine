@@ -154,11 +154,11 @@
                             //console.log(response);
                         })
                         .then(() => {
-                            self.self.hideLoader();
+                            self.hideLoader();
                             self.clearDataAdhoc();
                         })
                         .catch(error => {
-                            self.self.hideLoader();
+                            self.hideLoader();
                         });
                 } else {
                     console.log(form_validation.message);
@@ -183,15 +183,11 @@
                         holidays.forEach(function(holiday) {
                             self.holidays_date.push(moment(holiday.date).format('YYYY-MM-DD'));
                         });
-                        $('#contentLoading').on('shown.bs.modal', function (e) {
-                            self.hideLoader();
-                        })
+                        self.hideLoader();
                     })
                     .catch(function (error) {
                         console.log(error);
-                        $('#contentLoading').on('shown.bs.modal', function (e) {
-                            self.hideLoader();
-                        })
+                        self.hideLoader();
                     });
             },
             getHolidays (date) {
@@ -220,7 +216,6 @@
         mounted() {
             this.initDragSelect();
             this.initHolidays();
-            $('#contentLoading').modal('hide');
         }
     }
 </script>

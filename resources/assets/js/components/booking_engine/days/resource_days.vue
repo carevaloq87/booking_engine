@@ -76,9 +76,7 @@
                     })
                     .then(() => {
                         self.initDragSelect();
-                        setTimeout(() => {
-                            self.hideLoader();
-                        }, 2000);
+                        self.hideLoader();
                     })
                     .catch(error => {
                         self.hideLoader();
@@ -113,7 +111,7 @@
                     .then(() => {
                         setTimeout(() => {
                             $("#set_days").modal("hide");
-                            $('#contentLoading').modal('hide');
+                            self.hideLoader();
                         }, 2000);
                     })
                     .catch(error => {
