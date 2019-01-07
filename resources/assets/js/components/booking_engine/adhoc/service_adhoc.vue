@@ -50,7 +50,7 @@
     import SelectableDS from '../selectableDS';
     import moment from 'moment';
     import Datepicker from 'vuejs-datepicker';
-    import { data_bus } from '../../../booking_engine';
+    import EventBus from '../../../utils/event-bus';
 
     Vue.component('journey-container', require('./journey_container.vue'));
 
@@ -171,16 +171,16 @@
                 let url = '/calendar/service/adhoc';
                 let form_validation = self.validateAdhocForm();
                 if(form_validation.can_submit) {
-                    $("#contentLoading").modal("show");
+                    self.showLoader();
                     axios['post'](url, { id: self.service, hours: self.adhoc_object })
                         .then(response => {
-                            data_bus.$emit('calendar', response.data);
+                            EventBus.$emit('calendar', response.data);
                             $("#set_adhoc_booking").modal("hide");
                             self.clearDataAdhoc();
-                            //location.reload();
+                            self.hideLoader();
                         })
                         .catch(error => {
-                            $("#contentLoading").modal("hide");
+                            self.hideLoader();
                         });
                 } else {
                     console.log(form_validation.message);
@@ -202,7 +202,7 @@
             initHolidays () {
                 var self = this;
                 let url = '/holidays/getTwoYearDates';
-                $("#contentLoading").modal("show");
+                self.showLoader();
                 axios.get(url)
                     .then(function (response) {
                         let holidays = response.data.data;
@@ -210,13 +210,13 @@
                             self.holidays_date.push(moment(holiday.date).format('YYYY-MM-DD'));
                         });
                         $('#contentLoading').on('shown.bs.modal', function (e) {
-                            $("#contentLoading").modal('hide');
+                            self.hideLoader();
                         })
                     })
                     .catch(function (error) {
                         console.log(error);
                         $('#contentLoading').on('shown.bs.modal', function (e) {
-                            $("#contentLoading").modal('hide');
+                            self.hideLoader();
                         })
                     });
             },
@@ -227,11 +227,17 @@
                     return  self.holidays_date.includes(date_formated) ? true:false;
                 }
             },
+            showLoader() {
+                EventBus.$emit('SHOW_LOADER', 'service_adhoc');
+            },
+            hideLoader() {
+                EventBus.$emit('HIDE_LOADER', 'service_adhoc');
+            }
         },
         watch: {
             //Watch change of service
             service: function() {
-                $("#contentLoading").modal("show");
+                this.showLoader();
                 if (typeof this.ds_regular.clear === "function" && typeof this.ds_interpreter.clear === "function") {
                     this.ds_regular.clear();
                     this.ds_interpreter.clear();
@@ -241,7 +247,6 @@
         mounted() {
             this.initDragSelect();
             this.initHolidays();
-            $('#contentLoading').modal('hide');
         }
     }
 </script>

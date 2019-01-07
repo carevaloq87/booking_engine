@@ -83,6 +83,7 @@
         @include("services.modal.days")
         @include("services.modal.hours")
         @include("services.modal.adhoc")
+        <LoadingModal></LoadingModal>
     </div>
 @endsection
 

@@ -25,7 +25,7 @@
 
 <script>
     import SelectableDS from '../selectableDS';
-    import { data_bus } from '../../../booking_engine';
+    import EventBus from '../../../utils/event-bus';
     Vue.component('hours-container', require('./hours_container.vue'));
     export default {
         props:['service'],
@@ -42,9 +42,9 @@
         methods: {
             //Get schedules by service ID
             getSchedule(sv_id) {
-                $("#contentLoading").modal("show");
                 var self = this;
                 let url = '/calendar/service/hours/' + sv_id;
+                self.showLoader();
 
                 axios['get'](url, {})
                     .then(response => {
@@ -55,11 +55,11 @@
                     })
                     .then(() => {
                         self.loadInitialSelections();
-                        $("#contentLoading").modal("hide");
+                        self.hideLoader();
                     })
                     .catch(error => {
                         console.log(error);
-                        $("#contentLoading").modal("hide");
+                        self.hideLoader();
                         self.getSchedule(self.service);
                     });
             },
@@ -114,16 +114,22 @@
 
                 let url = '/calendar/service/hours';
 
-                $("#contentLoading").modal("show");
+                self.showLoader();
                 axios['post'](url, { id: self.service, hours: hours })
                     .then(response => {
-                        data_bus.$emit('calendar', response.data);
+                        EventBus.$emit('calendar', response.data);
                         $("#set_hours").modal("hide");
-                        $("#contentLoading").modal("hide");
+                        self.hideLoader();
                     })
                     .catch(error => {
-                        $("#contentLoading").modal("hide");
+                        self.hideLoader();
                     });
+            },
+            showLoader() {
+                EventBus.$emit('SHOW_LOADER', 'service_hours');
+            },
+            hideLoader() {
+                EventBus.$emit('HIDE_LOADER', 'service_hours');
             }
         },
         watch: {

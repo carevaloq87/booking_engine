@@ -10,7 +10,7 @@
 
 <script>
 	import moment from 'moment'
-    import { data_bus } from '../../booking_engine';
+    import EventBus from '../../utils/event-bus';
 	export default {
         props: {
             sv_id: Number
@@ -53,19 +53,18 @@
                                 //sp_id: currentServiceProvider
                             },
                             beforeSend: function () {
-                                $("#contentLoading").modal('show');
+                                self.showLoader();
                             },
                             error: function() {
                                 alert('there was an error while fetching events!');
-                                $("#contentLoading").modal('hide');
+                                self.hideLoader();
                             },
                             success: function (data) {
                                 self.events = [];
                                 self.initCalendar(data);
-                                $("#contentLoading").modal('hide');
                             },
                             complete:function () {
-                                $("#contentLoading").modal('hide');
+                                self.hideLoader();
                             }
                         }]
                     },
@@ -141,8 +140,8 @@
             },
             updateCalendar() {
                 let self = this;
-                data_bus.$on('calendar', (data) => {
-                    $("#contentLoading").modal('show');
+                EventBus.$on('calendar', (data) => {
+                    self.showLoader();
                     //let response = self.getFutureAvailability();
                     let calendar = self.$refs.calendar.fireMethod('getView');
                     let start_day = moment(calendar.start).format('YYYY-MM-DD');
@@ -156,17 +155,22 @@
                         .then(response => {
                             self.events = [];
                             self.initCalendar(response.data);
-                            $("#contentLoading").modal("hide");
+                            self.hideLoader();
                         })
                         .catch(error => {
-                            $("#contentLoading").modal("hide");
+                            self.hideLoader();
                         });
                 });
+            },
+            showLoader() {
+                EventBus.$emit('SHOW_LOADER', 'calendar');
+            },
+            hideLoader() {
+                EventBus.$emit('HIDE_LOADER', 'calendar');
             }
         },
         mounted() {
             this.updateCalendar();
-            $("#contentLoading").modal("hide");
         },
     }
 

@@ -5,8 +5,7 @@ Vue.component('service-hours', require('./components/booking_engine/hours/servic
 Vue.component('service-adhoc', require('./components/booking_engine/adhoc/service_adhoc.vue'));
 Vue.component('selected-adhoc', require('./components/booking_engine/adhoc/selected_adhoc.vue'));
 Vue.component('Calendar', require('./components/calendar/calendar.vue'));
-
-export const data_bus = new Vue();
+Vue.component('loading-modal', require('./components/loading/loading-modal.vue'));
 
 new Vue({
     el: '#booking_engine',
@@ -32,8 +31,5 @@ new Vue({
         }
     },
     mounted() {
-        setTimeout(() => {
-            $('#contentLoading').modal('hide');
-        }, 3000);
     },
 });

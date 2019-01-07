@@ -25,8 +25,7 @@
     </div>
 </template>
 <script>
-
-import { data_bus } from '../../../booking_engine';
+    import EventBus from '../../../utils/event-bus';
 
     export default {
         props:['service'],
@@ -40,45 +39,50 @@ import { data_bus } from '../../../booking_engine';
         },
         methods: {
             deleteAdhoc(value) {
-                $("#contentLoading").modal("show");
                 var self = this;
                 let url = '/calendar/service/adhoc/delete';
 
+                self.showLoader();
                 axios['post'](url, {service_id: self.service, adhoc: value})
                     .then(response => {
                         //self.getAdhocs();
-                        data_bus.$emit('calendar');
-                        $("#contentLoading").modal("hide");
+                        EventBus.$emit('calendar');
+                        self.hideLoader();
                     })
                     .catch(error => {
-                        $("#contentLoading").modal("hide");
+                        self.hideLoader();
                     });
             },
             getAdhocs() {
-                $("#contentLoading").modal("show");
                 var self = this;
                 let url = '/calendar/service/adhoc/' + self.service;
 
+                self.showLoader();
                 axios['get'](url, {})
                     .then(response => {
                         self.adhocs = response.data;
-                        $("#contentLoading").modal("hide");
+                        self.hideLoader();
                     })
                     .catch(error => {
-                        $("#contentLoading").modal("hide");
+                        self.hideLoader();
                     });
             },
             updateListAdhocs() {
                 var self = this;
-                data_bus.$on('calendar', (data) => {
+                EventBus.$on('calendar', (data) => {
                     self.getAdhocs();
                 });
             },
+            showLoader() {
+                EventBus.$emit('SHOW_LOADER', 'selected_adhoc');
+            },
+            hideLoader() {
+                EventBus.$emit('HIDE_LOADER', 'selected_adhoc');
+            }
         },
         mounted() {
             this.getAdhocs();
             this.updateListAdhocs();
-            $('#contentLoading').modal('hide');
         }
     }
 </script>

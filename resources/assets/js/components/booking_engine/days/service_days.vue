@@ -59,7 +59,8 @@
 
 <script>
     import SelectableDS from '../selectableDS';
-    import { data_bus } from '../../../booking_engine';
+    import EventBus from '../../../utils/event-bus';
+
     Vue.component('calendar-container', require('./calendar_container.vue'));
     export default {
         props:['service'],
@@ -85,10 +86,10 @@
             },
             //Get Calendar by service ID
             getCalendar(sv_id) {
-                $("#contentLoading").modal("show");
 
                 var self = this;
                 let url = '/calendar/service/days/' + sv_id;
+                self.showLoader();
 
                 axios['get'](url, {})
                     .then(response => {
@@ -96,10 +97,10 @@
                     })
                     .then(() => {
                         self.initDragSelect();
-                        $("#contentLoading").modal("hide");
+                        self.hideLoader();
                     })
                     .catch(error => {
-                        $("#contentLoading").modal("hide");
+                        self.hideLoader();
                         if (error.response) {
                             // The request was made and the server responded with a status code
                             // that falls out of the range of 2xx
@@ -144,18 +145,25 @@
 
                 let url = '/calendar/service/days';
 
-                $("#contentLoading").modal("show");
+                self.showLoader();
                 axios['post'](url, { id: self.service, dates: selections })
                     .then(response => {
-                        data_bus.$emit('calendar', response.data);
                         $("#set_days").modal("hide");
-                        $("#contentLoading").modal("hide");
-
+                        EventBus.$emit('calendar', response.data);
+                    })
+                    .then(() => {
+                        self.hideLoader();
                     })
                     .catch(error => {
-                        $("#contentLoading").modal("hide");
+                        self.hideLoader();
                         console.log(error);
                     });
+            },
+            showLoader() {
+                EventBus.$emit('SHOW_LOADER', 'service_days');
+            },
+            hideLoader() {
+                EventBus.$emit('HIDE_LOADER', 'service_days');
             }
         },
         watch: {
