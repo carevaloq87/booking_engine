@@ -76337,12 +76337,8 @@ Vue.component('calendar-container', __webpack_require__(558));
 
             self.showLoader();
             axios['post'](url, { id: self.resource, dates: selections }).then(function (response) {
-                console.log(response);
-            }).then(function () {
-                setTimeout(function () {
-                    $("#set_days").modal("hide");
-                    self.hideLoader();
-                }, 2000);
+                $("#set_days").modal("hide");
+                self.hideLoader();
             }).catch(function (error) {
                 self.hideLoader();
                 console.log(error);
@@ -76971,7 +76967,6 @@ Vue.component('journey-container', __webpack_require__(565));
                 axios['post'](url, { id: self.resource, hours: self.adhoc_object }).then(function (response) {
                     __WEBPACK_IMPORTED_MODULE_3__utils_event_bus__["a" /* default */].$emit('adhoc', response.data);
                     $("#set_adhoc_booking").modal("hide");
-                    //console.log(response);
                 }).then(function () {
                     self.hideLoader();
                     self.clearDataAdhoc();
@@ -77022,9 +77017,10 @@ Vue.component('journey-container', __webpack_require__(565));
     watch: {
         //Watch change of service
         resource: function resource() {
-            this.showLoader();
             if (typeof this.ds_regular.clear === "function") {
+                this.showLoader();
                 this.ds_regular.clear();
+                this.hideLoader();
             }
         }
     },

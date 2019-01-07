@@ -106,13 +106,8 @@
                 self.showLoader();
                 axios['post'](url, { id: self.resource, dates: selections })
                     .then(response => {
-                        console.log(response);
-                    })
-                    .then(() => {
-                        setTimeout(() => {
-                            $("#set_days").modal("hide");
-                            self.hideLoader();
-                        }, 2000);
+                        $("#set_days").modal("hide");
+                        self.hideLoader();
                     })
                     .catch(error => {
                         self.hideLoader();

@@ -151,7 +151,6 @@
                         .then(response => {
                             EventBus.$emit('adhoc', response.data);
                             $("#set_adhoc_booking").modal("hide");
-                            //console.log(response);
                         })
                         .then(() => {
                             self.hideLoader();
@@ -207,9 +206,10 @@
         watch: {
             //Watch change of service
             resource: function() {
-                this.showLoader();
                 if (typeof this.ds_regular.clear === "function" ) {
+                    this.showLoader();
                     this.ds_regular.clear();
+                    this.hideLoader();
                 }
             }
         },
