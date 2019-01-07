@@ -233,10 +233,11 @@
         watch: {
             //Watch change of service
             service: function() {
-                this.showLoader();
                 if (typeof this.ds_regular.clear === "function" && typeof this.ds_interpreter.clear === "function") {
+                    this.showLoader();
                     this.ds_regular.clear();
                     this.ds_interpreter.clear();
+                    this.hideLoader();
                 }
             }
         },

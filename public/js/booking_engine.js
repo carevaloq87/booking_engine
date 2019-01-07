@@ -77321,10 +77321,11 @@ Vue.component('journey-container', __webpack_require__(565));
     watch: {
         //Watch change of service
         service: function service() {
-            this.showLoader();
             if (typeof this.ds_regular.clear === "function" && typeof this.ds_interpreter.clear === "function") {
+                this.showLoader();
                 this.ds_regular.clear();
                 this.ds_interpreter.clear();
+                this.hideLoader();
             }
         }
     },
