@@ -2,7 +2,7 @@
 
     <div class="service_days">
 
-        <div class="btn-group btn-group-sm" role="group" aria-label="Year selection group">
+        <div class="btn-group btn-group-sm mb-3 mt-2" role="group" aria-label="Year selection group">
             <button type="button" class="btn btn-primary btn-sm" :class="choice == 'currentActive' ? 'active' : ''" v-on:click="makeActive('currentActive')"> Current Year </button>
             <button type="button" class="btn btn-primary btn-sm" :class="choice == 'nextActive' ? 'active' : ''" v-on:click="makeActive('nextActive')"> Next Year </button>
         </div>

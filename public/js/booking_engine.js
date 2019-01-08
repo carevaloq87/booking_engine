@@ -76119,7 +76119,8 @@ if (false) {
 /* 571 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(572);
+__webpack_require__(572);
+module.exports = __webpack_require__(588);
 
 
 /***/ }),
@@ -76412,7 +76413,7 @@ var render = function() {
     _c(
       "div",
       {
-        staticClass: "btn-group btn-group-sm",
+        staticClass: "btn-group btn-group-sm mb-3 mt-2",
         attrs: { role: "group", "aria-label": "Year selection group" }
       },
       [
@@ -78010,6 +78011,12 @@ if (false) {
     require("vue-hot-reload-api")      .rerender("data-v-b3cfd456", module.exports)
   }
 }
+
+/***/ }),
+/* 588 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
 
 /***/ })
 /******/ ]);
