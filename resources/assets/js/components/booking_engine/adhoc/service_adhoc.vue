@@ -41,6 +41,7 @@
         </div>
 
         <div class="col-12 mx-auto mt-4 mt-md-0">
+                <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
                 <button class="btn h-25 btn-sm" v-on:click="submitInfo">Submit</button>
         </div>
     </div>

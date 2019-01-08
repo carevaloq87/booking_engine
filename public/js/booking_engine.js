@@ -76119,8 +76119,7 @@ if (false) {
 /* 571 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(572);
-module.exports = __webpack_require__(588);
+module.exports = __webpack_require__(572);
 
 
 /***/ }),
@@ -76217,6 +76216,7 @@ module.exports = Component.exports
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__selectableDS__ = __webpack_require__(112);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__utils_event_bus__ = __webpack_require__(35);
+//
 //
 //
 //
@@ -76581,7 +76581,16 @@ var render = function() {
       _c(
         "button",
         {
-          staticClass: "btn",
+          staticClass: "btn btn-sm btn-secondary",
+          attrs: { type: "button", "data-dismiss": "modal" }
+        },
+        [_vm._v("Close")]
+      ),
+      _vm._v(" "),
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-sm",
           attrs: { id: "" },
           on: { click: _vm.submitInfo }
         },
@@ -76788,6 +76797,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 //
 //
 //
+//
 
 
 
@@ -76969,7 +76979,19 @@ var render = function() {
       _c("div", { staticClass: "col-sm mt-1" }, [
         _c(
           "button",
-          { staticClass: "btn green pull-left", on: { click: _vm.submitInfo } },
+          {
+            staticClass: "btn btn-sm btn-secondary",
+            attrs: { type: "button", "data-dismiss": "modal" }
+          },
+          [_vm._v("Close")]
+        ),
+        _vm._v(" "),
+        _c(
+          "button",
+          {
+            staticClass: "btn  btn-sm green pull-left",
+            on: { click: _vm.submitInfo }
+          },
           [_vm._v("Submit")]
         )
       ])
@@ -77089,6 +77111,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_moment___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_moment__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_vuejs_datepicker__ = __webpack_require__(564);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__utils_event_bus__ = __webpack_require__(35);
+//
 //
 //
 //
@@ -77438,6 +77461,15 @@ var render = function() {
     ]),
     _vm._v(" "),
     _c("div", { staticClass: "col-12 mx-auto mt-4 mt-md-0" }, [
+      _c(
+        "button",
+        {
+          staticClass: "btn btn-sm btn-secondary",
+          attrs: { type: "button", "data-dismiss": "modal" }
+        },
+        [_vm._v("Close")]
+      ),
+      _vm._v(" "),
       _c(
         "button",
         { staticClass: "btn h-25 btn-sm", on: { click: _vm.submitInfo } },
@@ -78011,12 +78043,6 @@ if (false) {
     require("vue-hot-reload-api")      .rerender("data-v-b3cfd456", module.exports)
   }
 }
-
-/***/ }),
-/* 588 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
 
 /***/ })
 /******/ ]);
