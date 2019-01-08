@@ -1,4 +1,4 @@
-<div id="set_hours" class="modal fade modal-scroll" tabindex="-1" data-replace="true">
+<div id="set_hours" class="modal fade modal-scroll" tabindex="-1" data-replace="true" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
 

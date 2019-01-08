@@ -1,4 +1,4 @@
-<div id="set_adhoc_booking" class="modal container fade in" tabindex="-1" data-replace="true">
+<div id="set_adhoc_booking" class="modal container fade in" tabindex="-1" data-replace="true" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-md">
         <div class="modal-content">
 
