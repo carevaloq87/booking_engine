@@ -186,6 +186,7 @@
   border-width: inherit;
   border-top-right-radius: 9px;
   border: solid #c49617 1px;
+  padding: 0;
 }
 
 .week_day :not(.ds-selectable) {
