@@ -17,8 +17,8 @@
 
         <div class="form-group mt-1">
             <div class="col-sm mt-1">
-                <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
-                <button class="btn  btn-sm green pull-left" v-on:click="submitInfo">Submit</button>
+                <button class="btn btn-sm btn-success" v-on:click="submitInfo">Submit</button>
+                <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cancel</button>
             </div>
         </div>
     </div>

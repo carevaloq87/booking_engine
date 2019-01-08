@@ -76493,20 +76493,20 @@ var render = function() {
       _c(
         "button",
         {
-          staticClass: "btn btn-sm btn-secondary",
-          attrs: { type: "button", "data-dismiss": "modal" }
+          staticClass: "btn btn-sm btn-success",
+          attrs: { id: "" },
+          on: { click: _vm.submitInfo }
         },
-        [_vm._v("Close")]
+        [_vm._v("Submit")]
       ),
       _vm._v(" "),
       _c(
         "button",
         {
-          staticClass: "btn btn-sm",
-          attrs: { id: "" },
-          on: { click: _vm.submitInfo }
+          staticClass: "btn btn-sm btn-secondary",
+          attrs: { type: "button", "data-dismiss": "modal" }
         },
-        [_vm._v("Submit")]
+        [_vm._v("Cancel")]
       ),
       _vm._v(" "),
       _c(
@@ -76753,16 +76753,19 @@ var render = function() {
         _c(
           "button",
           {
-            staticClass: "btn btn-sm btn-secondary",
-            attrs: { type: "button", "data-dismiss": "modal" }
+            staticClass: "btn btn-sm btn-success",
+            on: { click: _vm.submitInfo }
           },
-          [_vm._v("Close")]
+          [_vm._v("Submit")]
         ),
         _vm._v(" "),
         _c(
           "button",
-          { staticClass: "btn btn-sm", on: { click: _vm.submitInfo } },
-          [_vm._v("Submit")]
+          {
+            staticClass: "btn btn-sm btn-secondary",
+            attrs: { type: "button", "data-dismiss": "modal" }
+          },
+          [_vm._v("Cancel")]
         )
       ])
     ])
@@ -77125,16 +77128,19 @@ var render = function() {
       _c(
         "button",
         {
-          staticClass: "btn btn-sm btn-secondary",
-          attrs: { type: "button", "data-dismiss": "modal" }
+          staticClass: "btn h-25 btn-sm btn-success",
+          on: { click: _vm.submitInfo }
         },
-        [_vm._v("Close")]
+        [_vm._v("Submit")]
       ),
       _vm._v(" "),
       _c(
         "button",
-        { staticClass: "btn h-25 btn-sm", on: { click: _vm.submitInfo } },
-        [_vm._v("Submit")]
+        {
+          staticClass: "btn btn-sm btn-secondary",
+          attrs: { type: "button", "data-dismiss": "modal" }
+        },
+        [_vm._v("Cancel")]
       )
     ])
   ])

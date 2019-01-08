@@ -36,8 +36,8 @@
             </div>
         </div>
         <div class="col-12 mx-auto">
-                <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
-                <button class="btn h-25 btn-sm" v-on:click="submitInfo">Submit</button>
+                <button class="btn h-25 btn-sm btn-success" v-on:click="submitInfo">Submit</button>
+                <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cancel</button>
         </div>
     </div>
 </template>

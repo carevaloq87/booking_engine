@@ -28,8 +28,8 @@
         </div>
 
         <div class="form-group col-sm mt-2">
-            <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
-            <button class="btn btn-sm" id="" v-on:click="submitInfo">Submit</button>
+            <button class="btn btn-sm btn-success" id="" v-on:click="submitInfo">Submit</button>
+            <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cancel</button>
             <label id="holiday_label" class="control-label">Holiday</label>
             <span class="option_day holiday_conv"></span>
             <label id="selected_label" class="control-label">Date Selected &nbsp;</label>
