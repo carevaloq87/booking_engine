@@ -46,7 +46,7 @@
         </div>
 
         <div class="form-group col-sm mt-2">
-            <button class="btn btn-sm btn-success" id="" v-on:click="submitInfo">Submit</button>
+            <button class="btn btn-sm btn-green" id="" v-on:click="submitInfo">Submit</button>
             <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cancel</button>
             <label id="holiday_label" class="control-label ml-1">Holiday</label>
             <span class="option_day holiday_conv"></span>

@@ -76119,7 +76119,8 @@ if (false) {
 /* 571 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(572);
+__webpack_require__(572);
+module.exports = __webpack_require__(588);
 
 
 /***/ }),
@@ -76581,7 +76582,7 @@ var render = function() {
       _c(
         "button",
         {
-          staticClass: "btn btn-sm btn-success",
+          staticClass: "btn btn-sm btn-green",
           attrs: { id: "" },
           on: { click: _vm.submitInfo }
         },
@@ -76980,7 +76981,7 @@ var render = function() {
         _c(
           "button",
           {
-            staticClass: "btn btn-sm btn-success",
+            staticClass: "btn btn-sm btn-green",
             on: { click: _vm.submitInfo }
           },
           [_vm._v("Submit")]
@@ -77464,7 +77465,7 @@ var render = function() {
       _c(
         "button",
         {
-          staticClass: "btn h-25 btn-sm btn-success",
+          staticClass: "btn h-25 btn-sm btn-green",
           on: { click: _vm.submitInfo }
         },
         [_vm._v("Submit")]
@@ -78046,6 +78047,12 @@ if (false) {
     require("vue-hot-reload-api")      .rerender("data-v-b3cfd456", module.exports)
   }
 }
+
+/***/ }),
+/* 588 */
+/***/ (function(module, exports) {
+
+// removed by extract-text-webpack-plugin
 
 /***/ })
 /******/ ]);
