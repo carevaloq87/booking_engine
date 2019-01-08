@@ -3,10 +3,9 @@ import axios from 'axios';
 
 new Vue({
     el: '#set_sp',
-
     data: {
         service_provider_id : null,
-        name:null
+        name:null,
     },
     methods: {
         setServiceProvider: function () {
@@ -20,7 +19,7 @@ new Vue({
                     })
                     .then(function (response) {
                         $("#contentLoading").modal("hide");
-                        alert("Your information was updated");
+                        alert("Success");
                         window.location.href = "/services";
                     })
                     .catch(function (error) {
@@ -30,10 +29,20 @@ new Vue({
             } else {
                 alert("Please select an office/program");
             }
+        },
+        initName: function () {
+            var self = this;
+            let user_name = document.getElementById('user_name');
+            if(user_name.value ) {
+                user_name = document.getElementById('user_name').value;
+                if(user_name.localeCompare('')!=0) {
+                    self.name = user_name;
+                }
+            }
         }
     },
     mounted() {
-
+        this.initName();
     }
 
 });
