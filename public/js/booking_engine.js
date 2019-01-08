@@ -76420,6 +76420,7 @@ var render = function() {
           "button",
           {
             staticClass: "btn btn-primary btn-sm",
+            class: _vm.choice == "currentActive" ? "active" : "",
             attrs: { type: "button" },
             on: {
               click: function($event) {
@@ -76434,6 +76435,7 @@ var render = function() {
           "button",
           {
             staticClass: "btn btn-primary btn-sm",
+            class: _vm.choice == "nextActive" ? "active" : "",
             attrs: { type: "button" },
             on: {
               click: function($event) {

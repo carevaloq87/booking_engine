@@ -382,3 +382,10 @@ $white: #fff;
     margin: 0 15px 0 0;
     color: #3f4047;
 }
+
+/**************** Template wide changes *************/
+.nav-tabs {
+    .nav-link {
+        border-color: #ebedf2;
+    }
+}
