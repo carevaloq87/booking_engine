@@ -8,7 +8,8 @@
 
         <div class="form-group mt-1">
             <div class="col-sm mt-1">
-                <button class="btn" v-on:click="submitInfo">Submit</button>
+                <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Close</button>
+                <button class="btn btn-sm" v-on:click="submitInfo">Submit</button>
             </div>
         </div>
     </div>
