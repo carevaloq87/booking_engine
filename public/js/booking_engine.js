@@ -76119,8 +76119,7 @@ if (false) {
 /* 571 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(572);
-module.exports = __webpack_require__(588);
+module.exports = __webpack_require__(572);
 
 
 /***/ }),
@@ -78011,12 +78010,6 @@ if (false) {
     require("vue-hot-reload-api")      .rerender("data-v-b3cfd456", module.exports)
   }
 }
-
-/***/ }),
-/* 588 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
 
 /***/ })
 /******/ ]);
