@@ -1,3 +1,9 @@
+
+@if(isset($name))
+<input id='user_name' type='hidden' value="{{ $name }}">
+@else
+<input id='user_name' type='hidden' value="">
+@endif
 <div id="set_sp" class="modal fade bs-modal-lg" tabindex="-1" aria-hidden="true" role="dialog" data-backdrop="static" data-keyboard="false">
     <div class="modal-dialog modal-lg">
         <div class="modal-content">
@@ -24,7 +30,7 @@
                         @endif
                         {!! $errors->first('service_provider_id', '<p class="help-block">:message</p>') !!}
                     </div>
-                    <label for="full_name" class="col-md-12 control-label">Name: <small> optional </small> </label>
+                <label for="full_name" class="col-md-12 control-label">Update Name: <small> optional </small> </label>
                     <div class="col-md-12">
                         @if(isset($service_providers))
                         <input class="form-control" type="text" v-model="name" autocomplete="off" id="full_name" name="full_name"/>
@@ -33,7 +39,7 @@
                     </div>
                     <br>
                     <div class="col-md-12">
-                        <button type="button" @click="setServiceProvider" class="btn btn-primary" id="sp_send">Update profile</button><br>
+                        <button type="button" @click="setServiceProvider" class="btn btn-primary" id="sp_send">Save</button><br>
                     </div>
                 </div>
 

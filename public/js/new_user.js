@@ -982,10 +982,8 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 
 
 
-
 new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
     el: '#set_sp',
-
     data: {
         service_provider_id: null,
         name: null
@@ -1001,7 +999,7 @@ new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
                     name: self.name
                 }).then(function (response) {
                     $("#contentLoading").modal("hide");
-                    alert("Your information was updated");
+                    alert("Success");
                     window.location.href = "/services";
                 }).catch(function (error) {
                     console.log(error);
@@ -1010,9 +1008,21 @@ new __WEBPACK_IMPORTED_MODULE_0_vue___default.a({
             } else {
                 alert("Please select an office/program");
             }
+        },
+        initName: function initName() {
+            var self = this;
+            var user_name = document.getElementById('user_name');
+            if (user_name.value) {
+                user_name = document.getElementById('user_name').value;
+                if (user_name.localeCompare('') != 0) {
+                    self.name = user_name;
+                }
+            }
         }
     },
-    mounted: function mounted() {}
+    mounted: function mounted() {
+        this.initName();
+    }
 });
 
 /***/ }),

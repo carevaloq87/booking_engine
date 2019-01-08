@@ -82,16 +82,17 @@ class AuthController extends Controller
      * @return void
      */
     public function loginVLA(Request $request) {
-        if( !Auth::check()) {
-            $simple_SAML = new SimpleSAML_Auth_Simple(env('SIMPLESML_SP'));
-            $simple_SAML->requireAuth();
-            $attributes = $simple_SAML->getAttributes();
+        $simple_SAML = new SimpleSAML_Auth_Simple(env('SIMPLESML_SP'));
+        $simple_SAML->requireAuth();
+        $attributes = $simple_SAML->getAttributes();
+        $name = $attributes['name'][0];
+        if( !Auth::check() ) {
             if (isset($attributes['mail'][0]) && $attributes['mail'][0] != '') {
                 $email = $attributes['mail'][0];
                 $user = User::where('email',$email)->first();
                 if (!$user) { // create the user if does not exist;
                     $user = User::create([
-                            'name'     => $attributes['name'][0],
+                            'name'     => $name,
                             'email'    => $attributes['mail'][0],
                             'password' => bcrypt(substr(str_shuffle(MD5(microtime())), 0, 16))
                     ]);
@@ -102,11 +103,13 @@ class AuthController extends Controller
                 Auth::login($user);
                 $service_providers = ServiceProvider::pluck('name','id')->all();
                 $services = Service::getServicesByUserServiceProvider();
-                return view('services.index', compact('services','service_providers'));
-                //return redirect('/services');
+                return view('services.index', compact('services','service_providers', 'name'));
+
             }
         } else {
-            return redirect('/services');
+            $service_providers = ServiceProvider::pluck('name','id')->all();
+            $services = Service::getServicesByUserServiceProvider();
+            return view('services.index', compact('services','service_providers', 'name'));
         }
 
     }
