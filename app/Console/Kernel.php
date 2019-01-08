@@ -24,8 +24,10 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')
-        //          ->hourly();
+        $schedule->command('deselect:holidays')
+                    ->monthlyOn(1, '05:00')
+                    ->timezone('Australia/Melbourne')
+                    ->emailOutputTo('sebastian.currea@vla.vic.gov.au');
     }
 
     /**

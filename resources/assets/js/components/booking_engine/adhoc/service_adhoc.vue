@@ -78,6 +78,9 @@
                     disabledDates: {
                         to: new Date(),
                         days: [6, 0], // Disable Saturday's and Sunday's
+                        customPredictor: function (date) {
+                            return self.getHolidays(date);
+                        },
                     },
                     highlighted: {
                         dates: [

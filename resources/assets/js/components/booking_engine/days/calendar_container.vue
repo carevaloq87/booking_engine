@@ -50,7 +50,7 @@
 
                     <td class="week_day p-0"  v-for="(day_obj, day) in calendar" :key="day">
                         <div :class="tableClass + '_option_day option_day'" :id="month + '-' + day_obj.day" v-html="day_obj.day" v-if="day_obj !== '' && !day_obj.holiday"></div>
-                        <div :class="tableClass + '_option_day option_day holiday'" :id="month + '-' + day_obj.day" v-html="day_obj.day" v-if="day_obj !== '' && day_obj.holiday"></div>
+                        <div :class="'_option_day option_day holiday'" :id="month + '-' + day_obj.day" v-html="day_obj.day" v-if="day_obj !== '' && day_obj.holiday"></div>
                         <div v-if="day_obj === ''">&nbsp;</div>
                     </td>
 

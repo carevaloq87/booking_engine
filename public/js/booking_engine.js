@@ -73579,8 +73579,7 @@ var render = function() {
                   _vm._v(" "),
                   day_obj !== "" && day_obj.holiday
                     ? _c("div", {
-                        class:
-                          _vm.tableClass + "_option_day option_day holiday",
+                        class: "_option_day option_day holiday",
                         attrs: { id: month + "-" + day_obj.day },
                         domProps: { innerHTML: _vm._s(day_obj.day) }
                       })
@@ -77163,7 +77162,10 @@ Vue.component('journey-container', __webpack_require__(565));
             datepicker_state: {
                 disabledDates: {
                     to: new Date(),
-                    days: [6, 0] // Disable Saturday's and Sunday's
+                    days: [6, 0], // Disable Saturday's and Sunday's
+                    customPredictor: function customPredictor(date) {
+                        return self.getHolidays(date);
+                    }
                 },
                 highlighted: {
                     dates: [new Date(2019, 0, 1)],
