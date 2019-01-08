@@ -34,7 +34,10 @@
             EventBus.$on('HIDE_LOADER', function (payLoad) {
                 self.removeValue(self.requests,payLoad);
                 if(self.requests.length < 1){
-                    $("#contentLoading").modal('hide');
+                    //Delay execution
+                    setTimeout(() => {
+                        $("#contentLoading").modal('hide');
+                    }, 1000);
                 }
             });
         }

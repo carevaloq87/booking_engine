@@ -76086,7 +76086,10 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
         __WEBPACK_IMPORTED_MODULE_1__utils_event_bus__["a" /* default */].$on('HIDE_LOADER', function (payLoad) {
             self.removeValue(self.requests, payLoad);
             if (self.requests.length < 1) {
-                $("#contentLoading").modal('hide');
+                //Delay execution
+                setTimeout(function () {
+                    $("#contentLoading").modal('hide');
+                }, 1000);
             }
         });
     }
