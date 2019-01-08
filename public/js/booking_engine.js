@@ -74073,53 +74073,53 @@ var staticRenderFns = [
     return _c("div", { staticClass: "row top_dates noSelect" }, [
       _c("div", { staticClass: "day_col" }, [_vm._v(" ")]),
       _vm._v(" "),
-      _c("div", { staticClass: "hours_col" }, [_vm._v("00")]),
+      _c("div", { staticClass: "hours_col" }, [_vm._v("00:00")]),
       _vm._v(" "),
-      _c("div", { staticClass: "hours_col" }, [_vm._v("01")]),
+      _c("div", { staticClass: "hours_col" }, [_vm._v("01:00")]),
       _vm._v(" "),
-      _c("div", { staticClass: "hours_col" }, [_vm._v("02")]),
+      _c("div", { staticClass: "hours_col" }, [_vm._v("02:00")]),
       _vm._v(" "),
-      _c("div", { staticClass: "hours_col" }, [_vm._v("03")]),
+      _c("div", { staticClass: "hours_col" }, [_vm._v("03:00")]),
       _vm._v(" "),
-      _c("div", { staticClass: "hours_col" }, [_vm._v("04")]),
+      _c("div", { staticClass: "hours_col" }, [_vm._v("04:00")]),
       _vm._v(" "),
-      _c("div", { staticClass: "hours_col" }, [_vm._v("05")]),
+      _c("div", { staticClass: "hours_col" }, [_vm._v("05:00")]),
       _vm._v(" "),
-      _c("div", { staticClass: "hours_col" }, [_vm._v("06")]),
+      _c("div", { staticClass: "hours_col" }, [_vm._v("06:00")]),
       _vm._v(" "),
-      _c("div", { staticClass: "hours_col" }, [_vm._v("07")]),
+      _c("div", { staticClass: "hours_col" }, [_vm._v("07:00")]),
       _vm._v(" "),
-      _c("div", { staticClass: "hours_col" }, [_vm._v("08")]),
+      _c("div", { staticClass: "hours_col" }, [_vm._v("08:00")]),
       _vm._v(" "),
-      _c("div", { staticClass: "hours_col" }, [_vm._v("09")]),
+      _c("div", { staticClass: "hours_col" }, [_vm._v("09:00")]),
       _vm._v(" "),
-      _c("div", { staticClass: "hours_col" }, [_vm._v("10")]),
+      _c("div", { staticClass: "hours_col" }, [_vm._v("10:00")]),
       _vm._v(" "),
-      _c("div", { staticClass: "hours_col" }, [_vm._v("11")]),
+      _c("div", { staticClass: "hours_col" }, [_vm._v("11:00")]),
       _vm._v(" "),
-      _c("div", { staticClass: "hours_col" }, [_vm._v("12")]),
+      _c("div", { staticClass: "hours_col" }, [_vm._v("12:00")]),
       _vm._v(" "),
-      _c("div", { staticClass: "hours_col" }, [_vm._v("13")]),
+      _c("div", { staticClass: "hours_col" }, [_vm._v("13:00")]),
       _vm._v(" "),
-      _c("div", { staticClass: "hours_col" }, [_vm._v("14")]),
+      _c("div", { staticClass: "hours_col" }, [_vm._v("14:00")]),
       _vm._v(" "),
-      _c("div", { staticClass: "hours_col" }, [_vm._v("15")]),
+      _c("div", { staticClass: "hours_col" }, [_vm._v("15:00")]),
       _vm._v(" "),
-      _c("div", { staticClass: "hours_col" }, [_vm._v("16")]),
+      _c("div", { staticClass: "hours_col" }, [_vm._v("16:00")]),
       _vm._v(" "),
-      _c("div", { staticClass: "hours_col" }, [_vm._v("17")]),
+      _c("div", { staticClass: "hours_col" }, [_vm._v("17:00")]),
       _vm._v(" "),
-      _c("div", { staticClass: "hours_col" }, [_vm._v("18")]),
+      _c("div", { staticClass: "hours_col" }, [_vm._v("18:00")]),
       _vm._v(" "),
-      _c("div", { staticClass: "hours_col" }, [_vm._v("19")]),
+      _c("div", { staticClass: "hours_col" }, [_vm._v("19:00")]),
       _vm._v(" "),
-      _c("div", { staticClass: "hours_col" }, [_vm._v("20")]),
+      _c("div", { staticClass: "hours_col" }, [_vm._v("20:00")]),
       _vm._v(" "),
-      _c("div", { staticClass: "hours_col" }, [_vm._v("21")]),
+      _c("div", { staticClass: "hours_col" }, [_vm._v("21:00")]),
       _vm._v(" "),
-      _c("div", { staticClass: "hours_col" }, [_vm._v("22")]),
+      _c("div", { staticClass: "hours_col" }, [_vm._v("22:00")]),
       _vm._v(" "),
-      _c("div", { staticClass: "hours_col" }, [_vm._v("23")])
+      _c("div", { staticClass: "hours_col" }, [_vm._v("23:00")])
     ])
   }
 ]
@@ -76119,8 +76119,7 @@ if (false) {
 /* 571 */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(572);
-module.exports = __webpack_require__(588);
+module.exports = __webpack_require__(572);
 
 
 /***/ }),
@@ -78047,12 +78046,6 @@ if (false) {
     require("vue-hot-reload-api")      .rerender("data-v-b3cfd456", module.exports)
   }
 }
-
-/***/ }),
-/* 588 */
-/***/ (function(module, exports) {
-
-// removed by extract-text-webpack-plugin
 
 /***/ })
 /******/ ]);

@@ -60,7 +60,7 @@
 /******/ 	__webpack_require__.p = "/";
 /******/
 /******/ 	// Load entry module and return exports
-/******/ 	return __webpack_require__(__webpack_require__.s = 589);
+/******/ 	return __webpack_require__(__webpack_require__.s = 588);
 /******/ })
 /************************************************************************/
 /******/ ([
@@ -74073,53 +74073,53 @@ var staticRenderFns = [
     return _c("div", { staticClass: "row top_dates noSelect" }, [
       _c("div", { staticClass: "day_col" }, [_vm._v(" ")]),
       _vm._v(" "),
-      _c("div", { staticClass: "hours_col" }, [_vm._v("00")]),
+      _c("div", { staticClass: "hours_col" }, [_vm._v("00:00")]),
       _vm._v(" "),
-      _c("div", { staticClass: "hours_col" }, [_vm._v("01")]),
+      _c("div", { staticClass: "hours_col" }, [_vm._v("01:00")]),
       _vm._v(" "),
-      _c("div", { staticClass: "hours_col" }, [_vm._v("02")]),
+      _c("div", { staticClass: "hours_col" }, [_vm._v("02:00")]),
       _vm._v(" "),
-      _c("div", { staticClass: "hours_col" }, [_vm._v("03")]),
+      _c("div", { staticClass: "hours_col" }, [_vm._v("03:00")]),
       _vm._v(" "),
-      _c("div", { staticClass: "hours_col" }, [_vm._v("04")]),
+      _c("div", { staticClass: "hours_col" }, [_vm._v("04:00")]),
       _vm._v(" "),
-      _c("div", { staticClass: "hours_col" }, [_vm._v("05")]),
+      _c("div", { staticClass: "hours_col" }, [_vm._v("05:00")]),
       _vm._v(" "),
-      _c("div", { staticClass: "hours_col" }, [_vm._v("06")]),
+      _c("div", { staticClass: "hours_col" }, [_vm._v("06:00")]),
       _vm._v(" "),
-      _c("div", { staticClass: "hours_col" }, [_vm._v("07")]),
+      _c("div", { staticClass: "hours_col" }, [_vm._v("07:00")]),
       _vm._v(" "),
-      _c("div", { staticClass: "hours_col" }, [_vm._v("08")]),
+      _c("div", { staticClass: "hours_col" }, [_vm._v("08:00")]),
       _vm._v(" "),
-      _c("div", { staticClass: "hours_col" }, [_vm._v("09")]),
+      _c("div", { staticClass: "hours_col" }, [_vm._v("09:00")]),
       _vm._v(" "),
-      _c("div", { staticClass: "hours_col" }, [_vm._v("10")]),
+      _c("div", { staticClass: "hours_col" }, [_vm._v("10:00")]),
       _vm._v(" "),
-      _c("div", { staticClass: "hours_col" }, [_vm._v("11")]),
+      _c("div", { staticClass: "hours_col" }, [_vm._v("11:00")]),
       _vm._v(" "),
-      _c("div", { staticClass: "hours_col" }, [_vm._v("12")]),
+      _c("div", { staticClass: "hours_col" }, [_vm._v("12:00")]),
       _vm._v(" "),
-      _c("div", { staticClass: "hours_col" }, [_vm._v("13")]),
+      _c("div", { staticClass: "hours_col" }, [_vm._v("13:00")]),
       _vm._v(" "),
-      _c("div", { staticClass: "hours_col" }, [_vm._v("14")]),
+      _c("div", { staticClass: "hours_col" }, [_vm._v("14:00")]),
       _vm._v(" "),
-      _c("div", { staticClass: "hours_col" }, [_vm._v("15")]),
+      _c("div", { staticClass: "hours_col" }, [_vm._v("15:00")]),
       _vm._v(" "),
-      _c("div", { staticClass: "hours_col" }, [_vm._v("16")]),
+      _c("div", { staticClass: "hours_col" }, [_vm._v("16:00")]),
       _vm._v(" "),
-      _c("div", { staticClass: "hours_col" }, [_vm._v("17")]),
+      _c("div", { staticClass: "hours_col" }, [_vm._v("17:00")]),
       _vm._v(" "),
-      _c("div", { staticClass: "hours_col" }, [_vm._v("18")]),
+      _c("div", { staticClass: "hours_col" }, [_vm._v("18:00")]),
       _vm._v(" "),
-      _c("div", { staticClass: "hours_col" }, [_vm._v("19")]),
+      _c("div", { staticClass: "hours_col" }, [_vm._v("19:00")]),
       _vm._v(" "),
-      _c("div", { staticClass: "hours_col" }, [_vm._v("20")]),
+      _c("div", { staticClass: "hours_col" }, [_vm._v("20:00")]),
       _vm._v(" "),
-      _c("div", { staticClass: "hours_col" }, [_vm._v("21")]),
+      _c("div", { staticClass: "hours_col" }, [_vm._v("21:00")]),
       _vm._v(" "),
-      _c("div", { staticClass: "hours_col" }, [_vm._v("22")]),
+      _c("div", { staticClass: "hours_col" }, [_vm._v("22:00")]),
       _vm._v(" "),
-      _c("div", { staticClass: "hours_col" }, [_vm._v("23")])
+      _c("div", { staticClass: "hours_col" }, [_vm._v("23:00")])
     ])
   }
 ]
@@ -76133,23 +76133,22 @@ if (false) {
 /* 585 */,
 /* 586 */,
 /* 587 */,
-/* 588 */,
-/* 589 */
+/* 588 */
 /***/ (function(module, exports, __webpack_require__) {
 
-module.exports = __webpack_require__(590);
+module.exports = __webpack_require__(589);
 
 
 /***/ }),
-/* 590 */
+/* 589 */
 /***/ (function(module, exports, __webpack_require__) {
 
 __webpack_require__(291);
 
-Vue.component('resource-days', __webpack_require__(591));
-Vue.component('resource-hours', __webpack_require__(594));
-Vue.component('resource-adhoc', __webpack_require__(597));
-Vue.component('selected-adhoc', __webpack_require__(600));
+Vue.component('resource-days', __webpack_require__(590));
+Vue.component('resource-hours', __webpack_require__(593));
+Vue.component('resource-adhoc', __webpack_require__(596));
+Vue.component('selected-adhoc', __webpack_require__(599));
 Vue.component('loading-modal', __webpack_require__(568));
 
 new Vue({
@@ -76179,15 +76178,15 @@ new Vue({
 });
 
 /***/ }),
-/* 591 */
+/* 590 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(29)
 /* script */
-var __vue_script__ = __webpack_require__(592)
+var __vue_script__ = __webpack_require__(591)
 /* template */
-var __vue_template__ = __webpack_require__(593)
+var __vue_template__ = __webpack_require__(592)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -76226,7 +76225,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 592 */
+/* 591 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -76371,7 +76370,7 @@ Vue.component('calendar-container', __webpack_require__(558));
 });
 
 /***/ }),
-/* 593 */
+/* 592 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -76539,15 +76538,15 @@ if (false) {
 }
 
 /***/ }),
-/* 594 */
+/* 593 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(29)
 /* script */
-var __vue_script__ = __webpack_require__(595)
+var __vue_script__ = __webpack_require__(594)
 /* template */
-var __vue_template__ = __webpack_require__(596)
+var __vue_template__ = __webpack_require__(595)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -76586,7 +76585,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 595 */
+/* 594 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -76717,7 +76716,7 @@ Vue.component('hours-container', __webpack_require__(561));
 });
 
 /***/ }),
-/* 596 */
+/* 595 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -76783,15 +76782,15 @@ if (false) {
 }
 
 /***/ }),
-/* 597 */
+/* 596 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(29)
 /* script */
-var __vue_script__ = __webpack_require__(598)
+var __vue_script__ = __webpack_require__(597)
 /* template */
-var __vue_template__ = __webpack_require__(599)
+var __vue_template__ = __webpack_require__(598)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -76830,7 +76829,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 598 */
+/* 597 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -77065,7 +77064,7 @@ Vue.component('journey-container', __webpack_require__(565));
 });
 
 /***/ }),
-/* 599 */
+/* 598 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
@@ -77203,15 +77202,15 @@ if (false) {
 }
 
 /***/ }),
-/* 600 */
+/* 599 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var disposed = false
 var normalizeComponent = __webpack_require__(29)
 /* script */
-var __vue_script__ = __webpack_require__(601)
+var __vue_script__ = __webpack_require__(600)
 /* template */
-var __vue_template__ = __webpack_require__(602)
+var __vue_template__ = __webpack_require__(601)
 /* template functional */
 var __vue_template_functional__ = false
 /* styles */
@@ -77250,7 +77249,7 @@ module.exports = Component.exports
 
 
 /***/ }),
-/* 601 */
+/* 600 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -77330,7 +77329,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
 });
 
 /***/ }),
-/* 602 */
+/* 601 */
 /***/ (function(module, exports, __webpack_require__) {
 
 var render = function() {
