@@ -62,6 +62,7 @@
                             success: function (data) {
                                 self.events = [];
                                 self.initCalendar(data);
+                                self.hideLoader();
                             },
                             complete:function () {
                                 self.hideLoader();

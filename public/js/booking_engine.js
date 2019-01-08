@@ -77865,6 +77865,7 @@ Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
                     success: function success(data) {
                         self.events = [];
                         self.initCalendar(data);
+                        self.hideLoader();
                     },
                     complete: function complete() {
                         self.hideLoader();
