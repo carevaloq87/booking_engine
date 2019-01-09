@@ -29,7 +29,9 @@
             let self = this;
             EventBus.$on('SHOW_LOADER', function (payLoad) {
                 self.requests.push(payLoad);
-                $("#contentLoading").modal('show');
+                    setTimeout(() => {
+                        $("#contentLoading").modal('show');
+                    }, 500);
             });
             EventBus.$on('HIDE_LOADER', function (payLoad) {
                 self.removeValue(self.requests,payLoad);
