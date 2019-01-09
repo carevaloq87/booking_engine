@@ -58,9 +58,9 @@ class ResourceController extends Controller
      */
     public function store(Request $request)
     {
+        $data = $this->getData($request);
         try {
             self::validateServiceProvider($request);
-            $data = $this->getData($request);
             $resource = Resource::create($data);
             if (isset($data['services'])) {
                 $resource->services()->sync($data['services']);
@@ -133,9 +133,9 @@ class ResourceController extends Controller
      */
     public function update($id, Request $request)
     {
+        $data = $this->getData($request);
         try {
             self::validateServiceProvider($request);
-            $data = $this->getData($request);
 
             $resource = Resource::findOrFail($id);
             $resource->update($data);
@@ -224,7 +224,7 @@ class ResourceController extends Controller
         $rules = [
             'name' => 'required|string|min:1',
             'phone' => 'string|min:10|nullable',
-            'email' => 'nullable',
+            'email' => 'nullable|email',
             'service_provider_id' => 'nullable',
             'services' => 'nullable',
 
