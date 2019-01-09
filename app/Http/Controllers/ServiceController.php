@@ -60,9 +60,9 @@ class ServiceController extends Controller
      */
     public function store(Request $request)
     {
+        $data = $this->getData($request);
         try {
             self::validateServiceProvider($request);
-            $data = $this->getData($request);
 
             $service=Service::create($data);
             if (isset($data['resources'])) {
@@ -135,9 +135,9 @@ class ServiceController extends Controller
      */
     public function update($id, Request $request)
     {
+        $data = $this->getData($request);
         try {
             self::validateServiceProvider($request);
-            $data = $this->getData($request);
 
             $service = Service::findOrFail($id);
             $service->update($data);
@@ -228,11 +228,11 @@ class ServiceController extends Controller
         $rules = [
             'name' => 'string|min:1|max:255|nullable',
             'phone' => 'string|min:1|nullable',
-            'email' => 'nullable',
+            'email' => 'nullable|email',
             'description' => 'string|min:1|max:1000|nullable',
-            'duration' => 'string|min:1',
+            'duration' => 'required|numeric|min:10|max:480',
             'listed_duration' => 'string|min:1',
-            'interpreter_duration' => 'string|min:1',
+            'interpreter_duration' => 'required|numeric|min:10|max:480',
             'listed_interpreter_duration' => 'string|min:1',
             'spaces' => 'string|min:1|nullable',
             'service_provider_id' => 'required',
