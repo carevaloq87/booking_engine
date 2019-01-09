@@ -2,7 +2,7 @@
 <div class="d-inline-flex align-items-center p-2 {{ $errors->has('name') ? 'has-error' : '' }}">
     <label for="name" class="col-md-2 control-label">Name</label>
     <div class="col-md-10">
-        <input class="form-control" name="name" type="text" id="name" value="{{ old('name', optional($service)->name) }}" maxlength="100" placeholder="Enter name here...">
+        <input class="form-control" name="name" type="text" id="name" value="{{ old('name', optional($service)->name) }}" maxlength="100" required placeholder="Enter name here...">
         {!! $errors->first('name', '<p class="help-block">:message</p>') !!}
     </div>
 </div>
@@ -62,7 +62,7 @@
         <input class="form-control" name="interpreter_duration" type="number" id="interpreter_duration" value="{{ old('interpreter_duration', optional($service)->interpreter_duration) }}" max="480" min="10" placeholder="Enter duration here..." required>
         {!! $errors->first('interpreter_duration', '<p class="help-block">:message</p>') !!}
     </div>
-    <label for="duration" class="col-md-2">minutes</label>
+    <label for="interpreter_duration" class="col-md-2">minutes</label>
 </div>
 
 <div class="d-none p-2  {{ $errors->has('listed_interpreter_duration') ? 'has-error' : '' }} hidden">
