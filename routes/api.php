@@ -36,5 +36,6 @@ Route::group([
         Route::get('/booking_status','ApiController@getAllBookingStatus');
         Route::get('/service','ApiController@getAllServices');
         Route::get('/booking/date/{date}', 'ApiController@getBookingsByDate');
+        Route::get('/service/service_provider/{service_provider_name}', 'ApiController@getServiceBySPName');
     });
 });
