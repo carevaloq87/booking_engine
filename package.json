@@ -34,6 +34,7 @@
         "uiv": "^0.26.2",
         "vue-full-calendar": "^2.7.0",
         "vue-mce": "^1.5.0",
+        "vue-sweetalert2": "^1.6.3",
         "vuejs-datepicker": "^1.5.4"
     }
 }

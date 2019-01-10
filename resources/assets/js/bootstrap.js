@@ -14,9 +14,13 @@ import * as uiv from 'uiv';
 
 import FullCalendar from 'vue-full-calendar';
 
+import VueSweetalert2 from 'vue-sweetalert2';
+
 Vue.use(FullCalendar);
 
 Vue.use(uiv);
+
+Vue.use(VueSweetalert2);
 
 window.Vue = Vue;
 

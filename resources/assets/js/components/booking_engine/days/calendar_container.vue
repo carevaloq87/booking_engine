@@ -60,7 +60,7 @@
 
         <div class="row mt-3 pl-3" v-if="copyField">
             <label class="m-checkbox m-checkbox--solid m-checkbox--single m-checkbox--brand mr-3">
-                    <input type="checkbox" v-model="copy_days" v-on:click="copyDates"><span></span>
+                    <input type="checkbox" v-model="copy_days" v-on:click="confirmCopy"><span></span>
             </label>
             <span>Copy regular dates for interpreter appointments <i class="fa fa-info-circle" data-skin="dark" data-container="body" data-toggle="m-tooltip" data-placement="right" title="" data-original-title="This will override current interpreter selections"></i></span>
         </div>
@@ -83,20 +83,47 @@
             }
         },
         methods: {
-            copyDates() {
+            confirmCopy() {
                 var self = this;
                 if(!self.copy_days) {
-                    if(self.tableClass == 'current'){
-                        let preselection_current = self.$parent.ds_current.getSelectedValues();
-                        self.$parent.ds_current_interpreter.clear();
-                        self.$parent.ds_current_interpreter.setInitialSelections('.current_interpreter ', preselection_current);
-                    }
 
-                    if(self.tableClass == 'next'){
-                        let preselection_next = self.$parent.ds_next.getSelectedValues();
-                        self.$parent.ds_next_interpreter.clear();
-                        self.$parent.ds_next_interpreter.setInitialSelections('.next_interpreter ', preselection_next);
-                    }
+                    self.$swal({
+                                    title: 'Are you sure?',
+                                    text: "You won't be able to revert this!",
+                                    type: 'warning',
+                                    showCancelButton: true,
+                                    confirmButtonColor: '#17c4bb',
+                                    cancelButtonColor: '#e2e5ec',
+                                    confirmButtonText: 'Yes, copy them!',
+                                    keydownListenerCapture: true
+                                }).then((result) => {
+                                    if (result.value) {
+                                        self.copyDates();
+                                        self.$swal(
+                                                    'Copied!',
+                                                    'Days has been copied.',
+                                                    'success'
+                                                );
+                                    } else {
+                                        self.copy_days = false;
+                                    }
+                                });
+                }
+
+            },
+            copyDates() {
+                var self = this;
+
+                if(self.tableClass == 'current'){
+                    let preselection_current = self.$parent.ds_current.getSelectedValues();
+                    self.$parent.ds_current_interpreter.clear();
+                    self.$parent.ds_current_interpreter.setInitialSelections('.current_interpreter ', preselection_current);
+                }
+
+                if(self.tableClass == 'next'){
+                    let preselection_next = self.$parent.ds_next.getSelectedValues();
+                    self.$parent.ds_next_interpreter.clear();
+                    self.$parent.ds_next_interpreter.setInitialSelections('.next_interpreter ', preselection_next);
                 }
             },
             eventFetchDays() {
