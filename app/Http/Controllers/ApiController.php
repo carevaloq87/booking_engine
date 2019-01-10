@@ -222,9 +222,11 @@ class ApiController extends Controller
     public function getServiceBySPName($service_provider_name)
     {
         try {
-            $services = Service::with(['serviceprovider' => function($query) use ($service_provider_name){
-                            $query->where("name",'LIKE', '%'.$service_provider_name.'%');
-                        }])->get();
+            $service_provider =
+            $services = Service::with('serviceprovider')
+                                ->whereHas('serviceprovider' , function($query) use ($service_provider_name){
+                                    $query->where("name",'LIKE', '%'.$service_provider_name.'%');
+                                })->get();
             return $services;
         } catch (Exception $exception) {
             return response()->json(['error'=>$exception instanceof ValidationException?
