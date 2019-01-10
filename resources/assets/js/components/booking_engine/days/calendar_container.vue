@@ -69,6 +69,8 @@
 </template>
 
 <script>
+    import EventBus from '../../../utils/event-bus';
+
     export default {
         props: {
             currentCalendar: Object,
@@ -96,7 +98,16 @@
                         self.$parent.ds_next_interpreter.setInitialSelections('.next_interpreter ', preselection_next);
                     }
                 }
+            },
+            eventFetchDays() {
+                let self = this;
+                EventBus.$on('FETCH_DAYS', function () {
+                    self.copy_days = false;
+                });
             }
-        }
+        },
+        mounted() {
+            this.eventFetchDays();
+        },
     }
 </script>

@@ -46,6 +46,13 @@
                 </div>
             </div>
         </div>
+
+        <div class="row mt-3 pl-3" v-if="copyField">
+            <label class="m-checkbox m-checkbox--solid m-checkbox--single m-checkbox--brand mr-3">
+                    <input type="checkbox" v-model="copy_hours" v-on:click="copyHours"><span></span>
+            </label>
+            <span>Copy regular hours for interpreter appointments <i class="fa fa-info-circle" data-skin="dark" data-container="body" data-toggle="m-tooltip" data-placement="right" title="" data-original-title="This will override current interpreter selections"></i></span>
+        </div>
     </div>
 
 </template>
@@ -56,11 +63,13 @@
     export default {
         props: {
             currentSchedule: Object,
-            tableClass: String
+            tableClass: String,
+            copyField: Boolean
         },
         data() {
             return {
                 choice: 'hour',
+                copy_hours: false,
                 week_days: ['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
                 time_structure_active: 'hour',
                 time_structure: {
@@ -128,6 +137,23 @@
             },
             hideLoader() {
                 EventBus.$emit('HIDE_LOADER', 'hours_container');
+            },
+            copyHours() {
+                var self = this;
+                if(!self.copy_hours && self.tableClass == 'current') {
+                    let preselection_current = self.$parent.ds_regular.getSelectedValues();
+                    document.querySelector('#interpreter #' + self.choice).click();
+                    setTimeout(() => {
+                        self.$parent.ds_interpreter.clear();
+                        self.$parent.ds_interpreter.setInitialSelections(self.$parent.interpreter_selector, preselection_current);
+                    }, 1000);
+                }
+            },
+            eventFetchHours() {
+                let self = this;
+                EventBus.$on('FETCH_HOURS', function () {
+                    self.copy_hours = false;
+                });
             }
         },
         watch: {
@@ -138,6 +164,7 @@
         },
         mounted() {
             this.hideNonWorkingHours();
+            this.eventFetchHours();
         },
     }
 </script>

@@ -7,6 +7,7 @@ Vue.component('selected-adhoc', require('./components/booking_engine/adhoc/selec
 Vue.component('Calendar', require('./components/calendar/calendar.vue'));
 Vue.component('loading-modal', require('./components/loading/loading-modal.vue'));
 
+import EventBus from './utils/event-bus';
 new Vue({
     el: '#booking_engine',
 
@@ -18,11 +19,13 @@ new Vue({
             var self = this;
             self.sv_id = id;
             $('#set_days').modal('show');
+            EventBus.$emit('FETCH_DAYS');
         },
         openSchedule(id) {
             var self = this;
             self.sv_id = id;
             $('#set_hours').modal('show');
+            EventBus.$emit('FETCH_HOURS');
         },
         openAdhoc(id) {
             var self = this;

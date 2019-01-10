@@ -87,38 +87,39 @@
             },
             //Get Calendar by service ID
             getCalendar(sv_id) {
+                if( sv_id > 0) {
+                    var self = this;
+                    let url = '/calendar/service/days/' + sv_id;
+                    self.showLoader();
 
-                var self = this;
-                let url = '/calendar/service/days/' + sv_id;
-                self.showLoader();
-
-                axios['get'](url, {})
-                    .then(response => {
-                        self.calendars = response.data;
-                    })
-                    .then(() => {
-                        self.initDragSelect();
-                        self.hideLoader();
-                    })
-                    .catch(error => {
-                        self.hideLoader();
-                        if (error.response) {
-                            // The request was made and the server responded with a status code
-                            // that falls out of the range of 2xx
-                            console.log(error.response.data);
-                            console.log(error.response.status);
-                            console.log(error.response.headers);
-                        } else if (error.request) {
-                            // The request was made but no response was received
-                            // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
-                            // http.ClientRequest in node.js
-                            console.log(error.request);
-                        } else {
-                            // Something happened in setting up the request that triggered an Error
-                            console.log('Error', error.message);
-                        }
-                        console.log(error.config);
-                    });
+                    axios['get'](url, {})
+                        .then(response => {
+                            self.calendars = response.data;
+                        })
+                        .then(() => {
+                            self.initDragSelect();
+                            self.hideLoader();
+                        })
+                        .catch(error => {
+                            self.hideLoader();
+                            if (error.response) {
+                                // The request was made and the server responded with a status code
+                                // that falls out of the range of 2xx
+                                console.log(error.response.data);
+                                console.log(error.response.status);
+                                console.log(error.response.headers);
+                            } else if (error.request) {
+                                // The request was made but no response was received
+                                // `error.request` is an instance of XMLHttpRequest in the browser and an instance of
+                                // http.ClientRequest in node.js
+                                console.log(error.request);
+                            } else {
+                                // Something happened in setting up the request that triggered an Error
+                                console.log('Error', error.message);
+                            }
+                            console.log(error.config);
+                        });
+                }
             },
             //Initialize Drage and select object for regular and interpreter elements
             initDragSelect() {
@@ -160,6 +161,31 @@
                         console.log(error);
                     });
             },
+            clearDays() {
+                let self = this;
+                if (typeof self.ds_current.clear === "function") {
+                    self.ds_current.clear();
+                    self.ds_current = {};
+                    self.ds_current_interpreter.clear();
+                    self.ds_current_interpreter = {};
+                    self.ds_next.clear();
+                    self.ds_next = {};
+                    self.ds_next_interpreter.clear();
+                    self.ds_next_interpreter = {};
+                }
+            },
+            reloadDays() {
+                let self = this;
+                self.clearDays();
+                self.getCalendar(self.service);
+            },
+            eventFetchDays() {
+                let self = this;
+                EventBus.$on('FETCH_DAYS', function () {
+                    self.reloadDays();
+                    self.choice ='currentActive';
+                });
+            },
             showLoader() {
                 EventBus.$emit('SHOW_LOADER', 'service_days');
             },
@@ -170,19 +196,11 @@
         watch: {
             //Watch change of service
             service: function() {
-                let self = this;
-                if (typeof this.ds_current.clear === "function") {
-                    self.ds_current.clear();
-                    self.ds_current = {};
-                    self.ds_current_interpreter.clear();
-                    self.ds_current_interpreter = {};
-                    self.ds_next.clear();
-                    self.ds_next = {};
-                    self.ds_next_interpreter.clear();
-                    self.ds_next_interpreter = {};
-                }
-                this.getCalendar(this.service);
+                this.reloadDays();
             }
-        }
+        },
+        mounted() {
+            this.eventFetchDays();
+        },
     }
 </script>

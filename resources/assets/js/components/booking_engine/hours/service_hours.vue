@@ -5,17 +5,17 @@
             <li class="nav-item"><a class="nav-link" data-toggle="tab" role="tab" aria-controls="interpreter" aria-selected="false" href="#interpreter">Interpreter</a></li>
         </ul>
 
-        <div class="tab-content col-sm">
+        <div class="tab-content col-sm pb-0">
             <div id="regular" class="tab-pane fade show active" role="tabpanel" aria-labelledby="regular-tab">
-                <hours-container v-bind:currentSchedule="schedule.regular" tableClass="current" v-on:reload-ds="updateDragSelect"> </hours-container>
+                <hours-container v-bind:currentSchedule="schedule.regular" tableClass="current" v-on:reload-ds="updateDragSelect" v-bind:copyField="true"> </hours-container>
             </div>
 
             <div id="interpreter" class="tab-pane fade" role="tabpanel" aria-labelledby="interpreter-tab">
-                <hours-container v-bind:currentSchedule="schedule.interpreter" tableClass="current_interpreter" v-on:reload-ds="updateDragSelect"> </hours-container>
+                <hours-container v-bind:currentSchedule="schedule.interpreter" tableClass="current_interpreter" v-on:reload-ds="updateDragSelect" v-bind:copyField="false"> </hours-container>
             </div>
         </div>
 
-        <div class="form-group mt-1">
+        <div class="form-group">
             <div class="col-sm mt-1">
                 <button class="btn btn-sm btn-green" v-on:click="submitInfo">Submit</button>
                 <button type="button" class="btn btn-sm btn-secondary" data-dismiss="modal">Cancel</button>
@@ -43,26 +43,28 @@
         methods: {
             //Get schedules by service ID
             getSchedule(sv_id) {
-                var self = this;
-                let url = '/calendar/service/hours/' + sv_id;
-                self.showLoader();
+                if(sv_id){
+                    var self = this;
+                    let url = '/calendar/service/hours/' + sv_id;
+                    self.showLoader();
 
-                axios['get'](url, {})
-                    .then(response => {
-                        self.schedule = response.data;
-                    })
-                    .then(() => {
-                        self.initDragSelect();
-                    })
-                    .then(() => {
-                        self.loadInitialSelections();
-                        self.hideLoader();
-                    })
-                    .catch(error => {
-                        console.log(error);
-                        self.hideLoader();
-                        self.getSchedule(self.service);
-                    });
+                    axios['get'](url, {})
+                        .then(response => {
+                            self.schedule = response.data;
+                        })
+                        .then(() => {
+                            self.initDragSelect();
+                        })
+                        .then(() => {
+                            self.loadInitialSelections();
+                            self.hideLoader();
+                        })
+                        .catch(error => {
+                            console.log(error);
+                            self.hideLoader();
+                            self.getSchedule(self.service);
+                        });
+                }
             },
             //Initialize Drage and select object for regular and interpreter elements
             initDragSelect() {
@@ -126,6 +128,26 @@
                         self.hideLoader();
                     });
             },
+            clearHours() {
+                let self = this;
+                if (typeof self.ds_regular.clear === "function" && typeof self.ds_interpreter.clear === "function") {
+                    self.ds_regular.clear();
+                    self.ds_regular = {};
+                    self.ds_interpreter.clear();
+                    self.ds_interpreter = {};
+                }
+            },
+            reloadHours() {
+                let self = this;
+                self.clearHours();
+                self.getSchedule(self.service);
+            },
+            eventFetchHours() {
+                let self = this;
+                EventBus.$on('FETCH_HOURS', function () {
+                    self.reloadHours();
+                });
+            },
             showLoader() {
                 EventBus.$emit('SHOW_LOADER', 'service_hours');
             },
@@ -136,12 +158,11 @@
         watch: {
             //Watch change of service
             service: function() {
-                if (typeof this.ds_regular.clear === "function" && typeof this.ds_interpreter.clear === "function") {
-                    this.ds_regular.clear();
-                    this.ds_interpreter.clear();
-                }
-                this.getSchedule(this.service);
+                this.reloadHours();
             }
-        }
+        },
+        mounted() {
+            this.eventFetchHours();
+        },
     }
 </script>
