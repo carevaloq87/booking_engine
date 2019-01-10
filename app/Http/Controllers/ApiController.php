@@ -215,6 +215,24 @@ class ApiController extends Controller
         }
     }
     /**
+     * Get services by service provider name
+     *
+     * @return array
+     */
+    public function getServiceBySPName($service_provider_name)
+    {
+        try {
+            $services = Service::with(['serviceprovider' => function($query) use ($service_provider_name){
+                            $query->where("name",'LIKE', '%'.$service_provider_name.'%');
+                        }])->get();
+            return $services;
+        } catch (Exception $exception) {
+            return response()->json(['error'=>$exception instanceof ValidationException?
+            implode(" ",array_flatten($exception->errors())) :
+            $exception->getMessage()], 400);
+        }
+    }
+    /**
      * Get All Bookings in a date
      *
      * @param date $date
