@@ -85,10 +85,10 @@
                 }
             },
             //Keep selected values on interface update
-            updateDragSelect() {
+            updateDragSelect(selected_options) {
                 var self = this;
-                let selected_regular = self.ds_regular.getSelectedValues();
-                let selected_interpreter = self.ds_interpreter.getSelectedValues();
+                let selected_regular = selected_options.regular;
+                let selected_interpreter = selected_options.interpreter;
 
                 //Re-Initialize Drag Select
                 self.initDragSelect();
@@ -126,6 +126,7 @@
                     })
                     .catch(error => {
                         self.hideLoader();
+                        self.$swal('Error','Please save it again.','error');
                     });
             },
             clearHours() {
@@ -135,6 +136,12 @@
                     self.ds_regular = {};
                     self.ds_interpreter.clear();
                     self.ds_interpreter = {};
+
+                    let selected  = document.querySelectorAll('#set_hours .ds-selected');
+                    [].forEach.call(selected, function(el) {
+                        el.className = el.className.replace(/\bds-hover\b/, "");
+                        el.className = el.className.replace(/\bds-selected\b/, "");
+                    });
                 }
             },
             reloadHours() {

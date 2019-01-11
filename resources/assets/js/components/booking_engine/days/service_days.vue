@@ -118,6 +118,7 @@
                                 console.log('Error', error.message);
                             }
                             console.log(error.config);
+                            self.getCalendar(self.service);
                         });
                 }
             },
@@ -140,10 +141,10 @@
             submitInfo() {
                 let self = this;
                 let selections = {};
-                selections.current = self.ds_current.getSelectedValues();
-                selections.current_interpreter = self.ds_current_interpreter.getSelectedValues();
-                selections.next = self.ds_next.getSelectedValues();
-                selections.next_interpreter = self.ds_next_interpreter.getSelectedValues();
+                selections.current = self.ds_current.getSelectedValuesByContext('#current_regular .ds-selected');
+                selections.current_interpreter = self.ds_current_interpreter.getSelectedValuesByContext('#current_interpreter .ds-selected');
+                selections.next = self.ds_next.getSelectedValuesByContext('#next_regular .ds-selected');
+                selections.next_interpreter = self.ds_next_interpreter.getSelectedValuesByContext('#next_interpreter .ds-selected');
 
                 let url = '/calendar/service/days';
 
@@ -172,6 +173,12 @@
                     self.ds_next = {};
                     self.ds_next_interpreter.clear();
                     self.ds_next_interpreter = {};
+
+                    let selected  = document.querySelectorAll('.service_days .ds-selected');
+                    [].forEach.call(selected, function(el) {
+                        el.className = el.className.replace(/\bds-hover\b/, "");
+                        el.className = el.className.replace(/\bds-selected\b/, "");
+                    });
                 }
             },
             reloadDays() {

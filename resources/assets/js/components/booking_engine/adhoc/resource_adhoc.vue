@@ -100,7 +100,7 @@
             //Keep selected values on interface update
             updateDragSelect() {
                 var self = this;
-                let selected_regular = self.ds_regular.getSelectedValues();
+                let selected_regular = self.ds_regular.getSelectedValuesByContext('#set_adhoc_booking .ds-selected'); //Use this function because a bug in the regular one, so send the context
 
                 //Re-Initialize Drag Select
                 self.initDragSelect();
@@ -114,7 +114,7 @@
                 let self = this;
                 self.adhoc_object.regular = {
                                     time_name: document.querySelector("#regular_journey button.active").id,
-                                    hours: self.ds_regular.getSelectedValues(),
+                                    hours: self.ds_regular.getSelectedValuesByContext('#set_adhoc_booking .ds-selected'),
                                     duration: 0,//  Duration in adhoc resource is not necessary. document.querySelector("#regular_duration").value
                                     details:document.querySelector("#details").value
                                 };

@@ -115,13 +115,13 @@
                 var self = this;
 
                 if(self.tableClass == 'current'){
-                    let preselection_current = self.$parent.ds_current.getSelectedValues();
+                    let preselection_current = self.$parent.ds_current.getSelectedValuesByContext('#current_regular .ds-selected'); //Use this function because a bug in the regular one, so send the context
                     self.$parent.ds_current_interpreter.clear();
                     self.$parent.ds_current_interpreter.setInitialSelections('.current_interpreter ', preselection_current);
                 }
 
                 if(self.tableClass == 'next'){
-                    let preselection_next = self.$parent.ds_next.getSelectedValues();
+                    let preselection_next = self.$parent.ds_next.getSelectedValuesByContext('#next_regular .ds-selected'); //Use this function because a bug in the regular one, so send the context
                     self.$parent.ds_next_interpreter.clear();
                     self.$parent.ds_next_interpreter.setInitialSelections('.next_interpreter ', preselection_next);
                 }

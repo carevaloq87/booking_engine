@@ -109,8 +109,8 @@
             //Keep selected values on interface update
             updateDragSelect() {
                 var self = this;
-                let selected_regular = self.ds_regular.getSelectedValues();
-                let selected_interpreter = self.ds_interpreter.getSelectedValues();
+                let selected_regular = self.ds_regular.getSelectedValuesByContext("#regular_journey .ds-button.ds-selected");
+                let selected_interpreter = self.ds_interpreter.getSelectedValuesByContext("#interpreter_journey .ds-button.ds-selected");
 
                 //Re-Initialize Drag Select
                 self.initDragSelect();

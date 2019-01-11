@@ -32,26 +32,28 @@
         methods: {
             //Get schedules by resource ID
             getSchedule(rs_id) {
-                var self = this;
-                let url = '/calendar/resource/hours/' + rs_id;
+                if(rs_id > 0){
+                    var self = this;
+                    let url = '/calendar/resource/hours/' + rs_id;
 
-                self.showLoader();
-                axios['get'](url, {})
-                    .then(response => {
-                        self.schedule = response.data;
-                    })
-                    .then(() => {
-                        self.initDragSelect();
-                    })
-                    .then(() => {
-                        self.loadInitialSelections();
-                        self.hideLoader();
-                    })
-                    .catch(error => {
-                        console.log(error);
-                        self.hideLoader();
-                        self.getSchedule(self.resource);
-                    });
+                    self.showLoader();
+                    axios['get'](url, {})
+                        .then(response => {
+                            self.schedule = response.data;
+                        })
+                        .then(() => {
+                            self.initDragSelect();
+                        })
+                        .then(() => {
+                            self.loadInitialSelections();
+                            self.hideLoader();
+                        })
+                        .catch(error => {
+                            console.log(error);
+                            self.hideLoader();
+                            self.getSchedule(self.resource);
+                        });
+                }
             },
             //Initialize Drage and select object for regular and interpreter elements
             initDragSelect() {
@@ -68,9 +70,9 @@
                 }
             },
             //Keep selected values on interface update
-            updateDragSelect() {
+            updateDragSelect(selected_options) {
                 var self = this;
-                let selected_regular = self.ds_regular.getSelectedValues();
+                let selected_regular = selected_options.regular;
 
                 //Re-Initialize Drag Select
                 self.initDragSelect();
@@ -86,7 +88,7 @@
                 let hours = {
                                 regular: {
                                     time_name: document.querySelector("#regular button.active").id,
-                                    days: self.ds_regular.getSelectedValues()
+                                    days: self.ds_regular.getSelectedValuesByContext('#set_hours .ds-selected') //Use this function because a bug in the regular one, so send the context
                                 }
                             };
 
@@ -105,6 +107,29 @@
                         self.hideLoader();
                     });
             },
+            clearHours() {
+                let self = this;
+                if (typeof self.ds_regular.clear === "function") {
+                    self.ds_regular.clear();
+                    self.ds_regular = {};
+                }
+                let selected  = document.querySelectorAll('#set_hours .ds-selected');
+                [].forEach.call(selected, function(el) {
+                    el.className = el.className.replace(/\bds-hover\b/, "");
+                    el.className = el.className.replace(/\bds-selected\b/, "");
+                });
+            },
+            reloadHours() {
+                let self = this;
+                self.clearHours();
+                self.getSchedule(self.resource);
+            },
+            eventFetchHours() {
+                let self = this;
+                EventBus.$on('FETCH_RESOURCE_HOURS', function () {
+                    self.reloadHours();
+                });
+            },
             showLoader() {
                 EventBus.$emit('SHOW_LOADER', 'resource_hours');
             },
@@ -113,13 +138,13 @@
             }
         },
         watch: {
-            //Watch change of resource
+            //Watch change of service
             resource: function() {
-                if (typeof this.ds_regular.clear === "function") {
-                    this.ds_regular.clear();
-                }
-                this.getSchedule(this.resource);
+                this.reloadHours();
             }
-        }
+        },
+        mounted() {
+            this.eventFetchHours();
+        },
     }
 </script>

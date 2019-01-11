@@ -106,10 +106,14 @@
             setTimeStructure(time_structure_name) {
                 let self = this;
                 self.time_structure_active = time_structure_name; //i.e Hour, Half hour or quarter hour
-
-                self.showLoader();
+                let regular_selection = (document.querySelector("#regular .ds-button.ds-selected") ? self.$parent.ds_regular.getSelectedValuesByContext("#regular .ds-button.ds-selected") : []);
+                let interpreter_selection = (document.querySelector("#interpreter .ds-button.ds-selected") ? self.$parent.ds_regular.getSelectedValuesByContext("#interpreter .ds-button.ds-selected") : []);
+                let selected_options = {
+                    regular:  regular_selection,
+                    interpreter:  interpreter_selection
+                };
                 setTimeout(function(){
-                    self.$emit('reload-ds',true); //This emits a message to the parent component in order to re-initialize drag all drag and select buttons
+                    self.$emit('reload-ds', selected_options); //This emits a message to the parent component in order to re-initialize drag all drag and select buttons
                     self.hideLoader();
                 }, 1000);
                 self.makeActive(time_structure_name);
@@ -167,7 +171,7 @@
             },
             copyHours() {
                 var self = this;
-                let preselection_current = self.$parent.ds_regular.getSelectedValues();
+                let preselection_current = self.$parent.ds_regular.getSelectedValuesByContext('#regular .ds-selected');
                 document.querySelector('#interpreter #' + self.choice).click();
                 setTimeout(() => {
                     self.$parent.ds_interpreter.clear();

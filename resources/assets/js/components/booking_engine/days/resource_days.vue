@@ -43,6 +43,7 @@
 <script>
     import SelectableDS from '../selectableDS';
     import EventBus from '../../../utils/event-bus';
+
     Vue.component('calendar-container', require('./calendar_container.vue'));
     export default {
         props:['resource'],
@@ -67,22 +68,25 @@
             //Get Calendar by resource ID
             getCalendar(rs_id) {
 
-                var self = this;
-                let url = '/calendar/resource/days/' + rs_id;
+                if(rs_id > 0){
+                    var self = this;
+                    let url = '/calendar/resource/days/' + rs_id;
 
-                self.showLoader();
-                axios['get'](url, {})
-                    .then(response => {
-                        self.calendars = response.data;
-                    })
-                    .then(() => {
-                        self.initDragSelect();
-                        self.hideLoader();
-                    })
-                    .catch(error => {
-                        self.hideLoader();
-                        console.log('Error', error.message);
-                    });
+                    self.showLoader();
+                    axios['get'](url, {})
+                        .then(response => {
+                            self.calendars = response.data;
+                        })
+                        .then(() => {
+                            self.initDragSelect();
+                            self.hideLoader();
+                        })
+                        .catch(error => {
+                            self.hideLoader();
+                            self.getCalendar(self.resource);
+                            console.log('Error', error.message);
+                        });
+                }
             },
             //Initialize Drage and select object for regular and interpreter elements
             initDragSelect() {
@@ -99,8 +103,8 @@
             submitInfo() {
                 let self = this;
                 let selections = {};
-                selections.current = self.ds_current.getSelectedValues();
-                selections.next = self.ds_next.getSelectedValues();
+                selections.current = self.ds_current.getSelectedValuesByContext('#current_regular .ds-selected'); //Use this function because a bug in the regular one, so send the context
+                selections.next = self.ds_next.getSelectedValuesByContext('#next_regular .ds-selected'); //Use this function because a bug in the regular one, so send the context
 
                 let url = '/calendar/resource/days';
 
@@ -115,6 +119,33 @@
                         console.log(error);
                     });
             },
+            clearDays() {
+                let self = this;
+                if (typeof self.ds_current.clear === "function") {
+                    self.ds_current.clear();
+                    self.ds_current = {};
+                    self.ds_next.clear();
+                    self.ds_next = {};
+
+                    let selected  = document.querySelectorAll('.resource_days .ds-selected');
+                    [].forEach.call(selected, function(el) {
+                        el.className = el.className.replace(/\bds-hover\b/, "");
+                        el.className = el.className.replace(/\bds-selected\b/, "");
+                    });
+                }
+            },
+            reloadDays() {
+                let self = this;
+                self.clearDays();
+                self.getCalendar(self.resource);
+            },
+            eventFetchDays() {
+                let self = this;
+                EventBus.$on('FETCH_RESOURCE_DAYS', function () {
+                    self.reloadDays();
+                    self.choice ='currentActive';
+                });
+            },
             showLoader() {
                 EventBus.$emit('SHOW_LOADER', 'resource_days');
             },
@@ -125,15 +156,11 @@
         watch: {
             //Watch change of resource
             resource: function() {
-                let self = this;
-                if (typeof this.ds_current.clear === "function") {
-                    self.ds_current.clear();
-                    self.ds_current = {};
-                    self.ds_next.clear();
-                    self.ds_next = {};
-                }
-                this.getCalendar(this.resource);
+                this.reloadDays();
             }
-        }
+        },
+        mounted() {
+            this.eventFetchDays();
+        },
     }
 </script>
