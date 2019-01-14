@@ -121,6 +121,17 @@
                 axios['post'](url, { id: self.service, hours: hours })
                     .then(response => {
                         EventBus.$emit('calendar', response.data);
+                        // Hide the warning message
+                        let message_hour = document.getElementById('alert_hour');
+                        let message_resource = document.getElementById('alert_resource');
+                        let message = document.querySelector('.alert-warning');
+                        if ((message_hour && message_resource) &&
+                            (response.data.hours.interpreter.days.length > 0 || response.data.hours.regular.days.length > 0)) {
+                            message_hour.style.display = 'none';
+                        } else if ((message_hour && !message_resource) &&
+                            (response.data.hours.interpreter.days.length > 0 || response.data.hours.regular.days.length > 0)) {
+                            message.style.display = 'none';
+                        }
                         $("#set_hours").modal("hide");
                         self.hideLoader();
                     })
