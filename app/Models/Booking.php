@@ -41,7 +41,8 @@ class Booking extends Model
                             'service_id',
                             'client_id',
                             'booking_status_id',
-                            'data'
+                            'data',
+                            'created_by'
                         ];
 
     /**

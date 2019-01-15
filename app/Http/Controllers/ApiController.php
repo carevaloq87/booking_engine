@@ -116,7 +116,8 @@ class ApiController extends Controller
             'first_name'        => 'string|required',
             'last_name'         => 'string|required',
             'contact'           => 'string|nullable',
-            'data'              => 'nullable'
+            'data'              => 'nullable',
+            'created_by'        => 'nullable'
         ];
         $customMessages = [
             'required' => 'The :attribute field is required.'
