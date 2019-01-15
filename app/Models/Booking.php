@@ -42,7 +42,8 @@ class Booking extends Model
                             'client_id',
                             'booking_status_id',
                             'data',
-                            'created_by'
+                            'created_by',
+                            'updated_by'
                         ];
 
     /**
@@ -187,8 +188,10 @@ class Booking extends Model
         $client['first_name'] = isset($data['first_name']) && $data['first_name'] != '' ? $data['first_name'] : $client['first_name'];
         $client['last_name'] = isset($data['last_name']) && $data['last_name'] != '' ? $data['last_name'] : $client['last_name'];
         $client['contact'] = isset($data['contact']) && $data['contact'] != '' ? $data['contact'] : $client['contact'];
-        $client->save();
+        //Updated info
+        $booking['updated_by'] = isset($data['updated_by']) && $data['updated_by'] != '' ? $data['updated_by'] : $booking['updated_by'];
 
+        $client->save();
         $booking->save();
         return $booking;
     }
