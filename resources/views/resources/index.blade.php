@@ -56,7 +56,7 @@
                                             <i class="fa fa-pencil-alt"></i>
                                         </a>
 
-                                        <button type="submit" class="btn btn-sm btn-danger" title="Delete Resource" onclick="return confirm(&quot;Delete Resource?&quot;)">
+                                        <button type="submit" dusk="delete-resource-{{$resource->id}}" class="btn btn-sm btn-danger" title="Delete Resource" onclick="return confirm(&quot;Delete Resource?&quot;)">
                                             <i class="fa fa-trash-alt"></i>
                                         </button>
                                     </div>

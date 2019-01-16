@@ -61,8 +61,8 @@
 
         {!! $errors->first('services', '<p class="help-block">:message</p>') !!}
     </div>
+    <loading-modal></loading-modal>
 </div>
-
 @section('scripts')
     <script src="{{ asset('js/resource.js')}}" ></script>
 @endsection

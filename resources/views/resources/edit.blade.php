@@ -21,14 +21,6 @@
 
         <div class="panel-body">
 
-            @if ($errors->any())
-                <ul class="alert alert-danger">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            @endif
-
             <form method="POST" action="{{ route('resources.resource.update', $resource->id) }}" id="edit_resource_form" name="edit_resource_form" accept-charset="UTF-8" class="form-horizontal">
             {{ csrf_field() }}
             <input name="_method" type="hidden" value="PUT">

@@ -59,7 +59,7 @@
                                             <i class="fa fa-pencil-alt"></i>
                                         </a>
 
-                                        <button type="submit" class="btn btn-sm btn-danger" title="Delete Service" onclick="return confirm(&quot;Delete Service?&quot;)">
+                                    <button type="submit" dusk="delete-service-{{$service->id}}" class="btn btn-sm btn-danger" title="Delete Service" onclick="return confirm(&quot;Delete Service?&quot;)">
                                             <i class="fa fa-trash-alt"></i>
                                         </button>
                                     </div>

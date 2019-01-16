@@ -240,7 +240,7 @@ class ServiceController extends Controller
     {
         $rules = [
             'name' => 'string|min:1|max:255|nullable',
-            'phone' => 'string|min:1|nullable',
+            'phone' => 'string|max:13|nullable',
             'email' => 'nullable|email',
             'description' => 'string|min:1|max:1000|nullable',
             'duration' => 'required|numeric|min:10|max:480',

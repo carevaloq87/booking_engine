@@ -2,8 +2,10 @@
 import Vue from 'vue';
 import Multiselect from 'vue-multiselect';
 import axios from 'axios';
+import EventBus from './utils/event-bus';
 
     Vue.component('multiselect', Multiselect)
+    Vue.component('loading-modal', require('./components/loading/loading-modal.vue'));
 
 new Vue({
     el: '#service-select',
@@ -33,20 +35,24 @@ new Vue({
                 });
         },
         initOldServices: function (resource_id) {
-            $("#contentLoading").modal("show");
             var self = this;
+            self.showLoader();
             let url = '/resources/getServices/'+resource_id;
             axios.get(url)
             .then(function (response) {
                 self.selected = response.data;
-                $('#contentLoading').on('shown.bs.modal', function (e) {
-                    $("#contentLoading").modal('hide');
-                })
+                self.hideLoader();
             })
             .catch(function (error) {
                 console.log(error);
-                $("#contentLoading").modal("hide");
+                self.hideLoader();
             });
+        },
+        showLoader() {
+            EventBus.$emit('SHOW_LOADER', 'resource');
+        },
+        hideLoader() {
+            EventBus.$emit('HIDE_LOADER', 'resource');
         }
 
     },
