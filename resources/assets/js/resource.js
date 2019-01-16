@@ -26,7 +26,7 @@ new Vue({
                     this.initOldServices(resource_id);
                 }
             }
-            axios.get(url)
+            axios['get'](url, {})
                 .then(function (response) {
                     self.options = response.data.data;
                 })
@@ -38,15 +38,15 @@ new Vue({
             var self = this;
             self.showLoader();
             let url = '/resources/getServices/'+resource_id;
-            axios.get(url)
-            .then(function (response) {
-                self.selected = response.data;
-                self.hideLoader();
-            })
-            .catch(function (error) {
-                console.log(error);
-                self.hideLoader();
-            });
+            axios['get'](url, {})
+                .then(function (response) {
+                    self.selected = response.data;
+                    self.hideLoader();
+                })
+                .catch(function (error) {
+                    console.log(error);
+                    self.hideLoader();
+                });
         },
         showLoader() {
             EventBus.$emit('SHOW_LOADER', 'resource');
