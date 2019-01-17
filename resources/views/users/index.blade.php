@@ -60,7 +60,7 @@
                                             <i class="fa fa-pencil-alt"></i>
                                         </a>
 
-                                        <button type="submit" class="btn btn-sm btn-danger" title="Delete User" onclick="return confirm(&quot;Delete User?&quot;)">
+                                        <button type="submit" dusk="delete-user-{{$user->id}}" class="btn btn-sm btn-danger" title="Delete User" onclick="return confirm(&quot;Delete User?&quot;)">
                                             <i class="fa fa-trash-alt"></i>
                                         </button>
                                     </div>

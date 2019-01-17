@@ -4,6 +4,7 @@ namespace Tests\Browser;
 
 use Tests\DuskTestCase;
 use App\Models\User;
+use App\Models\Resource;
 use Laravel\Dusk\Browser;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
@@ -11,26 +12,11 @@ class ResourceTest extends DuskTestCase
 {
 
     /**
-     * Test get the list of resources
+     * Test Create, Read, Update and Delete a resource
      *
      * @return void
      */
-    public function testGetResources()
-    {
-        $this->browse(function ($browser) {
-            $user = User::where('id', 30)->first();
-            $browser->loginAs($user)
-                    ->visit('/resources')
-                    ->assertSee('Sebastian Currea');
-
-        });
-    }
-    /**
-     * Test Create a new resource
-     *
-     * @return void
-     */
-    public function testCreateResource()
+    public function testCRUDResource()
     {
         $this->browse(function ($browser) {
             $user = User::where('id', 30)->first();
@@ -42,49 +28,44 @@ class ResourceTest extends DuskTestCase
                     ->press('Add')
                     ->assertPathIs('/resources')
                     ->assertSee('Resource was successfully added!');
+        });
 
+        $this->browse(function ($browser) {
+            $user = User::where('id', 30)->first();
+            $browser->loginAs($user)
+                    ->visit('/resources')
+                    ->assertSee('Test Dusk Resource');
 
         });
 
-    }
-
-    /**
-     * Test Update Resource
-     *
-     * @return void
-     */
-    public function testUpdateResource()
-    {
         $this->browse(function ($browser){
+            $resource =  Resource::where('name', 'Test Dusk Resource')->first();
             $user = User::where('id', 30)->first();
+            $url = "/resources/".$resource->id. "/edit";
+
             $browser->loginAs($user)
-                    ->visit('/resources/4/edit')
+                    ->visit($url)
                     ->pause(5000)
-                    ->type('name', 'Sebastian C')
+                    ->type('name', 'Test Dusk Resource Modified')
                     ->type('phone', str_repeat('4', 13))
-                    ->type('email', 'sebastian.currea@1.com')
+                    ->type('email', 'testdusk@2.com')
                     ->press('Update')
                     ->assertPathIs('/resources')
                     ->assertSee('Resource was successfully updated!');
         });
-    }
 
-    /**
-     * Test Delete Resource
-     *
-     * @return void
-     */
-    public function testDeleteService()
-    {
         $this->browse(function ($browser){
+            $resource =  Resource::where('name', 'Test Dusk Resource Modified')->first();
             $user = User::where('id', 30)->first();
+
             $browser->loginAs($user)
                     ->visit('/resources')
-                    ->click('@delete-resource-31')
+                    ->click('@delete-resource-'.$resource->id)
                     ->acceptDialog()
                     ->assertPathIs('/resources')
                     ->assertSee('Resource was successfully deleted!');
         });
     }
+
 
 }

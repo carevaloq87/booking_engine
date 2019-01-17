@@ -49,7 +49,7 @@
                                             <i class="fa fa-pencil-alt"></i>
                                         </a>
 
-                                        <button type="submit" class="btn btn-sm btn-danger" title="Delete Role" onclick="return confirm(&quot;Delete Role?&quot;)">
+                                        <button type="submit" dusk="delete-role-{{$role->id}}" class="btn btn-sm btn-danger" title="Delete Role" onclick="return confirm(&quot;Delete Role?&quot;)">
                                             <i class="fa fa-trash-alt"></i>
                                         </button>
                                     </div>

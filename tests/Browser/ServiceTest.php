@@ -4,33 +4,19 @@ namespace Tests\Browser;
 
 use Tests\DuskTestCase;
 use App\Models\User;
+use App\Models\Service;
 use Laravel\Dusk\Browser;
 use Illuminate\Foundation\Testing\DatabaseMigrations;
 
 class ServiceTest extends DuskTestCase
 {
-    
-    /**
-     * Test get the list of services
-     *
-     * @return void
-     */
-    public function testGetServices()
-    {
-        $this->browse(function ($browser) {
-            $user = User::where('id', 30)->first();
-            $browser->loginAs($user)
-                    ->visit('/services')
-                    ->assertSee('Tech for Non-Tech');
 
-        });
-    }
     /**
-     * Test Create a new service
+     * Test Create, Read Update and Delete a service
      *
      * @return void
      */
-    public function testCreateService()
+    public function testCRUDService()
     {
         $this->browse(function ($browser) {
             $user = User::where('id', 30)->first();
@@ -38,28 +24,29 @@ class ServiceTest extends DuskTestCase
                     ->visit('/services/create')
                     ->type('name', 'Test Dusk Service')
                     ->type('phone', str_repeat('4', 13))
-                    ->type('duration', '30')
-                    ->type('interpreter_duration','60')
+                    ->type('duration', '15')
+                    ->type('interpreter_duration','45')
                     ->press('Add')
                     ->assertPathIs('/services')
                     ->assertSee('Service was successfully added!');
+        });
 
+        $this->browse(function ($browser) {
+            $user = User::where('id', 30)->first();
+            $browser->loginAs($user)
+                    ->visit('/services')
+                    ->assertSee('Test Dusk Service');
 
         });
 
-    }
-
-    /**
-     * Test Update Service
-     *
-     * @return void
-     */
-    public function testUpdateService()
-    {
         $this->browse(function ($browser){
             $user = User::where('id', 30)->first();
+            $service = Service::where('name', 'Test Dusk Service')->first();
+            $url = "/services/".$service->id. "/edit";
             $browser->loginAs($user)
-                    ->visit('/services/12/edit')
+                    ->visit($url)
+                    ->pause(5000)
+                    ->type('name', 'Test Dusk Service Modified')
                     ->type('description', 'New Description')
                     ->type('duration', '30')
                     ->type('interpreter_duration','60')
@@ -67,24 +54,19 @@ class ServiceTest extends DuskTestCase
                     ->assertPathIs('/services')
                     ->assertSee('Service was successfully updated!');
         });
-    }
 
-    /**
-     * Test Delete Service
-     *
-     * @return void
-     */
-    public function testDeleteService()
-    {
         $this->browse(function ($browser){
             $user = User::where('id', 30)->first();
+            $service = Service::where('name', 'Test Dusk Service Modified')->first();
             $browser->loginAs($user)
                     ->visit('/services')
-                    ->click('@delete-service-45')
+                    ->click('@delete-service-'.$service->id)
                     ->acceptDialog()
                     ->assertPathIs('/services')
                     ->assertSee('Service was successfully deleted!');
         });
+
     }
+
 
 }
