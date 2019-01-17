@@ -102,6 +102,18 @@ class Booking extends Model
                     ->all();
     }
 
+    public function getFutureBookingsInfoByServiceAndDate($service_id, $start, $end)
+    {
+        $start = explode('T', $start)[0]; // The format that the Fullcalendar eg: 2018-08-08T10:10:12
+        $end = explode('T', $end)[0]; // The format that the Fullcalendar eg: 2018-08-08T10:10:12
+        return $this::with('client')
+                    ->where('service_id', $service_id)
+                    ->where('date', '>=', $start)
+                    ->where('date', '<=', $end)
+                    ->get()
+                    ->all();
+    }
+
     public function getFutureBookingsByServiceAndDate($service_id, $start, $end)
     {
         $start = explode('T', $start)[0]; // The format that the Fullcalendar eg: 2018-08-08T10:10:12

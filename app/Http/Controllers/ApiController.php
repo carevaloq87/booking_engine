@@ -235,6 +235,46 @@ class ApiController extends Controller
             $exception->getMessage()], 400);
         }
     }
+
+    /**
+     * Get future bookings by service provider name and date
+     *
+     * @param String $service_provider_name
+     * @param Date $start_date
+     * @param Date $end_date
+     * @return void
+     */
+    public function getBookingsBySPNameAndDate($service_provider_name, $start_date, $end_date)
+    {
+        try {
+            $booking_obj = new Booking();
+            $services = Service::with('serviceprovider')
+                                ->whereHas('serviceprovider' , function($query) use ($service_provider_name){
+                                    $query->where("name",'LIKE', '%'.$service_provider_name.'%');
+                                })->get();
+
+            $bookings = [];
+            foreach ($services as $service) {
+                $appts = $booking_obj->getFutureBookingsInfoByServiceAndDate($service->id, $start_date, $end_date);
+                if($appts){
+                    foreach($appts as $appointment){
+                        $time = $appointment->start_hour;
+                        $appointment->time = sprintf('%02d', floor($time / 60)) . ':' . sprintf('%02d', ($time % 60)); //Transform amount of minutes to hours and minutes
+                        $appointment->ServiceName = $service->name;
+                        $appointment->ServiceProviderName = $service->serviceprovider->name;
+                        $appointment->data = json_decode($appointment->data);
+                        $bookings[] = $appointment;
+                    }
+                }
+            }
+            return $bookings;
+        } catch (Exception $exception) {
+            return response()->json(['error'=>$exception instanceof ValidationException?
+            implode(" ",array_flatten($exception->errors())) :
+            $exception->getMessage()], 400);
+        }
+    }
+
     /**
      * Get All Bookings in a date
      *
