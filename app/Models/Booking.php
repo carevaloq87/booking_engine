@@ -102,6 +102,14 @@ class Booking extends Model
                     ->all();
     }
 
+    /**
+     * Get  future bookings by service ID and a date range, includes client info
+     *
+     * @param Int $service_id
+     * @param String $start Date
+     * @param String $end Date
+     * @return Array Array of bookings
+     */
     public function getFutureBookingsInfoByServiceAndDate($service_id, $start, $end)
     {
         $start = explode('T', $start)[0]; // The format that the Fullcalendar eg: 2018-08-08T10:10:12
@@ -114,6 +122,14 @@ class Booking extends Model
                     ->all();
     }
 
+    /**
+     * Get  future bookings by service ID and a date range
+     *
+     * @param Int $service_id
+     * @param String $start Date
+     * @param String $end Date
+     * @return Array Array of bookings
+     */
     public function getFutureBookingsByServiceAndDate($service_id, $start, $end)
     {
         $start = explode('T', $start)[0]; // The format that the Fullcalendar eg: 2018-08-08T10:10:12
@@ -125,6 +141,27 @@ class Booking extends Model
                     ->all());
     }
 
+    /**
+     * Get bookings made by a specific Orbit's User ID
+     *
+     * @param Int $created_by
+     * @return Array Array of bookings
+     */
+    public function getBookingsByOBUserId($created_by)
+    {
+        return $this::with('client')
+                    ->with('service')
+                    ->where('created_by', $created_by)
+                    ->get()
+                    ->all();
+    }
+
+    /**
+     * Format bookings availability
+     *
+     * @param Array $bookings
+     * @return Array
+     */
     public function formatBookingsAsAvailability($bookings)
     {
         $bookings = self::parseBookingsDates($bookings);

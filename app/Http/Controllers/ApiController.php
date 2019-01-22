@@ -242,7 +242,7 @@ class ApiController extends Controller
      * @param String $service_provider_name
      * @param Date $start_date
      * @param Date $end_date
-     * @return void
+     * @return Array Bookings made by the office in the specified date
      */
     public function getBookingsBySPNameAndDate($service_provider_name, $start_date, $end_date)
     {
@@ -274,6 +274,37 @@ class ApiController extends Controller
             implode(" ",array_flatten($exception->errors())) :
             $exception->getMessage()], 400);
         }
+    }
+
+    /**
+     * Get bookings by Orbit's User ID
+     *
+     * @param Int $created_by User Id of Orbit
+     * @return Array Bookings made by the user provided
+     */
+    public function getBookingsByOBUserId($created_by)
+    {
+        try {
+            $booking_obj = new Booking();
+            $appts = $booking_obj-> getBookingsByOBUserId($created_by);
+            if($appts){
+                foreach($appts as $appointment){
+                    $time = $appointment->start_hour;
+                    $appointment->time = sprintf('%02d', floor($time / 60)) . ':' . sprintf('%02d', ($time % 60)); //Transform amount of minutes to hours and minutes
+                    $appointment->ServiceName = $appointment['service']['name'];
+                    $appointment->data = json_decode($appointment->data);
+                    $appointment->date = explode(' ', $appointment->date)[0];
+                    unset( $appointment['service']);
+                    $bookings[] = $appointment;
+                }
+            }
+            return $bookings;
+        } catch (Exception $exception) {
+            return response()->json(['error'=>$exception instanceof ValidationException?
+            implode(" ",array_flatten($exception->errors())) :
+            $exception->getMessage()], 400);
+        }
+
     }
 
     /**
