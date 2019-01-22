@@ -285,6 +285,7 @@ class ApiController extends Controller
     public function getBookingsByOBUserId($created_by)
     {
         try {
+            $bookings = [];
             $booking_obj = new Booking();
             $appts = $booking_obj-> getBookingsByOBUserId($created_by);
             if($appts){
