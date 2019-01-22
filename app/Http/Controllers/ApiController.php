@@ -263,6 +263,7 @@ class ApiController extends Controller
                         $appointment->ServiceName = $service->name;
                         $appointment->ServiceProviderName = $service->serviceprovider->name;
                         $appointment->data = json_decode($appointment->data);
+                        $appointment->date = explode(' ', $appointment->date)[0];
                         $bookings[] = $appointment;
                     }
                 }
