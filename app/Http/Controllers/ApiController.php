@@ -277,6 +277,29 @@ class ApiController extends Controller
     }
 
     /**
+     * Get  bookings by  start date and end date
+     *
+     * @param Date $start_date
+     * @param Date $end_date
+     * @return Array Bookings made in the specified date
+     */
+    public function getAllBookingsByDate($start_date, $end_date)
+    {
+        try {
+            $bookings = Booking::with('client')
+                                ->with('bookingstatus')
+                                ->with('resource')
+                                ->with('service')
+                                ->whereBetween ('date', [$start_date, $end_date])
+                                ->get();
+            return response()->json($bookings);
+        } catch (Exception $exception) {
+            return response()->json(['error'=>$exception instanceof ValidationException?
+            implode(" ",array_flatten($exception->errors())) :
+            $exception->getMessage()], 400);
+        }
+    }
+    /**
      * Get bookings by Orbit's User ID
      *
      * @param Int $created_by User Id of Orbit
