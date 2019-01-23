@@ -25,6 +25,17 @@
                 return arr;
             }
         },
+        watch: {
+            requests: function () {
+                //Delay execution
+                setTimeout(() => {
+                    console.log(this.requests);
+                    if(this.requests.length < 1){
+                        $("#contentLoading").modal('hide');
+                    }
+                }, 1500);
+            }
+        },
         mounted () {
             let self = this;
             EventBus.$on('SHOW_LOADER', function (payLoad) {
@@ -35,12 +46,6 @@
             });
             EventBus.$on('HIDE_LOADER', function (payLoad) {
                 self.removeValue(self.requests,payLoad);
-                if(self.requests.length < 1){
-                    //Delay execution
-                    setTimeout(() => {
-                        $("#contentLoading").modal('hide');
-                    }, 1000);
-                }
             });
         }
     };
