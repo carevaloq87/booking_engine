@@ -89,6 +89,11 @@ class Resource extends Model
         return $this->hasMany('App\Models\UnavailableAdhocs');
     }
 
+    public function bookings()
+    {
+        return $this->hasMany('App\Models\Booking');
+    }
+
     /**
      * Get all the Resources that belongs to the current user service provider
      *

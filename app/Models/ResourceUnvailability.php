@@ -80,7 +80,10 @@ class ResourceUnvailability extends Model
         if (isset($resource_days['adhoc'])) {
             $adhoc_days = self::selectDays($resource_days['adhoc']);
         }
-        $regular_merged =   $regular_days + $adhoc_days;//  self::mergeDays($regular_days['regular'], $adhoc_days['regular']);
+        if (isset($resource_days['booking'])) {
+            $booking_days = self::selectDays($resource_days['booking']);
+        }
+        $regular_merged =   $regular_days + $adhoc_days + $booking_days;//  self::mergeDays($regular_days['regular'], $adhoc_days['regular']);
         return $regular_merged;
     }
 
@@ -102,6 +105,12 @@ class ResourceUnvailability extends Model
                 $times = $this->resource->unavailableAdhocs->where('date', $slot->date);
                 $subset = $times->map(function($times) {
                     return $times->only(['start_time','length']);
+                });
+            }
+            if ($slot->type == 'booking') {
+                $times = $this->resource->bookings()->where('date', $slot->date)->get();
+                $subset = $times->map(function($times) {
+                    return $times->only(['start_hour','time_length']);
                 });
             }
             $slot->times = $subset->toArray();

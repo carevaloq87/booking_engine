@@ -80,8 +80,18 @@ class Availability extends Model
                         if($resource_date === $service_date && self::is_date_in_date_range($resource_date)) { //Check only the dates that match the service and the resource against each other
                             $is_available = true;
                             foreach($resouce_date_info->times as $resource_time){//Loop the times in the service
-                                $resource_start_time = $resource_time['start_time'];
-                                $resource_length = $resource_time['length'];
+                                if(isset($resource_time['start_time'])) {
+                                    $resource_start_time = $resource_time['start_time'];
+                                } else {
+                                    $resource_start_time =$resource_time['start_hour'];
+                                }
+                                if(isset($resource_time['length'])) {
+                                    $resource_length = $resource_time['length'];
+                                } else {
+                                    $resource_length =$resource_time['time_length'];
+                                }
+                                //$resource_start_time = $resource_time['start_time'] ? $resource_time['start_time'] : $resource_time['start_hour'] ;
+                                //$resource_length = $resource_time['length'] ? $resource_time['length'] : $resource_time['time_length'];
 
                                 $args = [
                                             'sv_start_time' => $service_start_time,
