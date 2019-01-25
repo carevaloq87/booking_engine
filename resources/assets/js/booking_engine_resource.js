@@ -18,13 +18,17 @@ new Vue({
             var self = this;
             self.rs_id = id;
             $('#set_days').modal('show');
-            EventBus.$emit('FETCH_RESOURCE_DAYS');
+            setTimeout(() => {
+                EventBus.$emit('FETCH_RESOURCE_DAYS');
+            }, 1000);
         },
         openSchedule(id) {
             var self = this;
             self.rs_id = id;
             $('#set_hours').modal('show');
-            EventBus.$emit('FETCH_RESOURCE_HOURS');
+            setTimeout(() => {
+                EventBus.$emit('FETCH_RESOURCE_HOURS');
+            }, 1000);
         },
         openAdhoc(id) {
             var self = this;

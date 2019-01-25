@@ -76423,13 +76423,17 @@ new Vue({
             var self = this;
             self.sv_id = id;
             $('#set_days').modal('show');
-            __WEBPACK_IMPORTED_MODULE_0__utils_event_bus__["a" /* default */].$emit('FETCH_DAYS');
+            setTimeout(function () {
+                __WEBPACK_IMPORTED_MODULE_0__utils_event_bus__["a" /* default */].$emit('FETCH_DAYS');
+            }, 1000);
         },
         openSchedule: function openSchedule(id) {
             var self = this;
             self.sv_id = id;
             $('#set_hours').modal('show');
-            __WEBPACK_IMPORTED_MODULE_0__utils_event_bus__["a" /* default */].$emit('FETCH_HOURS');
+            setTimeout(function () {
+                __WEBPACK_IMPORTED_MODULE_0__utils_event_bus__["a" /* default */].$emit('FETCH_HOURS');
+            }, 1000);
         },
         openAdhoc: function openAdhoc(id) {
             var self = this;
