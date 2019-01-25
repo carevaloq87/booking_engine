@@ -73,6 +73,7 @@ class ResourceUnvailability extends Model
         $regular_merged = [];
         $regular_days = [];
         $adhoc_days = [];
+        $booking_days = [];
         $resource_days = self::getResourceDays();
         if (isset($resource_days['regular'])) {
             $regular_days = self::selectDays($resource_days['regular']);
