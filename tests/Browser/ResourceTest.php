@@ -18,6 +18,7 @@ class ResourceTest extends DuskTestCase
      */
     public function testCRUDResource()
     {
+        // Create
         $this->browse(function ($browser) {
             $user = User::where('id', 30)->first();
             $browser->loginAs($user)
@@ -29,7 +30,7 @@ class ResourceTest extends DuskTestCase
                     ->assertPathIs('/resources')
                     ->assertSee('Resource was successfully added!');
         });
-
+        // Read
         $this->browse(function ($browser) {
             $user = User::where('id', 30)->first();
             $browser->loginAs($user)
@@ -37,7 +38,7 @@ class ResourceTest extends DuskTestCase
                     ->assertSee('Test Dusk Resource');
 
         });
-
+        // Edit
         $this->browse(function ($browser){
             $resource =  Resource::where('name', 'Test Dusk Resource')->first();
             $user = User::where('id', 30)->first();
@@ -53,7 +54,7 @@ class ResourceTest extends DuskTestCase
                     ->assertPathIs('/resources')
                     ->assertSee('Resource was successfully updated!');
         });
-
+        //Delete
         $this->browse(function ($browser){
             $resource =  Resource::where('name', 'Test Dusk Resource Modified')->first();
             $user = User::where('id', 30)->first();
@@ -73,7 +74,7 @@ class ResourceTest extends DuskTestCase
      */
     public function testSetUnavailability()
     {
-        // Create the user
+        // Create the resource
         $this->browse(function ($browser) {
             $user = User::where('id', 30)->first();
             $browser->loginAs($user)
@@ -96,7 +97,6 @@ class ResourceTest extends DuskTestCase
                     ->pause(20000)
                     ->press('Current Year')
                     ->drag('#Jun-15', '#Oct-25')
-                    ->screenshot('unavailableDay')
                     ->press('Submit')
                     ->pause(5000)
                     ->assertSee($resource->name);
@@ -116,17 +116,23 @@ class ResourceTest extends DuskTestCase
                     ->assertSee($resource->name);
         });
         //Set AdHoc
-      /*  $this->browse(function ($browser) {
+        $this->browse(function ($browser) {
             $user = User::where('id', 30)->first();
             $resource =  Resource::where('name', 'Test Dusk Resource')->first();
             $browser->loginAs($user)
                     ->visit('/resources/show/'.$resource->id)
                     ->clickLink("Ad hoc")
                     ->pause(20000)
-                    ->press('.vdp-datepicker__calendar-button')
-                    ->click('span.cell.day')
-                    ->screenshot('unavailableAdHoc6');
-      });*/
+                    ->click('.vdp-datepicker__calendar-button')
+                    ->click('.cell:not(.blank):not(.disabled).day')
+                    ->pause(1000)
+                    ->drag('#adhoc-540', '#adhoc-780')
+                    ->pause(1000)
+                    ->type('details', 'Test Dusk Resource adhoc Details')
+                    ->press('Submit')
+                    ->screenshot('unavailableAdHoc1')
+                    ->assertSee($resource->name);
+        });
         //Delete the resource.
         $this->browse(function ($browser){
             $resource =  Resource::where('name', 'Test Dusk Resource')->first();
