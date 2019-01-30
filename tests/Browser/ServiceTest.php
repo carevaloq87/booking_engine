@@ -94,7 +94,6 @@ class ServiceTest extends DuskTestCase
                     ->pause(20000)
                     ->press('Current Year')
                     ->drag('#Jun-15', '#Oct-25')
-                    ->screenshot('availableDay')
                     ->press('Submit')
                     ->pause(5000)
                     ->assertSee($service->name);
@@ -109,25 +108,29 @@ class ServiceTest extends DuskTestCase
                     ->pause(20000)
                     ->press('#hour')
                     ->drag('#Wed-540', '#Fri-600')
-                    ->screenshot('availableDayHour')
                     ->press('Submit')
                     ->pause(5000)
                     ->assertSee($service->name);
         });
+
         //Set AdHoc
-        /*$this->browse(function ($browser) {
+        $this->browse(function ($browser) {
             $user = User::where('id', 30)->first();
-            $resource =  Resource::where('name', 'Test Dusk Resource')->first();
+            $service = Service::where('name', 'Test Dusk Service')->first();
             $browser->loginAs($user)
-                    ->visit('/resources/show/'.$resource->id)
-                    ->clickLink("Hours")
+                    ->visit('/services/show/'.$service->id)
+                    ->clickLink("Ad hoc")
                     ->pause(20000)
-                    ->drag('#Wed-540', '#Fri-600')
-                    ->screenshot('unavailableHour')
+                    ->click('.vdp-datepicker__calendar-button')
+                    ->click('.cell:not(.blank):not(.disabled).day')
+                    ->pause(1000)
+                    ->type('duration', '30')
+                    ->pause(1000)
+                    ->drag('#adhoc-540', '#adhoc-780')
                     ->press('Submit')
-                    ->pause(5000)
-                    ->assertSee($resource->name);
-        });*/
+                    ->assertSee($service->name);
+        });
+
         //Delete the resource.
         $this->browse(function ($browser){
             $service =  Service::where('name', 'Test Dusk Service')->first();
