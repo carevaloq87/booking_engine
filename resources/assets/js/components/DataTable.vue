@@ -1,8 +1,9 @@
 <template>
     <div class="data-table">
-        <div class="form-group row float-right m-0">
-            <label class="col-form-label font-weight-bold pt-2" for="search" placeholder="Service name">Search</label>
-            <div class="col-sm-9">
+        <div class="form-group row mx-0">
+            <div class="col-sm-6 col-md-7"></div>
+            <label class="col-form-label font-weight-bold pt-2 col-sm-2 text-right" for="search" placeholder="Service name">Search</label>
+            <div class="col-sm-4 col-md-3">
                 <input type="text" id="search" class="form-control form-control-sm" v-model="search">
             </div>
         </div>
@@ -17,6 +18,7 @@
                             <i v-else class="fas fa-arrow-down"></i>
                         </span>
                     </th>
+                    <th class="table-head"></th>
                 </tr>
             </thead>
             <tbody>
