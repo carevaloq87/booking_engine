@@ -33,10 +33,6 @@
             </div>
         </div>
 
-        <div class="panel-footer">
-            {!! $services->render() !!}
-        </div>
-
         @endif
 
     </div>
