@@ -1,6 +1,6 @@
 <template>
     <div class="data-table">
-        <div class="form-group row float-right">
+        <div class="form-group row float-right m-0">
             <label class="col-form-label font-weight-bold pt-2" for="search" placeholder="Service name">Search</label>
             <div class="col-sm-9">
                 <input type="text" id="search" class="form-control form-control-sm" v-model="search">
