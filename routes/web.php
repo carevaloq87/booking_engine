@@ -127,6 +127,9 @@ Route::group(
     'prefix' => 'services',
 ], function () {
 
+    Route::get('/list', 'ServiceController@list')
+        ->name('services.list');
+
     Route::get('/', 'ServiceController@index')
         ->name('services.service.index');
 

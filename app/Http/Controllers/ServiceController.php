@@ -9,6 +9,7 @@ use App\Models\ServiceProvider;
 use App\Models\ServiceAvailability;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Carbon\Carbon;
 
 use Exception;
 
@@ -38,6 +39,28 @@ class ServiceController extends Controller
         $services = Service::getServicesByUserServiceProvider();
 
         return view('services.index', compact('services'));
+    }
+
+    /**
+     * Display a listing of the services.
+     *
+     * @return Illuminate\View\View
+     */
+    public function list(Request $request)
+    {
+        $services = Service::getServicesByUserServiceProviderTable($request);
+
+        $services->transform (function ($service) {
+                                    return [
+                                                'id' => $service->id,
+                                                'name' => $service->name,
+                                                'duration' => $service->duration,
+                                                'interpreter_duration'  => $service->interpreter_duration,
+                                                'service_provider'  => $service->serviceprovider->name,
+                                                'created_at' => $service->created_at->format('d/m/Y')
+                                            ];;
+                                });
+        return $services;
     }
 
     /**

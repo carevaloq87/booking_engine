@@ -21,57 +21,15 @@
         @else
         <div class="panel-body panel-body-with-table">
             <div class="table-responsive">
-
-                <table class="table table-striped ">
-                    <thead>
-                        <tr>
-                            <th>Name</th>
-                            <th>Phone</th>
-                            <th>Email</th>
-                            <th>Duration</th>
-                            <th>Interpreter Duration</th>
-                            <th>Service Provider</th>
-
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                    @foreach($services as $service)
-                        <tr>
-                            <td>{{ $service->name }}</td>
-                            <td>{{ $service->phone }}</td>
-                            <td>{{ $service->email }}</td>
-                            <td>{{ $service->duration }}</td>
-                            <td>{{ $service->interpreter_duration }}</td>
-                            <td>{{ optional($service->serviceProvider)->name }}</td>
-
-                            <td>
-
-                                <form method="POST" action="{!! route('services.service.destroy', $service->id) !!}" accept-charset="UTF-8">
-                                <input name="_method" value="DELETE" type="hidden">
-                                {{ csrf_field() }}
-
-                                    <div class="btn-group btn-group-sm pull-right list-table" role="group">
-                                        <a href="{{ route('services.service.show', $service->id ) }}" class="btn btn-sm btn-info" title="Show Service">
-                                            <i class="fa fa-calendar-alt"></i>
-                                        </a>
-                                        <a href="{{ route('services.service.edit', $service->id ) }}" class="btn btn-sm btn-primary" title="Edit Service">
-                                            <i class="fa fa-pencil-alt"></i>
-                                        </a>
-
-                                    <button type="submit" dusk="delete-service-{{$service->id}}" class="btn btn-sm btn-danger" title="Delete Service" onclick="return confirm(&quot;Delete Service?&quot;)">
-                                            <i class="fa fa-trash-alt"></i>
-                                        </button>
-                                    </div>
-
-                                </form>
-
-                            </td>
-                        </tr>
-                    @endforeach
-                    </tbody>
-                </table>
-
+                <div id="dTables">
+                    <data-table
+                        fetch-url="{{ route('services.list') }}"
+                        show-url="{{ route('services.service.show', '' ) }}"
+                        edit-url="{{ route('services.service.edit', '' ) }}"
+                        delete-url="{!! route('services.service.destroy', '') !!}"
+                        :columns="['name', 'duration', 'interpreter_duration' , 'service_provider','created_at']"
+                    ></data-table>
+                </div>
             </div>
         </div>
 
@@ -82,4 +40,8 @@
         @endif
 
     </div>
+@endsection
+
+@section('scripts')
+    <script src="{{ asset('js/tables.js') }}"></script>
 @endsection

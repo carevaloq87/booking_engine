@@ -112,6 +112,24 @@ class service extends Model
         }
         return $services;
     }
+
+    /**
+     * Get all the Services that belongs to the current user by service provider and allow pagination
+     *
+     * @param Request $request query coming from front-end table
+     * @return Collection
+     */
+    public static function getServicesByUserServiceProviderTable($request)
+    {
+        $user = auth()->user();
+        $search_value = '%' . $request->search . '%';
+        $query = Service::with('serviceprovider')->where('name', 'like', $search_value);
+        if(!$user->isAdmin()){
+            $query->where('service_provider_id', '=', $user->service_provider_id);
+        }
+        return $query->orderBy($request->column, $request->order)
+                    ->paginate($request->per_page);
+    }
     /**
      * Get Service by Service Provider id.
      *
