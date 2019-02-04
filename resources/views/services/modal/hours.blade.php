@@ -8,11 +8,7 @@
                     <div class="col-11 p-0">
                         <h5>Set Hours</h5>
                     </div>
-                    <div class="col-1">
-                        <button class="close" aria-label="Close" data-dismiss="modal" type="button"><span aria-hidden="true">×</span></button>
-                    </div>
                 </div>
-
                 <service-hours :service="sv_id"></service-hours>
             </div>
 
