@@ -40,5 +40,7 @@ Route::group([
         Route::get('/booking/{service_provider_name}/{start_date}/{end_date}', 'ApiController@getBookingsBySPNameAndDate');
         Route::get('/booking/orbit_user/{created_by}', 'ApiController@getBookingsByOBUserId');
         Route::get('/booking/{start_date}/{end_date}', 'ApiController@getAllBookingsByDate');
+        Route::get('/stats_day/{day}', 'ApiController@getBookingStatsDay');
+        Route::get('/stats_period/{startDay}', 'ApiController@getBookingStatsPeriod');
     });
 });

@@ -349,5 +349,41 @@ class ApiController extends Controller
             $exception->getMessage()], 400);
         }
     }
+    /**
+     * Get number of bookings for a day
+     *
+     * @param date $period
+     * @return void
+     */
+    public function getBookingStatsDay($day)
+    {
+        try {
+            $bookings = Booking::whereDate('created_at', '=', $day)->get()
+                                ->count();
+            return response()->json($bookings);
+        } catch (Exception $exception) {
+            return response()->json(['error'=>$exception instanceof ValidationException?
+            implode(" ",array_flatten($exception->errors())) :
+            $exception->getMessage()], 400);
+        }
+    }
+    /**
+     * Get number of bookings for period
+     *
+     * @param date $period
+     * @return void
+     */
+    public function getBookingStatsPeriod($startDay)
+    {
+        try {
+            $bookings = Booking::whereDate('created_at', '>=', $startDay)->get()
+                                ->count();
+            return response()->json($bookings);
+        } catch (Exception $exception) {
+            return response()->json(['error'=>$exception instanceof ValidationException?
+            implode(" ",array_flatten($exception->errors())) :
+            $exception->getMessage()], 400);
+        }
+    }
 
 }
