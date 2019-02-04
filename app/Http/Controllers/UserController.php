@@ -62,15 +62,20 @@ class UserController extends Controller
      */
     public function store(Request $request)
     {
+        //validate the password.
+        $this->validate($request, [
+            'name' => 'required',
+            'email' => 'required|email|unique:users,email',
+            'password'  => ['required','confirmed','min:8', 'regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-+]).{6,}$/'],
+            'roles' => 'required',
+            'service_provider_id' => 'nullable',
+        ], [
+            'password.min' =>  'The password must be at least 8 characters long',
+            'password.regex' => 'The password should contain at least one uppercase, one lowercase, one number and one special character'
+        ]);
+
         try {
-            //validate the password.
-            $this->validate($request, [
-                'name' => 'required',
-                'email' => 'required|email|unique:users,email',
-                'password'  => 'required|confirmed',
-                'roles' => 'required',
-                'service_provider_id' => 'nullable',
-            ]);
+
 
             //create and save the user
             $user = User::create($this->getUserFields($request, false));
@@ -84,11 +89,11 @@ class UserController extends Controller
             $log = new Log();
             $log->record('CREATE', 'user', $user->id,  $user);
             return redirect()->route('users.index')
-                             ->with('success_message', 'User was successfully added!');
+                                ->with('success_message', 'User was successfully added!');
 
         } catch (Exception $exception) {
             return back()->withInput()
-                         ->withErrors(['unexpected_error' => $exception->getMessage()]);
+                            ->withErrors(['unexpected_error' => $exception->getMessage()]);
         }
     }
 

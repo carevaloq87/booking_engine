@@ -16,14 +16,6 @@
 
         <div class="panel-body">
 
-            @if ($errors->any())
-                <ul class="alert alert-danger">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            @endif
-
             <form method="POST" action="{{ route('users.store') }}" accept-charset="UTF-8" id="create_user_form" name="create_user_form" class="form-horizontal">
             {{ csrf_field() }}
             @include ('users.form', [ 'user' => null ])
