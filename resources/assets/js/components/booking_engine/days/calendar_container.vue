@@ -84,8 +84,6 @@
         },
         watch: {
             copy_days: function (val) {
-                console.log(val);
-                console.log(this.copy_days);
                 if(val === true){
                     this.disable_ds();
                     this.confirmCopy();
