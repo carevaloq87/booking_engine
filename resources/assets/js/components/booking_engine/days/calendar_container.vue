@@ -60,7 +60,7 @@
 
         <div class="row mt-3 pl-3" v-if="copyField">
             <label class="m-checkbox m-checkbox--solid m-checkbox--single m-checkbox--brand mr-3">
-                    <input type="checkbox" v-model="copy_days" v-on:click="confirmCopy"><span></span>
+                    <input type="checkbox" v-model="copy_days"><span></span>
             </label>
             <span>Copy regular dates for interpreter appointments <i class="fa fa-info-circle" data-skin="dark" data-container="body" data-toggle="m-tooltip" data-placement="right" title="" data-original-title="This will override current interpreter selections"></i></span>
         </div>
@@ -82,34 +82,56 @@
                 copy_days: false
             }
         },
+        watch: {
+            copy_days: function (val) {
+                console.log(val);
+                console.log(this.copy_days);
+                if(val === true){
+                    this.disable_ds();
+                    this.confirmCopy();
+                }
+            }
+        },
         methods: {
+            disable_ds() {
+                var self = this;
+                self.$parent.ds_current.selectable.stop();
+                self.$parent.ds_current_interpreter.selectable.stop();
+                self.$parent.ds_next.selectable.stop();
+                self.$parent.ds_next_interpreter.selectable.stop();
+            },
+            enable_ds() {
+                var self = this;
+                self.$parent.ds_current.selectable.start();
+                self.$parent.ds_current_interpreter.selectable.start();
+                self.$parent.ds_next.selectable.start();
+                self.$parent.ds_next_interpreter.selectable.start();
+            },
             confirmCopy() {
                 var self = this;
-                if(!self.copy_days) {
-
-                    self.$swal({
-                                    title: 'Are you sure?',
-                                    text: "You won't be able to revert this!",
-                                    type: 'warning',
-                                    showCancelButton: true,
-                                    confirmButtonColor: '#17c4bb',
-                                    cancelButtonColor: '#e2e5ec',
-                                    confirmButtonText: 'Yes, copy them!',
-                                    keydownListenerCapture: true
-                                }).then((result) => {
-                                    if (result.value) {
-                                        self.copyDates();
-                                        self.$swal(
-                                                    'Copied!',
-                                                    'Days has been copied.',
-                                                    'success'
-                                                );
-                                    } else {
-                                        self.copy_days = false;
-                                    }
-                                });
-                }
-
+                self.$swal({
+                            title: 'Are you sure?',
+                            text: "You won't be able to revert this!",
+                            type: 'warning',
+                            showCancelButton: true,
+                            confirmButtonColor: '#17c4bb',
+                            cancelButtonColor: '#e2e5ec',
+                            confirmButtonText: 'Yes, copy them!',
+                            allowEscapeKey : false,
+                            allowOutsideClick: false
+                        }).then((result) => {
+                            if (result.value) {
+                                self.copyDates();
+                                self.$swal(
+                                            'Copied!',
+                                            'Days has been copied.',
+                                            'success'
+                                        );
+                            } else {
+                                self.copy_days = false;
+                            }
+                            self.enable_ds();
+                        });
             },
             copyDates() {
                 var self = this;
