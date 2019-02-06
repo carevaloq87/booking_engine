@@ -150,6 +150,7 @@
                 let url = '/calendar/resource/adhoc';
                 let form_validation = self.validateAdhocForm();
                 if(form_validation.can_submit) {
+                    self.adhoc_object.date = moment(self.adhoc_object.date).format('YYYY-MM-DD');
                     self.showLoader();
                     axios['post'](url, { id: self.resource, hours: self.adhoc_object })
                         .then(response => {

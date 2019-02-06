@@ -175,6 +175,7 @@
                 let url = '/calendar/service/adhoc';
                 let form_validation = self.validateAdhocForm();
                 if(form_validation.can_submit) {
+                    self.adhoc_object.date = moment(self.adhoc_object.date).format('YYYY-MM-DD');
                     self.showLoader();
                     axios['post'](url, { id: self.service, hours: self.adhoc_object })
                         .then(response => {
@@ -187,7 +188,6 @@
                             self.hideLoader();
                         });
                 } else {
-                    console.log(form_validation.message);
                     let message = 'Please set ' + form_validation.message.join(', ');
                     alert(message);
                 }
@@ -216,7 +216,6 @@
                         self.hideLoader();
                     })
                     .catch(function (error) {
-                        console.log(error);
                         self.hideLoader();
                     });
             },
