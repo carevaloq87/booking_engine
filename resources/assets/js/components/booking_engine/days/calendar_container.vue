@@ -93,17 +93,17 @@
         methods: {
             disable_ds() {
                 var self = this;
-                self.$parent.ds_current.selectable.stop();
-                self.$parent.ds_current_interpreter.selectable.stop();
-                self.$parent.ds_next.selectable.stop();
-                self.$parent.ds_next_interpreter.selectable.stop();
+                let ds_selectors = document.getElementsByClassName("ds-selector");
+                for(var i = 0; i < ds_selectors.length; i++){
+                    ds_selectors[i].className += " hidden";
+                }
             },
             enable_ds() {
                 var self = this;
-                self.$parent.ds_current.selectable.start();
-                self.$parent.ds_current_interpreter.selectable.start();
-                self.$parent.ds_next.selectable.start();
-                self.$parent.ds_next_interpreter.selectable.start();
+                let ds_selectors = document.getElementsByClassName("ds-selector");
+                for(var i = 0; i < ds_selectors.length; i++){
+                    ds_selectors[i].classList.remove("hidden");
+                }
             },
             confirmCopy() {
                 var self = this;
