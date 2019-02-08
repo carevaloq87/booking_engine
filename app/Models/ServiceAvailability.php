@@ -222,6 +222,7 @@ class ServiceAvailability extends Model
         $slots = [];
         $in_a_row = 1;
         $start_times = $times->pluck('start_time')->toArray();
+        $listed_duration = min($this->service->duration, $this->service->interpreter_duration);
         foreach($times as $time){
             $duration = (isset($time['duration']) ? $time['duration'] : $duration);
             $next = $time['start_time'] + $time['time_length'];
@@ -229,14 +230,24 @@ class ServiceAvailability extends Model
                 $in_a_row++; //Count the number of blocks that are next to each other
             } else {
                 $initial_time = ($time['start_time'] + $time['time_length']) - ($in_a_row * $time['time_length']);
-                $resultant = ($time['time_length'] * $in_a_row) / $duration;
+                $resultant = ($time['time_length'] * $in_a_row) / $listed_duration;
                 if($resultant >= 1) {
                     for ($rep=0; $rep < floor($resultant); $rep++) {
-                        $slots[] = [
-                            'start_time' => $initial_time + ($duration * $rep),
-                            'time_length' => $time['time_length'],
-                            'duration' => $duration
-                        ];
+                        if($rep == floor($resultant)-1) {
+                            if( $listed_duration >= $duration) {
+                                $slots[] = [
+                                    'start_time' => $initial_time + ($listed_duration * $rep),
+                                    'time_length' => $time['time_length'],
+                                    'duration' => $duration
+                                ];
+                            }
+                        } else {
+                            $slots[] = [
+                                'start_time' => $initial_time + ($listed_duration * $rep),
+                                'time_length' => $time['time_length'],
+                                'duration' => $duration
+                            ];
+                        }
                     }
                 }
                 $in_a_row = 1;
