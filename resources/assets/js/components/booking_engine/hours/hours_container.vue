@@ -93,11 +93,11 @@
         },
         methods: {
             //Make tab/container visible or hidden
-            makeActive: function(val) {
+            makeActive(val) {
                 this.choice = val;
             },
             //Check if a tab/container should be visible
-            isActiveTime: function(val) {
+            isActiveTime(val) {
                 if(this.choice === val) {
                     return 'active';
                 }
@@ -105,9 +105,10 @@
             },
             setTimeStructure(time_structure_name) {
                 let self = this;
+                let prev_time_structure_name = self.time_structure_active;
                 self.time_structure_active = time_structure_name; //i.e Hour, Half hour or quarter hour
-                let regular_selection = (document.querySelector("#regular .ds-button.ds-selected") ? self.$parent.ds_regular.getSelectedValuesByContext("#regular .ds-button.ds-selected") : []);
-                let interpreter_selection = (document.querySelector("#interpreter .ds-button.ds-selected") ? self.$parent.ds_regular.getSelectedValuesByContext("#interpreter .ds-button.ds-selected") : []);
+                let regular_selection = self.getSelections("#regular .ds-button.ds-selected", time_structure_name, prev_time_structure_name);
+                let interpreter_selection = self.getSelections("#interpreter .ds-button.ds-selected", time_structure_name, prev_time_structure_name);
                 let selected_options = {
                     regular:  regular_selection,
                     interpreter:  interpreter_selection
@@ -117,6 +118,70 @@
                     self.hideLoader();
                 }, 1000);
                 self.makeActive(time_structure_name);
+            },
+            getSelections(context, time_structure_name, prev_time_structure_name) {
+                let self = this;
+                let selection = [];
+                if( document.querySelector(context) ) {
+                    let ini_selection = self.$parent.ds_regular.getSelectedValuesByContext(context);
+                    selection = self.getComplementarySelections(ini_selection, time_structure_name, prev_time_structure_name);
+                }
+                return selection;
+            },
+            getComplementarySelections(selections, time_structure_name, prev_time_structure_name){
+                let self = this;
+                let sel_length = parseInt(self.time_structure[time_structure_name].lenght);
+                let prev_sel_length = parseInt(self.time_structure[prev_time_structure_name].lenght);
+                let complementary_sel = [];
+                const hour = self.time_structure.hour.lenght;
+                const half_hour = self.time_structure.half_hour.lenght;
+                const quarter_hour = self.time_structure.quarter_hour.lenght;
+
+                for (let index = 0; index < selections.length; index++) {
+                    let selection_data = selections[index].split('-');
+                    let minutes = parseInt(selection_data[1]);
+                    const prefix = `${selection_data[0]}-`;
+
+                    const minute_module = minutes % hour;
+                    const initial_minute = minutes - minute_module;
+                    let min_to_add = initial_minute;
+
+                    if(((prev_sel_length == half_hour) || (prev_sel_length == quarter_hour))
+                        && sel_length == hour){
+                        self.addToArray(prefix, complementary_sel, initial_minute);
+                    } else if(prev_sel_length == quarter_hour && sel_length == half_hour){
+                        if(minute_module >= half_hour) {
+                            self.addToArray(prefix, complementary_sel, initial_minute + half_hour);
+                        } else {
+                            self.addToArray(prefix, complementary_sel, initial_minute);
+                        }
+                    } else if(prev_sel_length == half_hour && sel_length == quarter_hour){
+                        if(minute_module >= half_hour) {
+                            self.addToArray(prefix, complementary_sel, initial_minute + half_hour);
+                            self.addToArray(prefix, complementary_sel, initial_minute + half_hour + quarter_hour);
+                        } else {
+                            self.addToArray(prefix, complementary_sel, initial_minute);
+                            self.addToArray(prefix, complementary_sel, initial_minute + quarter_hour);
+                        }
+                    } else if(prev_sel_length == hour){
+                        if(sel_length == quarter_hour){
+                            self.addToArray(prefix, complementary_sel, min_to_add);
+                            self.addToArray(prefix, complementary_sel, initial_minute + quarter_hour);
+                            self.addToArray(prefix, complementary_sel, initial_minute + half_hour);
+                            self.addToArray(prefix, complementary_sel, initial_minute + half_hour + quarter_hour);
+                        } else if(sel_length == half_hour) {
+                            self.addToArray(prefix, complementary_sel, min_to_add);
+                            self.addToArray(prefix, complementary_sel, initial_minute + half_hour);
+                        }
+                    }
+                }
+                return complementary_sel;
+            },
+            addToArray(prefix, the_array, value){
+                if(the_array.indexOf(value) < 0){ //Add only if is not in the array
+                    the_array.push(`${prefix}${value}`);
+                }
+                return the_array;
             },
             drawHours(week_day, hour) {
                 let self = this;
@@ -153,7 +218,8 @@
                                     confirmButtonColor: '#17c4bb',
                                     cancelButtonColor: '#e2e5ec',
                                     confirmButtonText: 'Yes, copy them!',
-                                    keydownListenerCapture: true
+                                    allowEscapeKey : false,
+                                    allowOutsideClick: false
                                 }).then((result) => {
                                     if (result.value) {
                                         self.copyHours();
