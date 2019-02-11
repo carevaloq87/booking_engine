@@ -49,7 +49,7 @@
 
         <div class="row mt-3 pl-3" v-if="copyField">
             <label class="m-checkbox m-checkbox--solid m-checkbox--single m-checkbox--brand mr-3">
-                    <input type="checkbox" v-model="copy_hours" v-on:click="confirmCopy"><span></span>
+                    <input type="checkbox" v-model="copy_hours"><span></span>
             </label>
             <span>Copy regular hours for interpreter appointments <i class="fa fa-info-circle" data-skin="dark" data-container="body" data-toggle="m-tooltip" data-placement="right" title="" data-original-title="This will override current interpreter selections"></i></span>
         </div>
@@ -102,6 +102,20 @@
                     return 'active';
                 }
                 return '';
+            },
+            disable_ds() {
+                var self = this;
+                let ds_selectors = document.getElementsByClassName("ds-selector");
+                for(var i = 0; i < ds_selectors.length; i++){
+                    ds_selectors[i].className += " hidden";
+                }
+            },
+            enable_ds() {
+                var self = this;
+                let ds_selectors = document.getElementsByClassName("ds-selector");
+                for(var i = 0; i < ds_selectors.length; i++){
+                    ds_selectors[i].classList.remove("hidden");
+                }
             },
             setTimeStructure(time_structure_name) {
                 let self = this;
@@ -209,7 +223,7 @@
             },
             confirmCopy() {
                 var self = this;
-                if(!self.copy_hours && self.tableClass == 'current') {
+                if(self.tableClass == 'current') {
                     self.$swal({
                                     title: 'Are you sure?',
                                     text: "You won't be able to revert this!",
@@ -231,6 +245,7 @@
                                     } else {
                                         self.copy_hours = false;
                                     }
+                                    self.enable_ds();
                                 });
                 }
 
@@ -255,6 +270,12 @@
             currentSchedule: function () {
                 this.time_structure_active = this.currentSchedule.time_name;
                 this.choice = this.currentSchedule.time_name;
+            },
+            copy_hours: function (val) {
+                if(val === true){
+                    this.disable_ds();
+                    this.confirmCopy();
+                }
             }
         },
         mounted() {
