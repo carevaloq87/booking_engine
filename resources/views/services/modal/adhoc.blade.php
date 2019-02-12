@@ -12,7 +12,7 @@
                         <button class="close" aria-label="Close" data-dismiss="modal" type="button"><span aria-hidden="true">×</span></button>
                     </div>
                 </div>
-                <service-adhoc :service="sv_id"></service-adhoc>
+                <service-adhoc :service="sv_id" :regular_duration="regular_duration" :interpreter_duration="interpreter_duration"></service-adhoc>
 
             </div>
 

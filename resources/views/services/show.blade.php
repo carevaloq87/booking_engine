@@ -55,10 +55,10 @@
 
             <div class="col-sm-2">
                 <div class="col-sm-12 text-center">
-                    <a v-on:click="openAdhoc({{ $service->id }})" href="#"><i class="fa fa-cogs"></i> </a>
+                    <a v-on:click="openAdhoc({{ $service->id }},{{ $service->duration }},{{ $service->interpreter_duration }})" href="#"><i class="fa fa-cogs"></i> </a>
                 </div>
                 <div class="col-sm-12 text-center">
-                    <a v-on:click="openAdhoc({{ $service->id }})" href="#">Ad hoc</a>
+                    <a v-on:click="openAdhoc({{ $service->id }},{{ $service->duration }},{{ $service->interpreter_duration }})" href="#">Ad hoc</a>
                 </div>
             </div>
         </div>

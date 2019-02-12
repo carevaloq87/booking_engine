@@ -13,6 +13,8 @@ new Vue({
 
     data: {
         sv_id: 0,
+        interpreter_duration: 0,
+        regular_duration : 0
     },
     methods: {
         openCalendar(id) {
@@ -31,9 +33,11 @@ new Vue({
                 EventBus.$emit('FETCH_HOURS');
             }, 1000);
         },
-        openAdhoc(id) {
+        openAdhoc(id, regular_duration, interpreter_duration) {
             var self = this;
             self.sv_id = id;
+            self.regular_duration = regular_duration,
+            self.interpreter_duration = interpreter_duration
             $('#set_adhoc_booking').modal('show');
         }
     },

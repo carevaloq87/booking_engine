@@ -4,7 +4,7 @@
         <div class="row adhoc-rows" v-if="is_service">
             <label for="duration" class="col-md-2 control-label">Duration</label>
             <div class="col-sm-8">
-                <input class="form-control" name="duration" type="number" min="0" step="1" :id="tableClass + '_duration'" minlength="1" placeholder="Enter duration here..." required>
+                <input class="form-control" :value="duration" name="duration" type="number" min="0" step="1" :id="tableClass + '_duration'" minlength="1" placeholder="Enter duration here..." required>
             </div>
         </div>
         <div class="btn-group btn-group-sm adhoc-rows">
@@ -62,6 +62,7 @@
             currentJourney: Object,
             tableClass: String,
             is_service: Boolean,
+            duration: Number,
         },
         data() {
             return {

@@ -31,11 +31,11 @@
 
             <div class="tab-content col-sm adhoc_hours_selection">
                 <div id="regular_journey"  class="tab-pane fade show active" role="tabpanel" aria-labelledby="regular-journey-tab">
-                    <journey-container v-bind:currentJourney="journey.regular" tableClass="regular" v-on:reload-ds="updateDragSelect" is_service> </journey-container>
+                    <journey-container v-bind:currentJourney="journey.regular" :duration="regular_duration" tableClass="regular" v-on:reload-ds="updateDragSelect" is_service> </journey-container>
                 </div>
 
                 <div id="interpreter_journey" class="tab-pane fade" role="tabpanel" aria-labelledby="interpreter-journey-tab">
-                    <journey-container v-bind:currentJourney="journey.interpreter" tableClass="interpreter" v-on:reload-ds="updateDragSelect" is_service> </journey-container>
+                    <journey-container v-bind:currentJourney="journey.interpreter" :duration="interpreter_duration" tableClass="interpreter" v-on:reload-ds="updateDragSelect" is_service> </journey-container>
                 </div>
             </div>
         </div>
@@ -56,7 +56,7 @@
     Vue.component('journey-container', require('./journey_container.vue'));
 
     export default {
-        props:['service'],
+        props:['service', 'regular_duration', 'interpreter_duration'],
         components: {
             Datepicker
         },
