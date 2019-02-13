@@ -90,6 +90,7 @@ class ServiceTest extends DuskTestCase
             $service =  Service::where('name', 'Test Dusk Service')->first();
             $browser->loginAs($user)
                     ->visit('/services/show/'.$service->id)
+                    ->pause(2000)
                     ->clickLink("Days")
                     ->pause(20000)
                     ->press('Current Year')
@@ -109,7 +110,7 @@ class ServiceTest extends DuskTestCase
                     ->press('#hour')
                     ->drag('#Wed-540', '#Fri-600')
                     ->press('Submit')
-                    ->pause(5000)
+                    ->pause(7000)
                     ->assertSee($service->name);
         });
 
@@ -127,6 +128,12 @@ class ServiceTest extends DuskTestCase
                     ->type('duration', '30')
                     ->pause(1000)
                     ->drag('#adhoc-540', '#adhoc-780')
+                    ->pause(1000)
+                    ->type('duration', '60')
+                    ->clickLink("Interpreter")
+                    ->drag('#adhoc-600', '#adhoc-660')
+                    ->pause(2000)
+                    ->screenshot('screent before submit Adhoc')
                     ->press('Submit')
                     ->assertSee($service->name);
         });
@@ -138,6 +145,7 @@ class ServiceTest extends DuskTestCase
 
             $browser->loginAs($user)
                     ->visit('/services')
+                    ->pause(2000)
                     ->click('@delete-service-'.$service->id)
                     ->acceptDialog()
                     ->assertPathIs('/services')
