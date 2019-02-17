@@ -32,7 +32,7 @@
 </div>
 
 <div class="d-inline-flex align-items-center p-2 {{ $errors->has('color') ? 'has-error' : '' }}">
-    <label for="color" class="col-md-2 control-label">Color</label>
+    <label for="color" class="col-md-2 control-label">Colour</label>
     <div class="col-md-1">
         <input class="form-control" name="color" type="color" id="color" value="{{ old('color', optional($service)->color) }}" minlength="1" maxlength="255" placeholder="Choose a color here...">
         {!! $errors->first('color', '<p class="help-block">:message</p>') !!}
