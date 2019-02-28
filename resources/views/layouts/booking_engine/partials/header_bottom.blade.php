@@ -47,14 +47,14 @@
                                         <span class="m-menu__link-text">Resources</span>
                                     </a>
                                 </li>
-                                <li class="m-menu__item {{ Request::is('bookings','bookings/*') ? 'm-menu__item--active' : null }}">
-                                    <a class="m-menu__link " href="{{ route('bookings.booking.index') }}">
-                                        <span class="m-menu__item-here"></span>
-                                        <span class="m-menu__link-text">New Booking</span>
-                                    </a>
-                                </li>
 
                                 @if (Auth::user()->isAdmin())
+                                    <li class="m-menu__item {{ Request::is('bookings','bookings/*') ? 'm-menu__item--active' : null }}">
+                                        <a class="m-menu__link " href="{{ route('bookings.booking.index') }}">
+                                            <span class="m-menu__item-here"></span>
+                                            <span class="m-menu__link-text">New Booking</span>
+                                        </a>
+                                    </li>
                                     <li class="m-menu__item {{ Request::is('users','users/*') ? 'm-menu__item--active' : null }}">
                                         <a class="m-menu__link " href="{{ route('users.index') }}">
                                             <span class="m-menu__item-here"></span>
