@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\ServiceProvider;
+use DB;
 
 class service extends Model
 {
@@ -121,14 +123,50 @@ class service extends Model
      */
     public static function getServicesByUserServiceProviderTable($request)
     {
-        $user = auth()->user();
         $search_value = '%' . $request->search . '%';
-        $query = Service::with('serviceprovider')->where('name', 'like', $search_value);
-        if(!$user->isAdmin()){
-            $query->where('service_provider_id', '=', $user->service_provider_id);
+        $query = Service::prepareServicesQuery($search_value);
+        if(isset($request->column) && !is_null($request->column)){
+            $column = $request->column;
+            if($request->column == 'name'){
+                $column = 'services.name';
+            }
+            if($request->column == 'service_provider'){
+                $column = 'service_providers.name';
+            }
+            $query->orderBy($column, $request->order);
         }
-        return $query->orderBy($request->column, $request->order)
-                    ->paginate($request->per_page);
+        $data = $query->paginate($request->per_page);
+        return $data;
+    }
+
+    /**
+     * Create query limiting services of each service provider and fields
+     *
+     * @param String $search_value
+     * @return DBQuery
+     */
+    public static function prepareServicesQuery($search_value)
+    {
+        $query = DB::table('services')
+                    ->join('service_providers', function($join){
+                            $join->on('services.service_provider_id', '=', 'service_providers.id');
+                            $user = auth()->user();
+                            if(!$user->isAdmin()){
+                                $join->where('service_providers.id', '=', $user->service_provider_id);
+                            }
+                    })
+                    ->select(
+                                'services.id',
+                                'services.name',
+                                'services.duration',
+                                'services.interpreter_duration',
+                                'service_providers.name AS sp_name'
+                            )
+                    ->orWhere("services.name",'LIKE', '%'.$search_value.'%')
+                    ->orWhere("services.duration",'LIKE', '%'.$search_value.'%')
+                    ->orWhere("services.interpreter_duration",'LIKE', '%'.$search_value.'%')
+                    ->orWhere("service_providers.name",'LIKE', '%'.$search_value.'%');
+        return $query;
     }
     /**
      * Get Service by Service Provider id.

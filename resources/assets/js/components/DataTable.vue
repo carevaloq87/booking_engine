@@ -10,7 +10,6 @@
         <table class="table">
             <thead>
                 <tr>
-                    <th class="table-head">#</th>
                     <th v-for="column in columns" :key="column" class="table-head" @click="sortByColumn(column)">
                         {{ column | columnHead }}
                         <span v-if="column === sortedColumn">
@@ -25,9 +24,11 @@
                 <tr class v-if="tableData.length === 0">
                     <td class="lead text-center" :colspan="columns.length + 1">No data found.</td>
                 </tr>
-                <tr v-for="data in tableData" :key="data.id" class="m-datatable__row" v-else>
+                <tr v-for="data in tableDataFiltered" :key="data.id" class="m-datatable__row" v-else>
                     <td v-for="(value, key) in data" v-bind:key="key">
-                        {{ value }}
+                        <span v-if="key !== 'row_num'">
+                            {{ value }}
+                        </span>
                     </td>
                     <td>
                         <form method="POST" :action="deleteUrl + '/'  + data.id" accept-charset="UTF-8">
@@ -105,6 +106,7 @@ export default {
         search: {
             handler: function(search) {
                 this.search = search;
+                this.currentPage = 1; //Reset current page to initial one when searching
                 this.fetchData();
             },
             immediate: true
@@ -114,6 +116,17 @@ export default {
         return this.fetchData();
     },
     computed: {
+        /**
+         * Remove extra attribute created on Laravel's end with row number
+         */
+        tableDataFiltered() {
+            return this.tableData.filter(function(td) {
+                    if('row_num' in td){
+                        delete td.row_num;
+                    }
+                    return td;
+                })
+        },
         /**
          * Get the pages number array for displaying in the pagination.
          * */
@@ -153,7 +166,11 @@ export default {
                 .then(({ data }) => {
                     this.pagination = data;
                     this.pagination.meta = data;
-                    this.tableData = data.data;
+                    if('data' in data) { //If no data then reset array
+                        this.tableData = data.data;
+                    } else {
+                        this.tableData = [];
+                    }
                 }).catch(error => this.tableData = []);
         },
         /**
@@ -175,15 +192,13 @@ export default {
          * Sort the data by column.
          * */
         sortByColumn(column) {
-            if( column != 'service_provider') {
-                if (column === this.sortedColumn) {
-                    this.order = (this.order === 'asc') ? 'desc' : 'asc';
-                } else {
-                    this.sortedColumn = column;
-                    this.order = 'asc';
-                }
-                this.fetchData();
+            if (column === this.sortedColumn) {
+                this.order = (this.order === 'asc') ? 'desc' : 'asc';
+            } else {
+                this.sortedColumn = column;
+                this.order = 'asc';
             }
+            this.fetchData();
         }
     },
     filters: {

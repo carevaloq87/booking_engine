@@ -50,16 +50,6 @@ class ServiceController extends Controller
     {
         $services = Service::getServicesByUserServiceProviderTable($request);
 
-        $services->transform (function ($service) {
-                                    return [
-                                                'id' => $service->id,
-                                                'name' => $service->name,
-                                                'duration' => $service->duration,
-                                                'interpreter_duration'  => $service->interpreter_duration,
-                                                'service_provider'  => $service->serviceprovider->name,
-                                                'created_at' => $service->created_at->format('d/m/Y')
-                                            ];;
-                                });
         return $services;
     }
 

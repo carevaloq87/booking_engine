@@ -27,7 +27,7 @@
                         show-url="{{ route('services.service.show', '' ) }}"
                         edit-url="{{ route('services.service.edit', '' ) }}"
                         delete-url="{!! route('services.service.destroy', '') !!}"
-                        :columns="['name', 'duration', 'interpreter_duration' , 'service_provider','created_at']"
+                        :columns="['id','name', 'duration', 'interpreter_duration' , 'service_provider']"
                     ></data-table>
                 </div>
             </div>
