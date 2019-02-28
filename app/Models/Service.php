@@ -130,6 +130,9 @@ class service extends Model
             if($request->column == 'name'){
                 $column = 'services.name';
             }
+            if($request->column == 'id'){
+                $column = 'services.id';
+            }
             if($request->column == 'service_provider'){
                 $column = 'service_providers.name';
             }
