@@ -20,20 +20,12 @@
 
         <div class="panel-body">
 
-            @if ($errors->any())
-                <ul class="alert alert-danger">
-                    @foreach ($errors->all() as $error)
-                        <li>{{ $error }}</li>
-                    @endforeach
-                </ul>
-            @endif
-
             <form method="POST" action="{{ route('users.update', $user->id) }}" id="edit_user_form" name="edit_user_form" accept-charset="UTF-8" class="form-horizontal">
             {{ csrf_field() }}
             <input name="_method" type="hidden" value="PUT">
             @include ('users.form', [
                                         'user' => $user,
-                                      ])
+                                    ])
 
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">

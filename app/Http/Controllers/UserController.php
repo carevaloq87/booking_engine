@@ -63,38 +63,42 @@ class UserController extends Controller
     public function store(Request $request)
     {
         //validate the password.
-        $this->validate($request, [
+        $this->validateUser($request);
+        try {
+            //create and save the user
+            $user = User::create($this->getUserFields($request, false));
+
+            $user->assignRole($request->input('roles'));
+
+            $log = new Log();
+            $log->record('CREATE', 'user', $user->id,  $user);
+            return redirect()->route('users.index')
+                                ->with('success_message', 'User was successfully added!');
+        } catch (Exception $exception) {
+            return back()->withInput()
+                            ->withErrors(['unexpected_error' => $exception->getMessage()]);
+        }
+    }
+    /**
+     *
+     *
+     * @param Request $request
+     * @return void
+     */
+    private function validateUser($request)
+    {
+        $messages = [
+            'password.min' =>  'The password must be at least 8 characters long',
+            'password.regex' => 'The password should contain at least one uppercase, one lowercase, one number and one special character'
+        ];
+        $rules = [
             'name' => 'required',
             'email' => 'required|email|unique:users,email',
             'password'  => ['required','confirmed','min:8', 'regex:/^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-+]).{6,}$/'],
             'roles' => 'required',
             'service_provider_id' => 'nullable',
-        ], [
-            'password.min' =>  'The password must be at least 8 characters long',
-            'password.regex' => 'The password should contain at least one uppercase, one lowercase, one number and one special character'
-        ]);
-
-        try {
-
-
-            //create and save the user
-            $user = User::create($this->getUserFields($request, false));
-
-            $user->assignRole($request->input('roles'));
-            /*
-            $user
-	            ->roles()
-	            ->attach(Role::where('id',  $request->role )->first());
-            */
-            $log = new Log();
-            $log->record('CREATE', 'user', $user->id,  $user);
-            return redirect()->route('users.index')
-                                ->with('success_message', 'User was successfully added!');
-
-        } catch (Exception $exception) {
-            return back()->withInput()
-                            ->withErrors(['unexpected_error' => $exception->getMessage()]);
-        }
+        ];
+        $this->validate($request, $rules, $messages);
     }
 
     /**
@@ -138,34 +142,26 @@ class UserController extends Controller
     public function update($id, Request $request)
     {
         try {
-
             $this->validate($request, [
                 'name' => 'required',
                 'email' => 'required|email|unique:users,email,'.$id,
-                //'password' => 'same:confirm-password',
                 'roles' => 'required',
                 'service_provider_id' => 'nullable'
             ]);
 
             $user = User::findOrFail($id);
             $user->update($this->getUserFields($request,true));
-            /*
-            $user->roles()
-                 ->sync( Role::where('id',  $request->role )
-                 ->first());
-            */
-
             DB::table('model_has_roles')->where('model_id',$id)->delete();
             $user->assignRole($request->input('roles'));
             $log = new Log();
             $log->record('UPDATE', 'user', $user->id,  $user);
             return redirect()->route('users.index')
-                             ->with('success_message', 'User was successfully updated!');
+                            ->with('success_message', 'User was successfully updated!');
 
         } catch (Exception $exception) {
 
             return back()->withInput()
-                         ->withErrors(['unexpected_error' => $exception->getMessage()]);
+                        ->withErrors(['unexpected_error' => $exception->getMessage()]);
         }
     }
     /**
@@ -202,12 +198,12 @@ class UserController extends Controller
             $log = new Log();
             $log->record('DELETE', 'user', $user->id,  $user);
             return redirect()->route('users.index')
-                             ->with('success_message', 'User was successfully deleted!');
+                            ->with('success_message', 'User was successfully deleted!');
 
         } catch (Exception $exception) {
 
             return back()->withInput()
-                         ->withErrors(['unexpected_error' => 'Unexpected error occurred while trying to process your request!']);
+                        ->withErrors(['unexpected_error' => 'Unexpected error occurred while trying to process your request!']);
         }
     }
 
