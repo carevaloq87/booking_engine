@@ -72,7 +72,7 @@ class ResourceController extends Controller
     {
         $data = $this->getData($request);
         try {
-        ServiceProvider::validateServiceProvider($request);
+            ServiceProvider::validateServiceProvider($request);
             $resource = Resource::create($data);
             if (isset($data['services'])) {
                 $resource->services()->sync($data['services']);
