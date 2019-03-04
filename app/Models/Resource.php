@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use DB;
 
 class Resource extends Model
 {
@@ -113,6 +114,64 @@ class Resource extends Model
 
         return $resources;
     }
+
+    /**
+     * Get all the Resources that belongs to the current user by service provider and allow pagination
+     *
+     * @param Request $request query coming from front-end table
+     * @return Collection
+     */
+    public static function getResourcesByUserServiceProviderTable($request)
+    {
+        $search_value = '%' . $request->search . '%';
+        $query = Resource::prepareResourcesQuery($search_value);
+        if(isset($request->column) && !is_null($request->column)){
+            $column = $request->column;
+            if($request->column == 'name'){
+                $column = 'resources.name';
+            }
+            if($request->column == 'id'){
+                $column = 'resources.id';
+            }
+            if($request->column == 'service_provider'){
+                $column = 'service_providers.name';
+            }
+            $query->orderBy($column, $request->order);
+        }
+        $data = $query->paginate($request->per_page);
+        return $data;
+    }
+
+    /**
+     * Create query limiting resources of each service provider and fields
+     *
+     * @param String $search_value
+     * @return DBQuery
+     */
+    public static function prepareResourcesQuery($search_value)
+    {
+        $query = DB::table('resources')
+                    ->join('service_providers', function($join){
+                            $join->on('resources.service_provider_id', '=', 'service_providers.id');
+                            $user = auth()->user();
+                            if(!$user->isAdmin()){
+                                $join->where('service_providers.id', '=', $user->service_provider_id);
+                            }
+                    })
+                    ->select(
+                                'resources.id',
+                                'resources.name',
+                                'resources.phone',
+                                'resources.email',
+                                'service_providers.name AS sp_name'
+                            )
+                    ->orWhere("resources.name",'LIKE', '%'.$search_value.'%')
+                    ->orWhere("resources.phone",'LIKE', '%'.$search_value.'%')
+                    ->orWhere("resources.email",'LIKE', '%'.$search_value.'%')
+                    ->orWhere("service_providers.name",'LIKE', '%'.$search_value.'%');
+        return $query;
+    }
+
     /**
      * Get Resource by Service Provider id.
      *

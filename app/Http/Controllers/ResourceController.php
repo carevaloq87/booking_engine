@@ -39,6 +39,18 @@ class ResourceController extends Controller
     }
 
     /**
+     * Display a listing of the resources.
+     *
+     * @return Illuminate\View\View
+     */
+    public function list(Request $request)
+    {
+        $resources = Resource::getResourcesByUserServiceProviderTable($request);
+
+        return $resources;
+    }
+
+    /**
      * Show the form for creating a new resource.
      *
      * @return Illuminate\View\View

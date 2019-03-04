@@ -176,6 +176,9 @@ Route::group(
     'prefix' => 'resources',
 ], function () {
 
+    Route::get('/list', 'ResourceController@list')
+    ->name('resources.list');
+
     Route::get('/', 'ResourceController@index')
         ->name('resources.resource.index');
 

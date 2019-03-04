@@ -206,6 +206,6 @@ export default {
             return value.split('_').join(' ').toUpperCase();
         }
     },
-    name: 'DataTable'
+
 }
 </script>
