@@ -72,7 +72,7 @@ class ResourceController extends Controller
     {
         $data = $this->getData($request);
         try {
-            self::validateServiceProvider($request);
+        ServiceProvider::validateServiceProvider($request);
             $resource = Resource::create($data);
             if (isset($data['services'])) {
                 $resource->services()->sync($data['services']);
@@ -86,23 +86,6 @@ class ResourceController extends Controller
 
             return back()->withInput()
                         ->withErrors(['unexpected_error' => $exception->getMessage()]);
-        }
-    }
-    /**
-     * Validate if the selected serives belong to the service provider
-     *
-     * @param Request $request
-     * @return void
-     */
-    private function validateServiceProvider($request)
-    {
-        if($request['services'] && $request['service_provider_id']) {
-            foreach ($request['services'] as $key => $service) {
-                $service_obj = Service::findOrFail($service);
-                if($service_obj->service_provider_id != $request['service_provider_id']) {
-                    throw new Exception("Error. One or more services do not belong to the selected service provider");
-                }
-            }
         }
     }
 
@@ -147,7 +130,7 @@ class ResourceController extends Controller
     {
         $data = $this->getData($request);
         try {
-            self::validateServiceProvider($request);
+            ServiceProvider::validateServiceProvider($request);
 
             $resource = Resource::findOrFail($id);
             $resource->update($data);

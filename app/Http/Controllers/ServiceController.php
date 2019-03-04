@@ -75,7 +75,7 @@ class ServiceController extends Controller
     {
         $data = $this->getData($request);
         try {
-            self::validateServiceProvider($request);
+            ServiceProvider::validateServiceProvider($request);
 
             $service=Service::create($data);
             if (isset($data['resources'])) {
@@ -91,23 +91,6 @@ class ServiceController extends Controller
 
             return back()->withInput()
                         ->withErrors(['unexpected_error' => $exception->getMessage()]);
-        }
-    }
-    /**
-     * Validate if the selected resources belong to the service provider
-     *
-     * @param Request $request
-     * @return void
-     */
-    private function validateServiceProvider($request)
-    {
-        if($request['resources'] && $request['service_provider_id']) {
-            foreach ($request['resources'] as $key => $resource) {
-                $resource_obj = Resource::findOrFail($resource);
-                if($resource_obj->service_provider_id != $request['service_provider_id']) {
-                    throw new Exception("Error. One or more resources do not belong to the selected service provider");
-                }
-            }
         }
     }
 
@@ -163,7 +146,7 @@ class ServiceController extends Controller
     {
         $data = $this->getData($request);
         try {
-            self::validateServiceProvider($request);
+            ServiceProvider::validateServiceProvider($request);
 
             $service = Service::findOrFail($id);
             $service->update($data);

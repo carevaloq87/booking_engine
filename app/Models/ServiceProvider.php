@@ -3,6 +3,9 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Resource;
+use App\Models\Service;
+use Exception;
 
 class ServiceProvider extends Model
 {
@@ -80,6 +83,31 @@ class ServiceProvider extends Model
             $serviceProviders = ServiceProvider::where('id', auth()->user()->service_provider_id)->pluck('name','id')->all();
         }
         return $serviceProviders;
+    }
+
+    /**
+     * Validate if the given resources or services belong to the service provider
+     *
+     * @param Request $request
+     * @return void
+     */
+    public static function validateServiceProvider($request)
+    {
+        if(($request['resources'] || $request['services'] ) && $request['service_provider_id']) {
+            $objs = (isset($request['resources']) ? $request['resources'] : $request['services']);
+            foreach ($objs as $key => $obj) {
+                if(isset($request['resources'])) {
+                    $type = 'resources';
+                    $local_obj = Resource::findOrFail($obj);
+                } else {
+                    $type = 'services';
+                    $local_obj = Service::findOrFail($obj);
+                }
+                if($local_obj->service_provider_id != $request['service_provider_id']) {
+                    throw new Exception("Error. One or more " . $type . " do not belong to the selected service provider");
+                }
+            }
+        }
     }
 
 }
