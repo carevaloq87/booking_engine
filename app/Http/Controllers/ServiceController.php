@@ -109,13 +109,12 @@ class ServiceController extends Controller
             return view('services.show', compact('service'));
         }
         if (!$service->resources()->first()) {
-            $message .= "<span id='alert_resource'><br>This service has <b>no resources allocated</b> - head <a href=" .
-                        route('services.service.edit', $service->id ) ." > here </a> to fix.</span>";
+            $message .= "<br>This service has <b>no resources allocated</b> - head <a href=" .
+                        route('services.service.edit', $service->id ) ." > here </a> to fix.";
         }
         if (!$service->availableHours()->first()) {
-            $message .= "<span id='alert_hour'><br>This service has <b>no Hours allocated</b> - click \"Hours\" to fix.<span>";
+            $message .= "<br>This service has <b>no Hours allocated</b> - click \"Hours\" to fix.";
         }
-
         return view('services.show', compact('service'))
                 ->with('alert_message',$message);
     }
