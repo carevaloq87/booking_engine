@@ -51,6 +51,7 @@
 			<div class="m-grid__item m-grid__item--fluid  m-grid m-grid--ver-desktop m-grid--desktop 	m-container m-container--responsive m-container--xxl m-page__container m-body">
 				<div class="m-grid__item m-grid__item--fluid m-wrapper">
 
+					@include ('layouts.booking_engine.partials.sub_header_alerts')
 					@include ('layouts.booking_engine.partials.sub_header')
 
 					<div class="m-content">
