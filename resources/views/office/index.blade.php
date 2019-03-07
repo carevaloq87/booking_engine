@@ -35,6 +35,7 @@
                                     @endif
                                 ]"
                     ></data-table>
+                    <hr>
                     <data-table
                         fetch-url="{{ route('resources.list') }}"
                         show-url="{{ route('resources.resource.show', '' ) }}"
