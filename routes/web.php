@@ -417,6 +417,6 @@ Route::group(
     ],
     function () {
         Route::get('/', 'OfficeController@index')
-            ->name('booking.index');
+            ->name('office.index');
     }
 );

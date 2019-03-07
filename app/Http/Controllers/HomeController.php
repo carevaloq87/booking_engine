@@ -51,7 +51,7 @@ class HomeController extends Controller
             $user->assignRole($role->id);
             $user->update($data);
 
-            return redirect()->route('services.service.index')
+            return redirect()->route('office.index')
                             ->with('success_message', 'User profile was updated');
 
         } catch (Exception $exception) {

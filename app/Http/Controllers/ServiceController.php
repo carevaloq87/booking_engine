@@ -84,7 +84,7 @@ class ServiceController extends Controller
 
             $log = new Log();
             $log->record('CREATE', 'service', $service->id,  $service);
-            return redirect()->route('services.service.index')
+            return redirect()->route('office.index')
                             ->with('success_message', 'Service was successfully added!');
 
         } catch (Exception $exception) {
@@ -156,7 +156,7 @@ class ServiceController extends Controller
             }
             $log = new Log();
             $log->record('UPDATE', 'service', $service->id,  $service);
-            return redirect()->route('services.service.index')
+            return redirect()->route('office.index')
                             ->with('success_message', 'Service was successfully updated!');
 
         } catch (Exception $exception) {
@@ -180,7 +180,7 @@ class ServiceController extends Controller
             $service->delete();
             $log = new Log();
             $log->record('DELETE', 'service', $service->id,  $service);
-            return redirect()->route('services.service.index')
+            return redirect()->route('office.index')
                             ->with('success_message', 'Service was successfully deleted!');
 
         } catch (Exception $exception) {

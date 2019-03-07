@@ -176,6 +176,7 @@ class service extends Model
     public static function getServicesFieldsToShow()
     {
         $fields = [
+            'services.id',
             'services.name',
             'services.duration',
             'services.interpreter_duration'

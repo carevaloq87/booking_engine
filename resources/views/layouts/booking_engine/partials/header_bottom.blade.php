@@ -35,19 +35,12 @@
                                         <span class="m-menu__link-text">Return to dashboard</span>
                                     </a>
                                 </li>
-                                <li class="m-menu__item {{ Request::is('services','services/*') ? 'm-menu__item--active' : null }}">
-                                    <a class="m-menu__link " href="{{ route('services.service.index') }}">
+                                <li class="m-menu__item {{ Request::is('office','office/*') ? 'm-menu__item--active' : null }}">
+                                    <a class="m-menu__link " href="{{ route('office.index') }}">
                                         <span class="m-menu__item-here"></span>
-                                        <span class="m-menu__link-text">Services</span>
+                                        <span class="m-menu__link-text">{{ auth()->user()->serviceProvider->name }} Home</span>
                                     </a>
                                 </li>
-                                <li class="m-menu__item {{ Request::is('resources','resources/*') ? 'm-menu__item--active' : null }}">
-                                    <a class="m-menu__link " href="{{ route('resources.resource.index') }}">
-                                        <span class="m-menu__item-here"></span>
-                                        <span class="m-menu__link-text">Resources</span>
-                                    </a>
-                                </li>
-
                                 @if (Auth::user()->isAdmin())
                                     <li class="m-menu__item {{ Request::is('bookings','bookings/*') ? 'm-menu__item--active' : null }}">
                                         <a class="m-menu__link " href="{{ route('bookings.booking.index') }}">

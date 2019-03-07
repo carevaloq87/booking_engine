@@ -27,6 +27,7 @@
                         title="Services"
                         per-page="7"
                         :columns="[
+                                    'id',
                                     'name',
                                     'duration',
                                     'interpreter_duration',
@@ -44,6 +45,7 @@
                         title="Resources"
                         per-page="5"
                         :columns="[
+                                    'id',
                                     'name',
                                     'phone',
                                     'email',

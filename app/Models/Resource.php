@@ -176,6 +176,7 @@ class Resource extends Model
     public static function getServicesFieldsToShow()
     {
         $fields = [
+            'resources.id',
             'resources.name',
             'resources.phone',
             'resources.email',

@@ -2,8 +2,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
-use App\Models\Service;
-use App\Models\ServiceProvider;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Carbon\Carbon;
@@ -101,15 +99,11 @@ class AuthController extends Controller
                     $user->save();
                 }
                 Auth::login($user);
-                $service_providers = ServiceProvider::pluck('name','id')->all();
-                $services = Service::getServicesByUserServiceProvider();
-                return view('services.index', compact('services','service_providers', 'name'));
+                return redirect()->route('office.index');
 
             }
         } else {
-            $service_providers = ServiceProvider::pluck('name','id')->all();
-            $services = Service::getServicesByUserServiceProvider();
-            return view('services.index', compact('services','service_providers', 'name'));
+            return redirect()->route('office.index');
         }
 
     }
