@@ -159,17 +159,31 @@ class Resource extends Model
                             }
                     })
                     ->select(
-                                'resources.id',
-                                'resources.name',
-                                'resources.phone',
-                                'resources.email',
-                                'service_providers.name AS sp_name'
+                                Resource::getServicesFieldsToShow()
                             )
                     ->orWhere("resources.name",'LIKE', '%'.$search_value.'%')
                     ->orWhere("resources.phone",'LIKE', '%'.$search_value.'%')
                     ->orWhere("resources.email",'LIKE', '%'.$search_value.'%')
                     ->orWhere("service_providers.name",'LIKE', '%'.$search_value.'%');
         return $query;
+    }
+
+    /**
+     * Get fields to be displayed in tables
+     *
+     * @return array
+     */
+    public static function getServicesFieldsToShow()
+    {
+        $fields = [
+            'resources.name',
+            'resources.phone',
+            'resources.email',
+        ];
+        if(auth()->user()->isAdmin()){
+            $fields[] = 'service_providers.name AS sp_name';
+        }
+        return $fields;
     }
 
     /**

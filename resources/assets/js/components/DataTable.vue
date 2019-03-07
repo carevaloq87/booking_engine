@@ -1,7 +1,9 @@
 <template>
     <div class="data-table">
         <div class="form-group row mx-0">
-            <div class="col-sm-6 col-md-7"></div>
+            <div class="col-sm-6 col-md-7">
+                <h5> {{ title }} </h5>
+            </div>
             <label class="col-form-label font-weight-bold pt-2 col-sm-2 text-right" for="search" placeholder="Service name">Search</label>
             <div class="col-sm-4 col-md-3">
                 <input type="text" id="search" class="form-control form-control-sm" v-model="search">
@@ -78,7 +80,9 @@ export default {
         columns: { type: Array, required: true },
         showUrl: { type: String, required: true },
         editUrl: { type: String, required: true },
-        deleteUrl: { type: String, required: true }
+        deleteUrl: { type: String, required: true },
+        title: { type: String, required: false },
+        perPage: { type: String, required: true }
     },
     data() {
         return {
@@ -89,7 +93,6 @@ export default {
             },
             offset: 4,
             currentPage: 1,
-            perPage: 20,
             sortedColumn: this.columns[0],
             search: '',
             order: 'asc',

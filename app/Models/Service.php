@@ -159,11 +159,7 @@ class service extends Model
                             }
                     })
                     ->select(
-                                'services.id',
-                                'services.name',
-                                'services.duration',
-                                'services.interpreter_duration',
-                                'service_providers.name AS sp_name'
+                                Service::getServicesFieldsToShow()
                             )
                     ->orWhere("services.name",'LIKE', '%'.$search_value.'%')
                     ->orWhere("services.duration",'LIKE', '%'.$search_value.'%')
@@ -171,6 +167,25 @@ class service extends Model
                     ->orWhere("service_providers.name",'LIKE', '%'.$search_value.'%');
         return $query;
     }
+
+    /**
+     * Get fields to be displayed in tables
+     *
+     * @return array
+     */
+    public static function getServicesFieldsToShow()
+    {
+        $fields = [
+            'services.name',
+            'services.duration',
+            'services.interpreter_duration'
+        ];
+        if(auth()->user()->isAdmin()){
+            $fields[] = 'service_providers.name AS sp_name';
+        }
+        return $fields;
+    }
+
     /**
      * Get Service by Service Provider id.
      *
