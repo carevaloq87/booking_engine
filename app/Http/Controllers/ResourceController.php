@@ -79,7 +79,7 @@ class ResourceController extends Controller
             }
             $log = new Log();
             $log->record('CREATE', 'resource', $resource->id,  $resource);
-            return redirect()->route('resources.resource.index')
+            return redirect()->route('office.index')
                              ->with('success_message', 'Resource was successfully added!');
 
         } catch (Exception $exception) {
@@ -141,7 +141,7 @@ class ResourceController extends Controller
             }
             $log = new Log();
             $log->record('UPDATE', 'resource', $resource->id,  $resource);
-            return redirect()->route('resources.resource.index')
+            return redirect()->route('office.index')
                              ->with('success_message', 'Resource was successfully updated!');
 
         } catch (Exception $exception) {
@@ -165,7 +165,7 @@ class ResourceController extends Controller
             $resource->delete();
             $log = new Log();
             $log->record('DELETE', 'resource', $resource->id,  $resource);
-            return redirect()->route('resources.resource.index')
+            return redirect()->route('office.index')
                              ->with('success_message', 'Resource was successfully deleted!');
 
         } catch (Exception $exception) {

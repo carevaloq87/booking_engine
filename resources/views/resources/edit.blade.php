@@ -6,7 +6,7 @@
 
 @section('buttons')
     <div class="btn-group btn-group-sm" role="group">
-        <a href="{{ route('resources.resource.index') }}" class="btn btn-primary" title="Show All Service">
+        <a href="{{ route('office.index') }}" class="btn btn-primary" title="Show All Service">
             <i class="fa fa-list-ul"></i>
         </a>
         <a href="{{ route('resources.resource.create') }}" class="btn btn-success" title="Create New Service">

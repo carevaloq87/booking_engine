@@ -9,7 +9,7 @@
         <input name="_method" value="DELETE" type="hidden">
         {{ csrf_field() }}
         <div class="btn-group btn-group-sm" role="group">
-            <a href="{{ route('resources.resource.index') }}" class="btn btn-primary" title="Show All Resource">
+            <a href="{{ route('office.index') }}" class="btn btn-primary" title="Show All Resource">
                 <i class="fa fa-list-ul"></i>
             </a>
 
