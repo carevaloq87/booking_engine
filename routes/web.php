@@ -323,7 +323,6 @@ Route::group(
     Route::post('/resource/adhoc','CalendarController@storeResourceAdhoc');
 });
 
-
 Route::group(
 [
     'middleware' => ['auth'],
@@ -338,6 +337,7 @@ Route::group(
 
 	Route::get('/service','BookingController@getBookingsByDate');
 });
+
 Route::group(
 [
     'prefix' => 'clients',
@@ -409,3 +409,14 @@ Route::group(
         ->where('id', '[0-9]+');
 
 });
+
+Route::group(
+    [
+        'middleware' => ['auth'],
+        'prefix' => 'office',
+    ],
+    function () {
+        Route::get('/', 'OfficeController@index')
+            ->name('booking.index');
+    }
+);
