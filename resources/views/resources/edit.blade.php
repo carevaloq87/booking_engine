@@ -22,13 +22,13 @@
         <div class="panel-body">
 
             <form method="POST" action="{{ route('resources.resource.update', $resource->id) }}" id="edit_resource_form" name="edit_resource_form" accept-charset="UTF-8" class="form-horizontal">
-            {{ csrf_field() }}
-            <input name="_method" type="hidden" value="PUT">
-            <div class="d-flex flex-column">
-            @include ('resources.form', [
-                                        'resource' => $resource,
-                                        ])
-            </div>
+                {{ csrf_field() }}
+                <input name="_method" type="hidden" value="PUT">
+                <div class="d-flex flex-column">
+                    @include ('resources.form', [
+                                                'resource' => $resource,
+                                                ])
+                </div>
                 <div class="form-group">
                     <div class="col-md-offset-2 col-md-10">
                         <input class="btn btn-primary" type="submit" value="Update">
