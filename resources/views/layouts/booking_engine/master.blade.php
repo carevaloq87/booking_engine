@@ -105,6 +105,7 @@
 		<script src="/js/new_user.js"></script>
 
 		@yield('scripts')
+		@yield('extra-scripts')
 	    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
 
 	</body>
