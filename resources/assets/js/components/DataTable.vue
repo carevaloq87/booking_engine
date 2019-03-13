@@ -4,7 +4,7 @@
             <div class="col-sm-6 col-md-7">
                 <h5> {{ title }} </h5>
             </div>
-            <label class="col-form-label font-weight-bold pt-2 col-sm-2 text-right" for="search" placeholder="Service name">Search</label>
+            <label class="col-form-label font-weight-bold pt-2 col-sm-2 text-right" for="search" :placeholder="title.toLowerCase() + ' name'">Search</label>
             <div class="col-sm-4 col-md-3">
                 <input type="text" id="search" class="form-control form-control-sm" v-model="search">
             </div>
@@ -37,13 +37,13 @@
                             <input name="_method" value="DELETE" type="hidden">
                             <input type="hidden" name="_token" :value="csrf">
                             <div class="btn-group btn-group-sm pull-right list-table" role="group">
-                                <a :href="showUrl + '/' + data.id" class="btn btn-sm btn-info" title="Show Service">
+                                <a :href="showUrl + '/' + data.id" class="btn btn-sm btn-info" :title="'Show ' + title">
                                     <i class="fa fa-calendar-alt"></i>
                                 </a>
-                                <a :href="editUrlComposition(data.id)" class="btn btn-sm btn-primary" title="Edit Service">
+                                <a :href="editUrlComposition(data.id)" class="btn btn-sm btn-primary" :title="'Edit ' + title" v-if="editUrl != ''">
                                     <i class="fa fa-pencil-alt"></i>
                                 </a>
-                                <button type="submit" :dusk="'delete-service-' + data.id" class="btn btn-sm btn-danger" title="Delete Service" onclick="return confirm(&quot;Delete Service?&quot;)">
+                                <button type="submit" :dusk="'delete-' + title.toLowerCase() + '-' + data.id" class="btn btn-sm btn-danger" :title="'Delete ' + title" :onclick="'return confirm(&quot;Delete ' + title + '?&quot;)'">
                                     <i class="fa fa-trash-alt"></i>
                                 </button>
                             </div>

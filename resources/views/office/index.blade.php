@@ -40,7 +40,7 @@
                     <data-table
                         fetch-url="{{ route('resources.list') }}"
                         show-url="{{ route('resources.resource.show', '' ) }}"
-                        edit-url="{{ route('resources.resource.edit', '' ) }}"
+                        edit-url=""
                         delete-url="{!! route('resources.resource.destroy', '') !!}"
                         title="Resources"
                         per-page="5"
@@ -62,5 +62,5 @@
 @endsection
 
 @section('scripts')
-    <script src="{{ asset('js/tables.js?id=1') }}"></script>
+    <script src="{{ asset('js/tables.js') }}"></script>
 @endsection
