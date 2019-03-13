@@ -99,8 +99,9 @@ class ResourceController extends Controller
     public function show($id)
     {
         $resource = Resource::with('serviceprovider')->findOrFail($id);
+        $serviceProviders = ServiceProvider::getServideProvidersByCurrentUser();
 
-        return view('resources.show', compact('resource'));
+        return view('resources.show', compact('resource', 'serviceProviders'));
     }
 
     /**

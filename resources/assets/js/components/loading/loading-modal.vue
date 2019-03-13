@@ -29,11 +29,10 @@
             requests: function () {
                 //Delay execution
                 setTimeout(() => {
-                    console.log(this.requests);
                     if(this.requests.length < 1){
                         $("#contentLoading").modal('hide');
                     }
-                }, 1500);
+                }, 2000);
             }
         },
         mounted () {
