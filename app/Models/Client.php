@@ -42,9 +42,10 @@ class Client extends Model
      * @param string $last_name
      * @return void
      */
-    public static function getByName($first_name, $last_name){
-        return Client::where( "first_name", $first_name )
-                    ->where( "last_name", $last_name )
+    public static function getByNameAndContact($first_name, $last_name, $contact){
+        return Client::where( "first_name", trim($first_name) )
+                    ->where( "last_name", trim($last_name) )
+                    ->where("contact", trim($contact))
                     ->first();
     }
     /**
@@ -57,7 +58,10 @@ class Client extends Model
      */
     public static function findOrCreate($first_name, $last_name, $contact)
     {
-        $client =self::getByName(trim($first_name), trim($last_name));
+        if(!filter_var(trim($contact), FILTER_VALIDATE_EMAIL)){
+            $contact= preg_replace('/\D+/', '', $contact);
+        }
+        $client =self::getByNameAndContact($first_name, $last_name, $contact);
         if(!isset($client)){
             $client = Client::create([
                 'first_name' => $first_name,
