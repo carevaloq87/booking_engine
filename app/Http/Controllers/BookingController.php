@@ -62,7 +62,10 @@ class BookingController extends Controller
 
     public function findOrCreateClient($first_name, $last_name, $contact)
     {
-        $client = Client::getByName(trim($first_name), trim($last_name));
+        if(!filter_var(trim($contact), FILTER_VALIDATE_EMAIL)){
+            $contact= preg_replace('/\D+/', '', $contact);
+        }
+        $client = Client::getByNameAndContact($first_name, $last_name, $contact);
         if(!isset($client)){
             $client = Client::create([
                 'first_name' => $first_name,
