@@ -85,12 +85,12 @@
     <label for="service_provider_id" class="col-md-2 control-label">Service Provider</label>
     <div class="col-md-10">
         <select class="form-control" id="service_provider_id" name="service_provider_id">
-        	    <option value="" style="display: none;" {{ old('service_provider_id', optional($service)->service_provider_id ?: '') == '' ? 'selected' : '' }} disabled selected>Select service provider</option>
-        	@foreach ($serviceProviders as $key => $serviceProvider)
-			    <option value="{{ $key }}" {{ (old('service_provider_id', optional($service)->service_provider_id) == $key || auth()->user()->service_provider_id == $key) ? 'selected' : '' }}>
-			    	{{ $serviceProvider }}
-			    </option>
-			@endforeach
+            <option value="" style="display: none;" {{ old('service_provider_id', optional($service)->service_provider_id ?: '') == '' ? 'selected' : '' }} disabled selected>Select service provider</option>
+            @foreach ($serviceProviders as $key => $serviceProvider)
+                <option value="{{ $key }}" {{ (old('service_provider_id', optional($service)->service_provider_id) == $key || auth()->user()->service_provider_id == $key) ? 'selected' : '' }}>
+                    {{ $serviceProvider }}
+                </option>
+            @endforeach
         </select>
 
         {!! $errors->first('service_provider_id', '<p class="help-block">:message</p>') !!}

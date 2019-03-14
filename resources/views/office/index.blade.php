@@ -22,7 +22,7 @@
                     <data-table
                         fetch-url="{{ route('services.list') }}"
                         show-url="{{ route('services.service.show', '' ) }}"
-                        edit-url="{{ route('services.service.edit', '' ) }}"
+                        edit-url=""
                         delete-url="{!! route('services.service.destroy', '') !!}"
                         title="Services"
                         per-page="7"

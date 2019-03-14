@@ -103,19 +103,20 @@ class ServiceController extends Controller
      */
     public function show($id)
     {
+        $serviceProviders = ServiceProvider::getServideProvidersByCurrentUser();
         $service = Service::with('serviceprovider')->findOrFail($id);
         $message = "Not seeing any availability? ";
         if($service->resources()->first() && $service->availableHours()->first()) {
-            return view('services.show', compact('service'));
+            return view('services.show', compact('service', 'serviceProviders'));
         }
         if (!$service->resources()->first()) {
-            $message .= "<br>This service has <b>no resources allocated</b> - head <a href=" .
-                        route('services.service.edit', $service->id ) ." > here </a> to fix.";
+            $message .= "<br>This service has <b>no resources allocated</b>";
         }
         if (!$service->availableHours()->first()) {
             $message .= "<br>This service has <b>no Hours allocated</b> - click \"Hours\" to fix.";
         }
-        return view('services.show', compact('service'))
+
+        return view('services.show', compact('service', 'serviceProviders'))
                 ->with('alert_message',$message);
     }
 
