@@ -9,12 +9,6 @@
                     </button>
                     <div id="m_header_menu" class="m-header-menu m-aside-header-menu-mobile m-aside-header-menu-mobile--offcanvas  m-header-menu--skin-dark m-header-menu--submenu-skin-light m-aside-header-menu-mobile--skin-light m-aside-header-menu-mobile--submenu-skin-light ">
                         <ul class="m-menu__nav  m-menu__nav--submenu-arrow ">
-                            <li class="m-menu__item  " aria-haspopup="true">
-                                <a href="#" class="m-menu__link ">
-                                    <span class="m-menu__item-here"></span>
-                                    <span class="m-menu__link-text">Booking Engine</span>
-                                </a>
-                            </li>
                             @guest
                                 <li class="m-menu__item {{ Request::is('login','login/*') ? ' m-menu__item--active' : null }}">
                                     <a class="m-menu__link" href="{{ route('login') }}">
