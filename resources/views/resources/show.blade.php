@@ -59,7 +59,7 @@
             <!--end::Item-->
 
             <!--begin::Item-->
-            <div id="booking_engine_resource">
+            <div id="booking_engine_resource" class="resource">
                 <div class="m-accordion__item">
                     <div class="m-accordion__item-head collapsed" role="tab" id="accordion_resource_unavailability" data-toggle="collapse" href="#accordion_resource_unavailability_body" aria-expanded="false">
                         <span class="m-accordion__item-icon"><i class="fa  flaticon-alert-2"></i></span>

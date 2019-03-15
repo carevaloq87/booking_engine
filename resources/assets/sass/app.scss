@@ -1,6 +1,7 @@
 $orbit-blue: #17c4bb;
 $light-grey: #EFEFEF;
 $white: #fff;
+$soft_red: #E7505A;
 //Adhock Calendar Styles
 #set_adhoc_booking {
     .day_col {
@@ -296,6 +297,22 @@ $white: #fff;
 #booking_description {
     padding: 0;
     border: 0;
+}
+
+/*************** Resources Page *******/
+.resource {
+    #interpreter_journey,
+    #interpreter,
+    #regular_journey,
+    #regular{
+        button.active {
+            background-color: $soft_red;
+        }
+    }
+    .ds-selected,
+    .selected_conv {
+        background-color: $soft_red;
+    }
 }
 /*************** Login Page **********/
 #login_button {
