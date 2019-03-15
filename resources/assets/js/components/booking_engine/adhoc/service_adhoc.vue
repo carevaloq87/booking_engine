@@ -3,6 +3,9 @@
         <div class="card mx-2 col-sm-11 mx-auto">
             <div class="card-body">
                 <span>This will set an adhoc day only, you should provide a range of hours and duration for those appointments. Please include interpreter and regular information when relevant.</span>
+                <br>
+                <br>
+                <span>Any existing appointments will <strong>not</strong> be deleted.</span>
             </div>
         </div>
         <div class="col-11 mx-auto p-0">
