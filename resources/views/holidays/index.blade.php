@@ -1,7 +1,9 @@
 @extends('layouts.booking_engine.master')
 
 @section('sub_title')
-    Holidays
+    Holidays 
+    <br>
+    <small> Click <a href="https://www.business.vic.gov.au/victorian-public-holidays-and-daylight-saving/victorian-public-holidays" target="_blank"> here</a> to consult the official dates</small>
 @endsection
 
 @section('buttons')

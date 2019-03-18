@@ -58,6 +58,7 @@ class Holiday extends Model
 
         return Holiday::where('date', '>=', $current_year)
                     ->where('date', '<=', $next_year)
+                    ->orderBy('date', 'asc')
                     ->paginate(25);
     }
 
