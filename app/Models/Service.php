@@ -201,4 +201,51 @@ class service extends Model
         return $services;
     }
 
+    /**
+     * Create a new service from API request
+     *
+     * @param array $request
+     * @return int
+     */
+    public static function  createService($request)
+    {
+        $service_provider_obj = new ServiceProvider();
+        $service_provider = $service_provider_obj->where('name', $request['sp_name'])->first();
+
+        if($service_provider) {
+            $service = new Service();
+            $service->name = $request['name'];
+            $service->phone = $request['phone'];
+            $service->email = $request['email'];
+            $service->description = $request['description'];
+            $service->service_provider_id = $service_provider->id;
+            $is_existent_service = self::serviceExist($service);
+            if(!$is_existent_service){
+                $service->save();
+                return $service->id;
+            } else {
+                return $is_existent_service->id;
+            }
+        } else {
+            //Service provider do not exist - What to do?
+            return false;
+        }
+    }
+
+    /**
+     * Check if a service exist
+     *
+     * @param Service $service
+     * @return int
+     */
+    public static function serviceExist($service)
+    {
+        $exist = Service::where('service_provider_id', $service->service_provider_id)
+                        ->where('name', $service->name)
+                        ->first();
+        if($exist) {
+            return $exist->id;
+        }
+        return false;
+    }
 }

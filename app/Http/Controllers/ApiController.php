@@ -55,6 +55,30 @@ class ApiController extends Controller
                                             $exception->getMessage()],400);
         }
     }
+
+    /**
+     * Create a service
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function storeService(Request $request)
+    {
+        try {
+            $service_obj = new Service();
+            $sv_id = $service_obj->createService($request);
+            if($sv_id) {
+                return response()->json($sv_id);
+            } else {
+                return response()->json(['error'=>'Service Provider do not exist'],400);
+            }
+        } catch (Exception $exception) {
+            return response()->json(['error'=>$exception instanceof ValidationException?
+                                            implode(" ",array_flatten($exception->errors())) :
+                                            $exception->getMessage()],400);
+        }
+    }
+
     /**
      * Delete a booking
      *
