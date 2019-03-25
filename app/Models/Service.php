@@ -223,9 +223,8 @@ class service extends Model
             if(!$is_existent_service){
                 $service->save();
                 return $service->id;
-            } else {
-                return $is_existent_service->id;
             }
+            return $is_existent_service;
         } else {
             //Service provider do not exist - What to do?
             return false;
