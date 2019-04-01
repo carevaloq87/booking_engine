@@ -39,8 +39,19 @@ new Vue({
             self.regular_duration = regular_duration,
             self.interpreter_duration = interpreter_duration
             $('#set_adhoc_booking').modal('show');
+        },
+        /**
+         * Allow users to see the details of the service and then close the accordion
+         * This will improve how users interact with the information according to our UX
+         */
+        closeAccordion() {
+            let selector = '#accordion_service_details';
+            setTimeout(() => {
+                document.querySelector(selector).click();
+            }, 500);
         }
     },
     mounted() {
+        this.closeAccordion();
     },
 });
