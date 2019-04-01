@@ -49,6 +49,7 @@ new Vue({
             setTimeout(() => {
                 document.querySelector(selector).click();
             }, 500);
+            jQuery('[data-tooltip="true"]').tooltip();
         }
     },
     mounted() {

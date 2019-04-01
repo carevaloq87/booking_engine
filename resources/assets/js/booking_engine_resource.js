@@ -34,8 +34,20 @@ new Vue({
             var self = this;
             self.rs_id = id;
             $('#set_adhoc_booking').modal('show');
+        },
+        /**
+         * Allow users to see the details of the service and then close the accordion
+         * This will improve how users interact with the information according to our UX
+         */
+        closeAccordion() {
+            let selector = '#accordion_resource_details';
+            setTimeout(() => {
+                document.querySelector(selector).click();
+            }, 500);
+            jQuery('[data-tooltip="true"]').tooltip();
         }
     },
     mounted() {
+        this.closeAccordion();
     },
 });
