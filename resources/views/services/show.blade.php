@@ -25,12 +25,12 @@
 @endsection
 
 @section('content')
-    <div class="container">
+    <div class="container service_page">
 
         <div class="m-accordion m-accordion--default m-accordion--solid m-accordion--toggle-arrow" id="accordion_service" role="tablist">
             <!--begin::Item-->
             <div class="m-accordion__item">
-                <div class="m-accordion__item-head" role="tab" id="accordion_service_details" data-toggle="collapse" href="#accordion_service_details_body" aria-expanded="false">
+                <div class="m-accordion__item-head" role="tab" id="accordion_service_details" data-toggle="collapse" href="#accordion_service_details_body" aria-expanded="false" data-tooltip="true" data-placement="top" title="Click to open or close Service Details">
                     <span class="m-accordion__item-icon"><i class="fa flaticon-user-ok"></i></span>
                     <span class="m-accordion__item-title">Service Details</span>
 
@@ -61,7 +61,7 @@
             <!--begin::Item-->
             <div id="booking_engine">
                 <div class="m-accordion__item">
-                    <div class="m-accordion__item-head collapsed" role="tab" id="accordion_service_availability" data-toggle="collapse" href="#accordion_service_availability_body" aria-expanded="false">
+                    <div class="m-accordion__item-head collapsed" role="tab" id="accordion_service_availability" data-toggle="collapse" href="#accordion_service_availability_body" aria-expanded="false" data-tooltip="true" data-placement="top" title="Click to open or close Service Availability">
                         <span class="m-accordion__item-icon"><i class="fa  flaticon-alert-2"></i></span>
                         <span class="m-accordion__item-title">Service Availability</span>
 

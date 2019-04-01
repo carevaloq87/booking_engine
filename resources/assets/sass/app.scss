@@ -325,14 +325,6 @@ $soft_red: #E7505A;
     height: 500px;
 }
 
-@media (max-width: 991px) {
-.vl {
-        border-top: 1px solid lightgray;
-        border-left: none;
-        height: 500px;
-    }
-}
-
 /********** Buggy calendar in B4 *************/
 .fc-unthemed {
     .fc-scroller .fc-content-col {
@@ -397,7 +389,19 @@ $soft_red: #E7505A;
     margin: 0 15px 0 0;
     color: #3f4047;
 }
-
+/**************** Service page Accordion ************/
+.service_page,
+.resource_page {
+    .m-accordion .m-accordion__item .m-accordion__item-head {
+        .m-accordion__item-icon,
+        .m-accordion__item-mode{
+            width: 7%
+        }
+        .m-accordion__item-title {
+            width: 25%
+        }
+    }
+}
 /**************** Template wide changes *************/
 .nav-tabs {
     .nav-link {
@@ -414,4 +418,26 @@ $soft_red: #E7505A;
 /***************** General Styles ********************/
 .hidden {
     display: none !important;
+}
+.tooltip-inner {
+    max-width: 300px;
+}
+/******************** Media Query ***********/
+@media (max-width: 991px) {
+    /**************** Login page ************/
+    .vl {
+        border-top: 1px solid lightgray;
+        border-left: none;
+        height: 500px;
+    }
+
+    /**************** Service page Accordion ************/
+    .service_page,
+    .resource_page {
+        .m-accordion .m-accordion__item .m-accordion__item-head {
+            .m-accordion__item-title {
+                width: 40%
+            }
+        }
+    }
 }

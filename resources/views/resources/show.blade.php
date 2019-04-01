@@ -25,12 +25,12 @@
 @endsection
 
 @section('content')
-    <div class="container">
+    <div class="container resource_page">
 
         <div class="m-accordion m-accordion--default m-accordion--solid m-accordion--toggle-arrow" id="accordion_resource" role="tablist">
             <!--begin::Item-->
             <div class="m-accordion__item">
-                <div class="m-accordion__item-head" role="tab" id="accordion_resource_details" data-toggle="collapse" href="#accordion_resource_details_body" aria-expanded="false">
+                <div class="m-accordion__item-head" role="tab" id="accordion_resource_details" data-toggle="collapse" href="#accordion_resource_details_body" aria-expanded="false" data-tooltip="true" data-placement="top" title="Click to open or close Resource Details">
                     <span class="m-accordion__item-icon"><i class="fa flaticon-user-ok"></i></span>
                     <span class="m-accordion__item-title">Resource Details</span>
 
@@ -61,7 +61,7 @@
             <!--begin::Item-->
             <div id="booking_engine_resource" class="resource">
                 <div class="m-accordion__item">
-                    <div class="m-accordion__item-head collapsed" role="tab" id="accordion_resource_unavailability" data-toggle="collapse" href="#accordion_resource_unavailability_body" aria-expanded="false">
+                    <div class="m-accordion__item-head collapsed" role="tab" id="accordion_resource_unavailability" data-toggle="collapse" href="#accordion_resource_unavailability_body" aria-expanded="false" data-tooltip="true" data-placement="top" title="Click to open or close Resource Unavailability">
                         <span class="m-accordion__item-icon"><i class="fa  flaticon-alert-2"></i></span>
                         <span class="m-accordion__item-title">Resource Unavailability</span>
 
