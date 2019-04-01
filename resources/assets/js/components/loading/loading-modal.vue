@@ -32,7 +32,7 @@
                     if(this.requests.length < 1){
                         $("#contentLoading").modal('hide');
                     }
-                }, 2000);
+                }, 2500);
             }
         },
         mounted () {

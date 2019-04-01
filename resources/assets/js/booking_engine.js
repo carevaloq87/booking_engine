@@ -14,7 +14,8 @@ new Vue({
     data: {
         sv_id: 0,
         interpreter_duration: 0,
-        regular_duration : 0
+        regular_duration : 0,
+        initial_accordion_close: false
     },
     methods: {
         openCalendar(id) {
@@ -50,6 +51,15 @@ new Vue({
                 document.querySelector(selector).click();
             }, 500);
             jQuery('[data-tooltip="true"]').tooltip();
+        },
+        goToAccordion(event) {
+            setTimeout(() => {
+                if(this.initial_accordion_close){
+                    event.target.scrollIntoView();
+                } else {
+                    this.initial_accordion_close = true;
+                }
+            }, 500);
         }
     },
     mounted() {
