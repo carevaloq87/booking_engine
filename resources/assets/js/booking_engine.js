@@ -8,14 +8,15 @@ Vue.component('Calendar', require('./components/calendar/calendar.vue'));
 Vue.component('loading-modal', require('./components/loading/loading-modal.vue'));
 
 import EventBus from './utils/event-bus';
+import scroll_to_element from './utils/scroll_to_element';
+
 new Vue({
     el: '#booking_engine',
 
     data: {
         sv_id: 0,
         interpreter_duration: 0,
-        regular_duration : 0,
-        initial_accordion_close: false
+        regular_duration : 0
     },
     methods: {
         openCalendar(id) {
@@ -52,17 +53,12 @@ new Vue({
             }, 500);
             jQuery('[data-tooltip="true"]').tooltip();
         },
-        goToAccordion(event) {
-            setTimeout(() => {
-                if(this.initial_accordion_close){
-                    event.target.scrollIntoView();
-                } else {
-                    this.initial_accordion_close = true;
-                }
-            }, 500);
+        scroll_to_headers() {
+            scroll_to_element(".m-accordion__item-head");
         }
     },
     mounted() {
         this.closeAccordion();
+        this.scroll_to_headers();
     },
 });

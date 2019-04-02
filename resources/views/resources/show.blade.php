@@ -25,12 +25,12 @@
 @endsection
 
 @section('content')
-    <div class="container resource_page" id="booking_engine_resource">
+    <div class="container resource_page">
 
         <div class="m-accordion m-accordion--default m-accordion--solid m-accordion--toggle-arrow" id="accordion_resource" role="tablist">
             <!--begin::Item-->
             <div class="m-accordion__item">
-                <div class="m-accordion__item-head" role="tab" id="accordion_resource_details" data-toggle="collapse" href="#accordion_resource_details_body" aria-expanded="false" data-tooltip="true" data-placement="top" title="Click to open or close Resource Details" v-on:click="goToAccordion">
+                <div class="m-accordion__item-head" role="tab" id="accordion_resource_details" data-toggle="collapse" href="#accordion_resource_details_body" aria-expanded="false" data-tooltip="true" data-placement="top" title="Click to open or close Resource Details">
                     <span class="m-accordion__item-icon"><i class="fa flaticon-user-ok"></i></span>
                     <span class="m-accordion__item-title">Resource Details</span>
 
@@ -59,9 +59,9 @@
             <!--end::Item-->
 
             <!--begin::Item-->
-            <div class="resource">
+            <div class="resource" id="booking_engine_resource">
                 <div class="m-accordion__item">
-                    <div class="m-accordion__item-head collapsed" role="tab" id="accordion_resource_unavailability" data-toggle="collapse" href="#accordion_resource_unavailability_body" aria-expanded="false" data-tooltip="true" data-placement="top" title="Click to open or close Resource Unavailability" v-on:click="goToAccordion">
+                    <div class="m-accordion__item-head collapsed" role="tab" id="accordion_resource_unavailability" data-toggle="collapse" href="#accordion_resource_unavailability_body" aria-expanded="false" data-tooltip="true" data-placement="top" title="Click to open or close Resource Unavailability">
                         <span class="m-accordion__item-icon"><i class="fa  flaticon-alert-2"></i></span>
                         <span class="m-accordion__item-title">Resource Unavailability</span>
 
@@ -75,7 +75,7 @@
                                 <div class="col-12">
                                     <h5>Set Resource Unavailability</h5>
                                 </div>
-                                <div class="col-sm-4">
+                                <div class="col-sm-4 col-lg-3">
                                     <div class="col-sm-12 text-center">
                                         <a v-on:click="openCalendar({{ $resource->id }})" href="#">
                                             <img src="/img/icons/resource/days.png" alt="" width="160">
@@ -83,7 +83,7 @@
                                     </div>
                                 </div>
 
-                                <div class="col-sm-4">
+                                <div class="col-sm-4 col-lg-3">
                                     <div class="col-sm-12 text-center">
                                         <a v-on:click="openSchedule({{ $resource->id }})" href="#">
                                             <img src="/img/icons/resource/hours.png" alt="" width="160">
@@ -91,11 +91,19 @@
                                     </div>
                                 </div>
 
-                                <div class="col-sm-4">
+                                <div class="col-sm-4 col-lg-3">
                                     <div class="col-sm-12 text-center">
                                         <a v-on:click="openAdhoc({{ $resource->id }})" href="#">
                                             <img src="/img/icons/resource/exceptions_adhocs.png" alt="" width="160">
                                         </a>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-12 col-lg-3">
+                                    <div class="col-sm-12 text-left">
+                                        <p>Resource availability is defined by setting the days and hours when the resource is <strong>unavailable</strong>.</p>
+                                        <p>For specific days when you need to make an exception to general or regular unavailability (office closures, training sessions, etc.) you can set exceptions below.</p>
+                                        <p class="hidden">Want to learn more? <a href="#">Click here.</a></p>
                                     </div>
                                 </div>
                             </div>

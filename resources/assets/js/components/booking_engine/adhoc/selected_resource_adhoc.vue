@@ -1,7 +1,7 @@
 <template>
     <div class="justify-content-md-center">
         <div class="col-xs-12">
-            <span>Appointments<small> Remember that the information represents the hours that the resource is unavailable</small></h4>
+            <span>Appointments<small> Remember that the information represents the hours that the resource is unavailable</small></span>
             <div>
                 <ul class="adhoc-hours" v-for="(hours, day) in adhocs.regular" :key="day">
                     <p><i class="fa fa-times-circle" @click="deleteAdhoc(day + '||' + 0)"></i> <strong>{{day}}</strong>&nbsp;<i id="adhoc_details" class="fa fa-info-circle" :title="hours.options.details" aria-hidden="true" data-container="body"></i></p>

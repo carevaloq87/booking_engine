@@ -7,12 +7,13 @@ Vue.component('selected-adhoc', require('./components/booking_engine/adhoc/selec
 Vue.component('loading-modal', require('./components/loading/loading-modal.vue'));
 
 import EventBus from './utils/event-bus';
+import scroll_to_element from './utils/scroll_to_element';
+
 new Vue({
     el: '#booking_engine_resource',
 
     data: {
-        rs_id: 0,
-        initial_accordion_close: false
+        rs_id: 0
     },
     methods: {
         openCalendar(id) {
@@ -48,17 +49,12 @@ new Vue({
             }, 500);
             jQuery('[data-tooltip="true"]').tooltip();
         },
-        goToAccordion(event) {
-            setTimeout(() => {
-                if(this.initial_accordion_close){
-                    event.target.scrollIntoView();
-                } else {
-                    this.initial_accordion_close = true;
-                }
-            }, 500);
+        scroll_to_headers() {
+            scroll_to_element(".m-accordion__item-head");
         }
     },
     mounted() {
         this.closeAccordion();
+        this.scroll_to_headers();
     },
 });
