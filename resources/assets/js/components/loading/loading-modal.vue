@@ -14,7 +14,7 @@
             }
         },
         methods: {
-            removeValue(arr) { //Source of this function is Stackoverflow
+            removeValueFromArr(arr) { //Source of this function is Stackoverflow
                 var what, a = arguments, L = a.length, ax;
                 while (L > 1 && arr.length) {
                     what = a[--L];
@@ -23,28 +23,48 @@
                     }
                 }
                 return arr;
+            },
+            addValue(value) {
+                let self = this;
+                return new Promise((resolve, reject) => {
+                    self.requests.push(value);
+                    resolve(self.requests.length);
+                });
+            },
+            removeValue(value) {
+                let self = this;
+                return new Promise((resolve, reject) => {
+                    self.removeValueFromArr(self.requests,value);
+                    resolve(self.requests.length);
+                });
+            },
+            checkIfEmpty(){
+                if(this.requests.length < 1){
+                    $("#contentLoading").modal('hide');
+                }
+                if(this.requests.length > 1) {
+                    $("#contentLoading").modal('show');
+                }
             }
         },
         watch: {
             requests: function () {
-                //Delay execution
-                setTimeout(() => {
-                    if(this.requests.length < 1){
-                        $("#contentLoading").modal('hide');
-                    }
-                }, 2500);
+                this.checkIfEmpty();
             }
         },
         mounted () {
             let self = this;
             EventBus.$on('SHOW_LOADER', function (payLoad) {
-                self.requests.push(payLoad);
-                    setTimeout(() => {
-                        $("#contentLoading").modal('show');
-                    }, 500);
+                self.addValue(payLoad).then(() => {
+                    self.checkIfEmpty();
+                });
             });
             EventBus.$on('HIDE_LOADER', function (payLoad) {
-                self.removeValue(self.requests,payLoad);
+                self.removeValue(payLoad)
+                .then(() => {
+                    self.checkIfEmpty();
+                })
+                .catch(err => console.error('Error: ', err));
             });
         }
     };
