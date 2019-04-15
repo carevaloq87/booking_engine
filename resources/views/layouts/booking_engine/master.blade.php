@@ -34,7 +34,7 @@
 		<link href="{{ asset('assets/demo/demo5/base/style.bundle.css') }}" rel="stylesheet" type="text/css" />
 
 		<!--end::Base Styles -->
-		<link rel="shortcut icon" href="/assets/demo/demo5/media/img/logo/favicon.ico" />
+		<link rel="shortcut icon" href="/img/vlalogo.ico" />
 	</head>
 
 	<!-- end::Head -->
