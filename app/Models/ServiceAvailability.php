@@ -130,7 +130,14 @@ class ServiceAvailability extends Model
         $bookings_obj = new Booking();
         $unavailable_dates =  $bookings_obj->getFutureBookingsByServiceAndDate($this->service_id,  $this->start, $this->end);
 
-        return ['regular'=> $availability_regular->get(), 'interpreter' => $availability_interpreter->get(), 'unavailable' => $unavailable_dates];
+        $service_info = [
+            'name' => $this->service->name,
+            'color' => $this->service->color,
+            'duration' => $this->service->duration,
+            'interpreter_duration' => $this->service->interpreter_duration,
+        ];
+
+        return ['regular'=> $availability_regular->get(), 'interpreter' => $availability_interpreter->get(), 'unavailable' => $unavailable_dates, 'service_info' => $service_info];
     }
 
     /**
