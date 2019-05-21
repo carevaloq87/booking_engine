@@ -20,7 +20,7 @@ new Vue({
                     .then(function (response) {
                         $("#contentLoading").modal("hide");
                         alert("Success");
-                        window.location.href = "/services";
+                        window.location.href = "/office";
                     })
                     .catch(function (error) {
                         console.log(error);
