@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.booking_engine.master')
 
 @section('content')
 <div class="container">
