@@ -62,10 +62,11 @@ class AuthController extends Controller
             ], 401);
         $user = $request->user();
         $tokenResult = $user->createToken('Personal Access Token');
-        $token = $tokenResult->token;
-        if ($request->remember_me)
-            $token->expires_at = Carbon::now()->addWeeks(1);
-        $token->save();
+        if ($request->remember_me) {
+            $token = $tokenResult->token;
+            $token->expires_at = Carbon::now()->addWeeks(10);
+            $token->save();
+        }
         return response()->json([
             'access_token' => $tokenResult->accessToken,
             'token_type' => 'Bearer',
@@ -74,6 +75,7 @@ class AuthController extends Controller
             )->toDateTimeString()
         ]);
     }
+
     /**
      * Login with VLA credentials
      *
@@ -127,7 +129,7 @@ class AuthController extends Controller
      */
     public function logout(Request $request)
     {
-        $request->user()->token()->revoke();
+        $request->user()->token()->delete();
         return response()->json([
             'message' => 'Successfully logged out'
         ]);
