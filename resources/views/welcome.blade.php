@@ -24,7 +24,12 @@
 
 		<!--begin::Page Vendors Styles -->
 
-		<link rel="stylesheet" href="https://unpkg.com/vue-multiselect@2.1.0/dist/vue-multiselect.min.css">
+        <link rel="stylesheet" href="https://unpkg.com/vue-multiselect@2.1.0/dist/vue-multiselect.min.css">
+        <link type="text/css" href="assets/vendors/edmin/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link type="text/css" href="assets/vendors/edmin/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet">
+        <link type="text/css" href="assets/vendors/edmin/css/theme.css" rel="stylesheet">
+        <link type="text/css" href="assets/vendors/edmin/images/icons/css/font-awesome.css" rel="stylesheet">
+
 
 		<!--end::Page Vendors Styles -->
 
@@ -35,7 +40,7 @@
 		<!--end::Base Styles -->
 		<link rel="shortcut icon" href="/img/vlalogo.ico" />
     </head>
-    <body class="m-page--wide  m-footer--push m-aside--offcanvas-default">
+    <body class="m-page--wide  m-footer--push m-aside--offcanvas-default" >
         <div class="m-grid m-grid--hor m-grid--root m-page">
             <header id="m_header" class="m-grid__item		m-header " m-minimize="minimize" m-minimize-offset="200" m-minimize-mobile-offset="200">
                 <div class="m-header__bottom">
@@ -84,6 +89,69 @@
 				<div class="m-grid__item m-grid__item--fluid m-wrapper">
 
 					<div class="m-content">
+                        <div class="mr-auto pb-5">
+                            <h3 class="m-subheader__title ">Booking Engine</h3>
+                        </div>
+                        <div class="row">
+                            <div class="span9">
+                                <div class="content">
+                                    <div class="btn-controls">
+                                        <div class="btn-box-row row-fluid">
+                                            <a href="#" id="welcome_card" class="btn-box big span4"><i class=" icon-book"></i><b>{{ $bookings['year'] }}</b>
+                                                <p class="text-muted">
+                                                    Bookings This Year</p>
+                                            </a>
+                                            <a href="#" id="welcome_card" class="btn-box big span4 welcome_card"><i class="icon-calendar"></i><b>{{ $bookings['week'] }}</b>
+                                                <p class="text-muted">
+                                                    Bookings This Week</p>
+                                            </a>
+                                            <a href="#" id="welcome_card" class="btn-box big span4"><i class="icon-comment"></i><b>{{ $bookings['day'] }}</b>
+                                                <p class="text-muted">
+                                                    Bookings Today</p>
+                                            </a>
+                                        </div>
+                                        <div class="btn-box-row row-fluid">
+                                            <ul class="widget widget-usage unstyled span4">
+                                                <li>
+                                                    <p>
+                                                        <strong>Regular</strong> <span class="pull-right small muted">{{$bookings['regular']}}%</span>
+                                                    </p>
+                                                    <div class="progress tight">
+                                                        <div class="bar" style="width: {{$bookings['regular']}}%;">
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <p>
+                                                        <strong>Interpreter</strong> <span class="pull-right small muted">{{$bookings['interpreter']}}%</span>
+                                                    </p>
+                                                    <div class="progress tight">
+                                                        <div class="bar bar-success" style="width: {{$bookings['interpreter']}}%;">
+                                                        </div>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                            <div class="span8">
+                                                <div class="row-fluid">
+                                                    <div class="span12">
+                                                        @auth
+                                                        <a id="welcome_card"  href="{{ route('logout') }}" class="btn-box small span4"><i class="icon-user"></i><b>Logout</b>
+                                                        </a>
+                                                        @else
+                                                        <a id="welcome_card"  href="{{ route('login') }}" class="btn-box small span4"><i class="icon-user"></i><b>Login</b>
+                                                        </a>
+                                                        @endauth
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="btn-box-row row-fluid">
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
 					</div>
 				</div>
