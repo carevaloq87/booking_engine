@@ -56,10 +56,11 @@ class AuthController extends Controller
             'remember_me' => 'boolean'
         ]);
         $credentials = request(['email', 'password']);
-        if(!Auth::attempt($credentials))
+        if (!Auth::attempt($credentials)) {
             return response()->json([
                 'message' => 'Unauthorized'
             ], 401);
+        }
         $user = $request->user();
         $tokenResult = $user->createToken('Personal Access Token');
         $token = $tokenResult->token;
@@ -78,49 +79,89 @@ class AuthController extends Controller
     }
 
     /**
+     * Login usin LHO Credentials
+     *
+     * @param String $user_details
+     * User details structure
+     * [0] Name
+     * [1] Email
+     * [2] Service provider name
+     * [3] password
+     * @return void
+     */
+    public function loginCLC($user_details)
+    {
+        $user_details = base64_decode($user_details);
+        $user_details = explode('---', $user_details);
+        $user = User::where('email', $user_details[1])->first();
+
+        if (!Auth::check()) {
+            // If user exists
+            if(!$user) {
+                //If user does not exist then create it.
+                if (!$user) { // create the user if does not exist;
+                    $service_provider = ServiceProvider::where('name', $user_details[2])->first();
+
+                    $user = User::create([
+                            'name'     => $user_details[0],
+                            'email'    => $user_details[1],
+                            'service_provider_id' => $service_provider->id,
+                            'password' => $user_details[3]
+                    ]);
+                    $role = \App\Models\Role::where('name', 'Standard')->first();
+                    $user->assignRole($role->id);
+                    $user->save();
+                }
+            }
+            Auth::login($user);
+
+        }
+        return redirect()->route('office.index');
+    }
+
+    /**
      * Login with VLA credentials
      *
      * @param Request $request
      * @return void
      */
-    public function loginVLA(Request $request) {
+    public function loginVLA(Request $request)
+    {
         $simple_SAML = new SimpleSAML_Auth_Simple(env('SIMPLESML_SP'));
         $simple_SAML->requireAuth();
         $attributes = $simple_SAML->getAttributes();
         $name = $attributes['name'][0];
-        if( !Auth::check() ) {
+        if (!Auth::check()) {
             if (isset($attributes['mail'][0]) && $attributes['mail'][0] != '') {
                 $email = $attributes['mail'][0];
-                $user = User::where('email',$email)->first();
+                $user = User::where('email', $email)->first();
                 if (!$user) { // create the user if does not exist;
                     $user = User::create([
                             'name'     => $name,
                             'email'    => $attributes['mail'][0],
                             'password' => bcrypt(substr(str_shuffle(MD5(microtime())), 0, 16))
                     ]);
-                    $role = \App\Models\Role::where('name','Authenticated')->first();
+                    $role = \App\Models\Role::where('name', 'Standard')->first();
                     $user->assignRole($role->id);
                     $user->save();
                 }
                 Auth::login($user);
-                if($user->service_provider_id == null) {
-                    $service_providers = ServiceProvider::pluck('name','id')->all();
+                if ($user->service_provider_id == null) {
+                    $service_providers = ServiceProvider::pluck('name', 'id')->all();
                     return view('welcome', compact('service_providers', 'name'));
                 } else {
                     return redirect()->route('office.index');
                 }
-
             }
         } else {
             $user = $user = Auth::user();
-            if($user->service_provider_id == null) {
-                $service_providers = ServiceProvider::pluck('name','id')->all();
+            if ($user->service_provider_id == null) {
+                $service_providers = ServiceProvider::pluck('name', 'id')->all();
                 return view('welcome', compact('service_providers', 'name'));
             } else {
                 return redirect()->route('office.index');
             }
         }
-
     }
 
     /**
